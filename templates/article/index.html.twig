@@ -1,13 +1,16 @@
-{% extends 'base.html.twig' %}
+{% extends 'index.html.twig' %}
 
 {% block title %}Article index{% endblock %}
 
-{% block body %}
+{% block contenu %}
+
+
+
     <h1>Article index</h1>
 
-    <table class="table">
+    <table class="table table-bordered">
         <thead>
-            <tr>
+        <tr>
                 <th>IdArticle</th>
                 <th>NomArticle</th>
                 <th>Price</th>
@@ -30,8 +33,8 @@
                 <td>{{ article.image }}</td>
                 <td>{{ article.description }}</td>
                 <td>{{ article.quantity }}</td>
-                <td>{{ article.IdArtiste }}</td>
-                <td>{{ article.idCategorie }}</td>
+                <td>{{ article.IdArtiste.email }}</td>
+                <td>{{ article.idCategorie.nameCategorie}}</td>
 
 
                 <td>
@@ -48,4 +51,6 @@
     </table>
 
     <a href="{{ path('app_article_new') }}">Create new</a>
+
+
 {% endblock %}

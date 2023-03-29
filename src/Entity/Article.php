@@ -2,11 +2,10 @@
 
 namespace App\Entity;
 
+use App\Entity\Artiste;
+use App\Entity\Categorie;
 use App\Repository\ArticleRepository;
-use App\Repository\ArticteRepository;
 use Doctrine\ORM\Mapping as ORM;
-Use App\Entity\Artiste;
-Use App\Entity\Categorie;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -52,17 +51,17 @@ class Article
     private ?int $quantity;
 
 
-    #[ORM\ManyToOne(inversedBy: 'articles')]
-    #[ORM\Column]
-    #[Assert\NotBlank(message:"nom requis")]
-
-    private ?string $idArtiste;
+    #[ORM\ManyToOne(targetEntity: Artiste::class )]
+    #[ORM\JoinColumn(name: 'idArtiste', referencedColumnName: 'username')]
+    private ?Artiste $idArtiste;
 
 
-    #[ORM\ManyToOne(inversedBy: 'articles')]
-    #[ORM\Column]
-    #[Assert\NotBlank(message:"nom requis")]
-    private ?int $idCategorie;
+
+
+    #[ORM\ManyToOne(targetEntity: Categorie::class)]
+    #[ORM\JoinColumn(name: 'id_categorie', referencedColumnName: 'id_categorie')]
+    private ?Categorie $id_categorie = null;
+
 
     public function getIdArticle(): ?int
     {
@@ -141,26 +140,26 @@ class Article
         return $this;
     }
 
-    public function getIdArtiste()
+    public function getIdArtiste(): ?Artiste
     {
         return $this->idArtiste;
     }
 
-    public function setIdArtiste(?string $idArtiste): self
+    public function setIdArtiste(?Artiste $idArtiste): self
     {
         $this->idArtiste = $idArtiste;
 
         return $this;
     }
 
-    public function getIdCategorie()
+    public function getIdCategorie(): ?Categorie
     {
-        return $this->idCategorie;
+        return $this->id_categorie;
     }
 
-    public function setIdCategorie(?int $idCategorie): self
+    public function setIdCategorie( Categorie $id_categorie): self
     {
-        $this->idCategorie = $idCategorie;
+        $this->id_categorie = $id_categorie;
 
         return $this;
     }

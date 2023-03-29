@@ -11,55 +11,56 @@ class Artiste
 {
 
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
+
     #[ORM\Column]
     private ?int  $idArtiste;
 
 
     #[ORM\Column(length:255)]
-    private ?string $firstname;
+    private ?string $firstname = null;
 
 
     #[ORM\Column(length:255)]
-    private ?string $lastname;
+    private ?string $lastname = null;
 
 
     #[ORM\Column(length:255)]
-    private ?string $birthplace;
+    private ?string $birthplace = null;
 
 
 
     #[ORM\Column(length:255)]
-    private ?string $birthdate;
+    private ?string $birthdate = null;
 
 
     #[ORM\Column(length:255)]
-    private ?string $description;
+    private ?string $description = null;
 
 
     #[ORM\Column(length:255)]
-    private ?string $image;
+    private ?string $image = null;
 
 
     #[ORM\Column(length:255)]
-    private ?string $address;
+    private ?string $address = null;
 
 
     #[ORM\Column(length:255)]
-    private ?string $phonenumber;
+    private ?string $phonenumber = null;
 
 
     #[ORM\Column(length:255)]
-    private ?string $email;
+    private ?string $email = null;
+
+
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?string $username = null;
 
 
     #[ORM\Column(length:255)]
-    private ?string $username;
-
-
-    #[ORM\Column(length:255)]
-    private ?string $password;
+    private ?string $password = null;
 
     public function getIdArtiste(): ?int
     {
