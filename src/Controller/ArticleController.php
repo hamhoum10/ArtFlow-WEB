@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +33,14 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('Image')->getData();
+
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+            $image->move(
+                $this->getParameter('images_directory'),
+                $fichier
+            );
+            $article->setImage($fichier);
             $articleRepository->save($article, true);
 
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
@@ -58,6 +67,14 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('Image')->getData();
+
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+            $image->move(
+                $this->getParameter('images_directory'),
+                $fichier
+            );
+            $article->setImage($fichier);
             $articleRepository->save($article, true);
 
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
@@ -69,13 +86,16 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{idArticle}', name: 'app_article_delete', methods: ['POST'])]
-    public function delete(Request $request, Article $article, ArticleRepository $articleRepository): Response
+    #[Route('/{idArticle}', name: 'app_article_delete')]
+    public function delete(Request $request, Article $article, ArticleRepository $articleRepository,$idArticle,ManagerRegistry $doctrine): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getIdArticle(), $request->request->get('_token'))) {
-            $articleRepository->remove($article, true);
-        }
+       /* if ($this->isCsrfTokenValid('delete'.$article->getIdArticle(), $request->request->get('_token'))) {
+            $articleRepository->remove($article, true);*/
+          $article= $articleRepository->find($idArticle);
+        $em =$doctrine->getManager();
+        $em->remove($article);
+        $em->flush();
 
-        return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_article_index');
     }
 }

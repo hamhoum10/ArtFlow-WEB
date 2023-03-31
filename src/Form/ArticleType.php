@@ -20,7 +20,12 @@ class ArticleType extends AbstractType
             ->add('nomArticle')
             ->add('price')
             ->add('type')
-            ->add('image')
+            ->add('Image', FileType::class,
+                ['label' => 'image',
+                    'multiple' => false,
+                    'mapped' => false,
+                    'required' => false])
+
             ->add('description')
             ->add('quantity')
             ->add('idArtiste', EntityType::class, [

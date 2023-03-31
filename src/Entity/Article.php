@@ -37,7 +37,7 @@ class Article
 
 
     #[ORM\Column(length:255)]
-    #[Assert\NotBlank(message:"nom requis")]
+
     private ?string $image;
 
 
@@ -54,8 +54,6 @@ class Article
     #[ORM\ManyToOne(targetEntity: Artiste::class )]
     #[ORM\JoinColumn(name: 'idArtiste', referencedColumnName: 'username')]
     private ?Artiste $idArtiste;
-
-
 
 
     #[ORM\ManyToOne(targetEntity: Categorie::class)]
