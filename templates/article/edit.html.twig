@@ -1,8 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'index.html.twig' %}
 
 {% block title %}Edit Article{% endblock %}
 
-{% block body %}
+{% block contenu %}
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
     <h1>Edit Article</h1>
 
     {{ include('article/_form.html.twig', {'button_label': 'Update'}) }}

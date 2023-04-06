@@ -35,6 +35,7 @@ class ArticleType extends AbstractType
                     return sprintf('%s', $Artiste->getUsername());
                 },
                 'placeholder' => 'Choosiness Artiste',
+                'attr' => ['class' => 'form-select'],
             ])
             ->add('idCategorie', EntityType::class, [
                 'label'=> 'Categories',

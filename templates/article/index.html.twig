@@ -65,11 +65,12 @@
                     {{ article.quantity }}
                 </td>
                 <td class="px-4 py-3 text-sm">
-                    {{ article.IdArtiste.email }}
+                    {{ article.IdArtiste.username }}
                 </td>
                 <td class="px-4 py-3 text-sm">
                     {{ article.idCategorie.nameCategorie}}
                 </td>
+                {%if(Artiste.username==article.IdArtiste.username) %}
                 <td class="px-4 py-3">
                     <div class="flex items-center space-x-4 text-sm">
                         <a
@@ -115,6 +116,7 @@
                         </form>
                     </div>
                 </td>
+                {% endif %}
             </tr>
             {% else %}
                 <tr>
@@ -122,7 +124,8 @@
                 </tr>
             {% endfor %}
 
-
+            </tbody>
+        </table>
 
 
 
@@ -152,7 +155,36 @@
         </tbody>
     </table>#}
 
-    <a href="{{ path('app_article_new') }}">Create new</a>
+    <a href="{{ path('app_article_new') }}"class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray">Create new</a>
+        <div>
+            <a href="{{ path('app_article_new') }}" class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" onclick="createNew(x)">
+                <span>create_new</span>
+                <svg
+                        class="w-4 h-4 ml-2 -mr-1"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        viewBox="0 0 20 20"
+                >
+                    <path
+                            d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                            clip-rule="evenodd"
+                            fill-rule="evenodd"
+                    ></path>
 
+
+                </svg>
+            </a>
+        </div>
+        <script>
+            function createNew(x) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'message',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
+        </script>
 
 {% endblock %}

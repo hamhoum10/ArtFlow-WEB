@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Categorie;
 use App\Form\CategorieType;
 use App\Repository\CategorieRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,12 +68,15 @@ class CategorieController extends AbstractController
     }
 
     #[Route('/{idCategorie}', name: 'app_categorie_delete', methods: ['POST'])]
-    public function delete(Request $request, Categorie $categorie, CategorieRepository $categorieRepository): Response
+    public function delete(Request $request, Categorie $categorie, CategorieRepository $categorieRepository,$idCategorie,ManagerRegistry $doctrine): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$categorie->getIdCategorie(), $request->request->get('_token'))) {
-            $categorieRepository->remove($categorie, true);
-        }
+        /*if ($this->isCsrfTokenValid('delete'.$categorie->getIdCategorie(), $request->request->get('_token'))) {
+            $categorieRepository->remove($categorie, true);*/
+        $categorie= $categorieRepository->find($idCategorie);
+        $em =$doctrine->getManager();
+        $em->remove($categorie);
+        $em->flush();
 
-        return $this->redirectToRoute('app_categorie_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_categorie_index');
     }
 }
