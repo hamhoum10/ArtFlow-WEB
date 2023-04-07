@@ -19,6 +19,8 @@ class Participant
 
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"prix requis")]
+    #[Assert\Type(type: 'numeric', message: "Le montant doit être un nombre.")]
     private ?float $montant =null;
 
     #[ORM\ManyToOne(targetEntity: Client::class )]

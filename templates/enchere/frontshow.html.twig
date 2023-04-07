@@ -142,22 +142,36 @@
                 <div class="product__details__text">
                     <h3>{{ enchere.titre }}</h3>
 
-                    <div class="product__details__price">$ 75.0 <span>{{ enchere.prixdepart }}</span></div>
+                    <div class="product__details__price">DT {{ enchere.prixdepart }}<span></span></div>
                     <p>{{ enchere.description }}</p>
+                    <p>{{ enchere.dateLimite|date('Y-m-d') }}</p>
+
+
+
+                    <a href="{{ path('app_participant_new') }}" class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple" onclick="createNew(x)">
+                        <span>create_new</span>
+                        <svg
+                                class="w-5 h-5 mr-2"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                        >
+
                     <div class="product__details__button">
                         <div class="quantity">
-                            <span>Quantity:</span>
+                            <span>Montant</span>
                             <div class="pro-qty">
                                 <input type="text" value="1">
                             </div>
                         </div>
+
+
                         <a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
                         <ul>
                             <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                             <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
                         </ul>
                     </div>
-                   
+
 
 
 

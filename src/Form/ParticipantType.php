@@ -19,18 +19,18 @@ class ParticipantType extends AbstractType
             ->add('id', EntityType::class, [
                 'label'=> 'Clients',
                 'class' => Client::class,
-                'choice_label' =>  function (Client $id) {
-                    return sprintf('%d', $id->getId());
+                'choice_label' =>  function (Client $client) {
+                    return sprintf('%s', $client    ->getFirstname());
                 },
-                'placeholder' => 'Choosiness client',
+                'placeholder' => 'user',
             ])
             ->add('ide', EntityType::class, [
-                'label'=> 'encheres',
+                'label'=> 'user',
                 'class' => Enchere::class,
                 'choice_label' =>  function (Enchere $enchere) {
-                    return sprintf('%s', $enchere->getIde());
+                    return sprintf('%s', $enchere->getTitre());
                 },
-                'placeholder' => 'Choosiness Enchere',
+                'placeholder' => ' Enchere',
             ])
 
 

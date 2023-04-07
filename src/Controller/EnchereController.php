@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Enchere;
 use App\Form\EnchereType;
 use App\Repository\EnchereRepository;
+use App\Repository\ParticipantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,24 +31,18 @@ class EnchereController extends AbstractController
 
 
     #[Route('/{ide}', name: 'app_enchere_showfront', methods: ['GET'])]
-    public function frontshow( Enchere $enchere): Response
+    public function frontshow(Enchere $enchere, ParticipantRepository $participantRepository): Response
     {
+        // Retrieve the participant associated with the Enchere object
+        $participant = $enchere->getParticipant();
+
         return $this->render('enchere/frontshow.html.twig', [
             'enchere' => $enchere,
-
-        ]);
-
-    }
-
-
-
-    #[Route('/{ide}', name: 'app_enchere_details', methods: ['GET'])]
-    public function frontdetails(Enchere $enchere): Response
-    {
-        return $this->render('enchere/encheredetails.html.twig', [
-            'enchere' => $enchere,
+            'participants' => $participant, // Pass the participant to the template
         ]);
     }
+
+
 
 
 

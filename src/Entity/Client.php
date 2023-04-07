@@ -19,12 +19,10 @@ class Client
     private ?int $id = null;
 
 
+
     #[ORM\Column(length: 200)]
-
-
     private ?string $firstname = null;
 
-    #[ORM\Column(length: 200)]
 
     private ?string $lastname = null;
 
@@ -48,22 +46,20 @@ class Client
 
 
 
-    /**
-     * __________i deleted this i,'m not using it rn
-     * @var *User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="username", referencedColumnName="username")
-     * })
 
-    private $username;
-     */
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+
+
+
+
+
+
+
 
     public function getFirstname(): ?string
     {
