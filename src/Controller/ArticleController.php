@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\ArtisteRepository;
+use App\Repository\CategorieRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +17,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'app_article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository): Response
+    public function index(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository): Response
     {
        # dd($articleRepository->findAll());
+        $categories = $categorieRepository->findAll();
         $artiste=$artisteRepository->findBy(array('username'=>'mou'))[0];
         #dd($artiste);
-        return $this->render('article/index.html.twig',[
+        return $this->render('article/indexfront.html.twig',[
             'articles' => $articleRepository->findAll(),
             'Artiste' => $artiste,
+            'categories' => $categories,
+        ]);
+    }
+
+    #[Route('/recherche/{categorie}', name: 'recherchearticle', methods: ['GET', 'POST'])]
+    public function recherchearticle(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,$categorie): Response
+    {
+        # dd($articleRepository->findAll());
+        $categories = $categorieRepository->findAll();
+        $artiste=$artisteRepository->findBy(array('username'=>'mou'))[0];
+        #dd($artiste);
+        return $this->render('article/indexfront.html.twig',[
+            'articles' => $articleRepository->findBy(array('id_categorie' =>$categorie)),
+            'Artiste' => $artiste,
+            'categories' => $categories,
         ]);
     }
 
@@ -105,4 +122,6 @@ class ArticleController extends AbstractController
 
         return $this->redirectToRoute('app_article_index');
     }
+
+
 }
