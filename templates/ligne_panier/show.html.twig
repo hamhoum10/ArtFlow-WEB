@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LignePanier{% endblock %}
+
+{% block body %}
+    <h1>LignePanier</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ligne_panier.id }}</td>
+            </tr>
+            <tr>
+                <th>PrixUnitaire</th>
+                <td>{{ ligne_panier.prixUnitaire }}</td>
+            </tr>
+            <tr>
+                <th>Quantity</th>
+                <td>{{ ligne_panier.quantity }}</td>
+            </tr>
+            <tr>
+                <th>NomArticle</th>
+                <td>{{ ligne_panier.nomArticle }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ ligne_panier.description }}</td>
+            </tr>
+            <tr>
+                <th>NomArtiste</th>
+                <td>{{ ligne_panier.nomArtiste }}</td>
+            </tr>
+            <tr>
+                <th>PrenomArtiste</th>
+                <td>{{ ligne_panier.prenomArtiste }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ligne_panier_index') }}">back to list</a>
+
+    <a href="{{ path('app_ligne_panier_edit', {'id': ligne_panier.id}) }}">edit</a>
+
+    {{ include('ligne_panier/_delete_form.html.twig') }}
+{% endblock %}
