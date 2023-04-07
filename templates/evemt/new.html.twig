@@ -1,0 +1,12 @@
+
+{#{% extends 'ajoutEvent.html.twig' %}#}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+    <h1>Create new Evemt</h1>
+
+    {{ include('evemt/_form.html.twig') }}
+
+    <a href="{{ path('app_evemt_index') }}">back to list</a>
+{% endblock %}
