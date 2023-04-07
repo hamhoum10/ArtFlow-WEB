@@ -81,7 +81,7 @@
                             <ul class="dropdown">
                                 <li><a href="./product-details.html">Product Details</a></li>
                                 <li><a href="/lignepanier">Shop Cart</a></li>
-                                <li><a href="./checkout.html">Checkout</a></li>
+                                <li><a href="../commande">Checkout</a></li>
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
                         </li>
@@ -101,7 +101,7 @@
                         <li><a href="#"><span class="icon_heart_alt"></span>
                                 <div class="tip">2</div>
                             </a></li>
-                        <li><a href="#"><span class="icon_bag_alt"></span>
+                        <li><a href="../lignepanier"><span class="icon_bag_alt"></span>
                                 <div class="tip">2</div>
                             </a></li>
                     </ul>
@@ -322,35 +322,6 @@
                 </div>
             </div>
         </div>
-{#        <div class="row">#}
-{#            <div class="col-lg-6">#}
-{#                <div class="discount__content">#}
-{#                    <h6>Discount codes</h6>#}
-{#                    <form id="promo-form">#}
-{#                        <input type="text" id="promo-code" name="promo_code" placeholder="Enter your coupon code">#}
-{#                        <button type="submit" class="site-btn">Submit</button>#}
-{#                    </form>#}
-{#                </div>#}
-{#            </div>#}
-{#            <script>#}
-{#                async function verifyPromoCode() {#}
-{#                    const promoCode = document.getElementById('promo_code').value;#}
-{#                    const response = await fetch({{ path('app_promocode_verify') }}, {#}
-{#                        method: 'POST',#}
-{#                        body: JSON.stringify({promo_code: promoCode}),#}
-{#                        headers: {#}
-{#                            'Content-Type': 'application/json'#}
-{#                        }#}
-{#                    });#}
-{#                    const data = await response.json();#}
-{#                    if (data.success) {#}
-{#                        alert('Promo code established!');#}
-{#                    } else {#}
-{#                        alert('Promo code is not valid.');#}
-{#                    }#}
-{#                }#}
-
-{#            </script>#}
         <div class="row">
             <div class="col-lg-6">
                 <div class="discount__content">
@@ -365,6 +336,7 @@
                 $('#discount-form').submit(function(event) {
                     // Prevent the form from submitting normally
                     event.preventDefault();
+
                     // Get the form data
                     var formData = {
                         code: $('#coupon_code').val()
@@ -435,7 +407,7 @@
                         <li>SubTotal <span id="total-amount">{{ total }} Tnd</span></li>
                         <li>Total <span id="Discount-total-amount">{{ total }} Tnd</span></li>
                     </ul>
-                    <a href="#" class="primary-btn">Proceed to checkout</a>
+                    <a href="../commande" class="primary-btn">Proceed to checkout</a>
                 </div>
             </div>
         </div>

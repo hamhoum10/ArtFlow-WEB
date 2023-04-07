@@ -48,7 +48,7 @@ class LignePanierController extends AbstractController
         $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
 
         //we point on the article that we will add on cart w ywali ana access to the artist who made this article
-        $article = $entityManager->getRepository(Article::class)->find(36);
+        $article = $entityManager->getRepository(Article::class)->find(38);
 
         $lignePanier->setIdPanier($panierparclient);
         $lignePanier->setIdArticle( /** @var Article $article */$article);
@@ -145,6 +145,8 @@ class LignePanierController extends AbstractController
     }
         return new JsonResponse(['success' => false]);
     }
+
+
 
 
 }
