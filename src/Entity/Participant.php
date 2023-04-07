@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Entity;
+
+use App\Entity\Client;
+use App\Entity\Enchere;
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ParticipantRepository;
+
+
+#[ORM\Entity(repositoryClass: ParticipantRepository::class)]
+class Participant
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+
+    private ?int $idp = null;
+
+
+    #[ORM\Column]
+    private ?float $montant =null;
+
+    #[ORM\ManyToOne(targetEntity: Client::class )]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
+    private ?Client $id;
+
+    #[ORM\ManyToOne(targetEntity: Enchere::class )]
+    #[ORM\JoinColumn(name: 'ide', referencedColumnName: 'ide')]
+    private ?Enchere $ide;
+
+    public function getIdp(): ?int
+    {
+        return $this->idp;
+    }
+
+    public function getMontant(): ?float
+    {
+        return $this->montant;
+    }
+
+    public function setMontant(float $montant): self
+    {
+        $this->montant = $montant;
+
+        return $this;
+    }
+
+
+
+    public function getId(): ?Client
+    {
+        return $this->id;
+    }
+
+    public function setId(?Client $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getIde(): ?Enchere
+    {
+        return $this->ide;
+    }
+
+    public function setIde(?Enchere $ide): self
+    {
+        $this->ide = $ide;
+
+        return $this;
+    }
+
+
+}

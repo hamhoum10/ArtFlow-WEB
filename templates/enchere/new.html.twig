@@ -1,0 +1,13 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}New Enchere{% endblock %}
+
+{% block contenu %}
+
+    <h1>Create new Enchere</h1>
+
+
+    {{ include('enchere/_form.html.twig', {'button_label':'new'}) }}
+
+    <a href="{{ path('app_enchere_index') }}">back to list</a>
+{% endblock %}
