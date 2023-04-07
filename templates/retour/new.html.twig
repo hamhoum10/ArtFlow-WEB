@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Retour{% endblock %}
+
+{% block body %}
+    <h1>Create new Retour</h1>
+
+    {{ include('retour/_form.html.twig') }}
+
+    <a  class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700
+     focus:outline-none focus:shadow-outline-purple" href="{{ path('app_retour_index') }}">back to list</a>
+{% endblock %}

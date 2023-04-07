@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Retour{% endblock %}
+
+{% block body %}
+    <h1>Retour</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ retour.id }}</td>
+            </tr>
+            <tr>
+                <th>Name_produit</th>
+                <td>{{ retour.nameProduit }}</td>
+            </tr>
+            <tr>
+                <th>Artiste</th>
+                <td>{{ retour.artiste }}</td>
+            </tr>
+            <tr>
+                <th>Addres</th>
+                <td>{{ retour.addres }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ retour.date ? retour.date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>User_name</th>
+                <td>{{ retour.userName }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_retour_index') }}">back to list</a>
+
+    <a href="{{ path('app_retour_edit', {'id': retour.id}) }}">edit</a>
+
+    {{ include('retour/_delete_form.html.twig') }}
+{% endblock %}
