@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artiste index{% endblock %}
+
+{% block body %}
+    <h1>Artiste index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdArtiste</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Birthplace</th>
+                <th>Birthdate</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Address</th>
+                <th>Phonenumber</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Email</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for artiste in artistes %}
+            <tr>
+                <td>{{ artiste.idArtiste }}</td>
+                <td>{{ artiste.firstname }}</td>
+                <td>{{ artiste.lastname }}</td>
+                <td>{{ artiste.birthplace }}</td>
+                <td>{{ artiste.birthdate }}</td>
+                <td>{{ artiste.description }}</td>
+                <td>{{ artiste.image }}</td>
+                <td>{{ artiste.address }}</td>
+                <td>{{ artiste.phonenumber }}</td>
+                <td>{{ artiste.username }}</td>
+                <td>{{ artiste.password }}</td>
+                <td>{{ artiste.email }}</td>
+                <td>
+                    <a href="{{ path('app_artiste_show', {'idArtiste': artiste.idArtiste}) }}">show</a>
+                    <a href="{{ path('app_artiste_edit', {'idArtiste': artiste.idArtiste}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_artiste_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{asset('front/css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{asset('front/css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{asset('front/css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{asset('front/css/jquery-ui.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{asset('front/css/magnific-popup.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{asset('front/css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{asset('front/css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{asset('front/css/style.css') }}" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+
+
+
+</head>
+
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__close">+</div>
+    <ul class="offcanvas__widget">
+        <li><span class="icon_search search-switch"></span></li>
+        <li><a href="#"><span class="icon_heart_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+        <li><a href="#"><span class="icon_bag_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+    </ul>
+    <div class="offcanvas__logo">
+        <a href="./base-front.html.twig"><img src="{{ asset('front/img/logo.png') }}" alt=""></a>
+    </div>
+    <div id="mobile-menu-wrap"></div>
+    <div class="offcanvas__auth">
+        <a href="#">Login</a>
+        <a href="#">Register</a>
+    </div>
+</div>
+<!-- Offcanvas Menu End -->
+
+<!-- Header Section Begin -->
+<header class="header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-2">
+                <div class="header__logo">
+                    <a href="./base-front.html.twig"><img src="{{ asset('front/img/logo.png') }}" alt=""></a>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-7">
+                <nav class="header__menu">
+                    <ul>
+                        <li class="active"><a href="./base-front.html.twig">Home</a></li>
+                        <li><a href="#">Women’s</a></li>
+                        <li><a href="#">Men’s</a></li>
+                        <li><a href="./shop.html">Shop</a></li>
+                        <li><a href="#">Pages</a>
+                            <ul class="dropdown">
+                                <li><a href="./product-details.html">Product Details</a></li>
+                                <li><a href="/lignepanier">Shop Cart</a></li>
+                                <li><a href="../commande">Checkout</a></li>
+                                <li><a href="./blog-details.html">Blog Details</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="./blog.html">Blog</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__right">
+                    <div class="header__right__auth">
+                        <a href="#">Login</a>
+                        <a href="#">Register</a>
+                    </div>
+                    <ul class="header__right__widget">
+                        <li><span class="icon_search search-switch"></span></li>
+                        <li><a href="#"><span class="icon_heart_alt"></span>
+                                <div class="tip">2</div>
+                            </a></li>
+                        <li><a href="../lignepanier"><span class="icon_bag_alt"></span>
+                                <div class="tip">2</div>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<!-- Header Section End -->
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                    <span>Shopping cart</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Shop Cart Section Begin -->
+<section class="shop-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop__cart__table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Article</th>
+                            <th>PrixUnitaire</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for ligne_panier in ligne_paniers %}
+                           <tr data-id={{ ligne_panier.id }}>
+                            <td class="cart__product__item">
+                                <img src="{{ asset('front/img/logo.png') }}" alt="">
+                                <div class="cart__product__item__title">
+                                    <h6>{{ ligne_panier.nomArticle }}</h6>
+                                    <div class="rating">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="cart__price">{{ ligne_panier.prixUnitaire }} Tnd</td>
+                            <td class="cart__quantity">{{ ligne_panier.quantity }}</td>
+                            <td class="cart__total"> {{ ligne_panier.prixUnitaire * ligne_panier.quantity }} Tnd</td>
+                               <td>
+                                   <button class="btn btn-danger delete-btn " data-id="{{ ligne_panier.id }} ">
+                                       <i class="icon_close"></i>
+                                   </button>
+                               </td>
+                               <td>
+                                   <button class="btn btn-light plus-btn " data-id="{{ ligne_panier.id }} ">
+                                       <i class="icon_plus"></i>
+                                   </button>
+                               </td>
+                               <td>
+                                   <button class="btn btn-light minus-btn " data-id="{{ ligne_panier.id }} ">
+                                       <i class="icon_minus-06"></i>
+                                   </button>
+                               </td>
+                        </tr>
+                            {% else %}
+                        <tr>
+                            <td colspan="8">You're Cart is Empty </td>
+                        </tr>
+                        {% endfor %}
+                        </tr>
+                        </tbody>
+                    </table>
+                    <script>
+                        $(document).ready(function() {
+                            $('.delete-btn').click(function() { {# we point al button eli class te3o delete-btn #}
+                                var id = $(this).data('id');
+                                $.ajax({
+                                    url: "{{ path('app_ligne_panier_delete_ajax',{'id':"1"}) }}".replace("1",id),
+                                    method: 'POST',
+                                    data: {'_token': '{{ csrf_token('delete') }}'},
+                                    success: function(response) {
+                                        if (response.success) {
+                                            $('tr[data-id=' + id + ']').remove(); {# we delete the row  #}
+                                            var totalAmount = 0;
+                                            $('.cart__total').each(function() { {# call el class eli yaml calcule awka fou9 bshwya #}
+                                                totalAmount += parseFloat($(this).text()); {# calcule mta total 7asb rows eli mezlou after el delete  #}
+                                            });
+                                            $('#total-amount').text(totalAmount.toFixed(2) + ' Tnd'); {# we update total  #}
+                                        } else {
+                                            alert('An error occurred while deleting the record.');
+                                        }console.log(response.state)
+                                        if (response.state){
+                                            $('#percentage').text('20%');
+                                            $('#Discount-total-amount').text((totalAmount * 0.8).toFixed(2) + ' Tnd' ); {# we update total  #}
+                                        }else{
+                                            $('#Discount-total-amount').text(totalAmount.toFixed(2)  + ' Tnd'); {# we update total  #}
+                                        }
+                                    },
+                                    error: function() {
+                                        alert('An error occurred while deleting the record.');
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                    <script>
+                        $(document).ready(function() {
+                            $('.plus-btn').click(function() { {# we point al button eli class te3o delete-btn #}
+                                var id = $(this).data('id');
+                                $.ajax({
+                                    url: "{{ path('app_ligne_panier_plus_ajax',{'id':"1"}) }}".replace("1",id),
+                                    method: 'POST',
+                                    data: {} ,
+                                    success: function(response) {
+                                        if (response.success) {
+                                            //update lel quantiy +1 w total mta row heki
+                                            var $row = $('tr[data-id=' + id + ']');
+                                            var quantity = parseInt($row.find('.cart__quantity').text()) + 1;
+                                            var price = parseFloat($row.find('.cart__price').text());
+                                            var total = quantity * price;
+                                            $row.find('.cart__quantity').text(quantity);
+                                            $row.find('.cart__total').text(total.toFixed(2) + ' Tnd');
+                                            //update lel totalMontant kol
+                                            var totalAmount = 0;
+                                            $('.cart__total').each(function() { {# call el class eli yaml calcule awka fou9 bshwya #}
+                                                totalAmount += parseFloat($(this).text()); {# calcule mta total 7asb rows eli mezlou after el delete  #}
+                                            });
+                                            $('#total-amount').text(totalAmount.toFixed(2) + ' Tnd'); {# we update total  #}
+                                        } else {
+                                            alert('An error occurred while updating1 the record.');
+                                        }console.log(response.state)
+                                        if (response.state){
+                                            $('#percentage').text('20%');
+                                            $('#Discount-total-amount').text((totalAmount * 0.8).toFixed(2) + ' Tnd' ); {# we update total  #}
+                                        }else{
+                                            $('#Discount-total-amount').text(totalAmount.toFixed(2)  + ' Tnd'); {# we update total  #}
+                                        }
+                                    },
+                                    error: function() {
+                                        alert('An error occurred while updating 2 the record.');
+                                    }
+                                });
+                            });
+                        });
+
+                    </script>
+                    <script>
+                        $(document).ready(function() {
+                            $('.minus-btn').click(function() { {# we point al button eli class te3o delete-btn #}
+                                var id = $(this).data('id');
+                                $.ajax({
+                                    url: "{{ path('app_ligne_panier_minus_ajax',{'id':"1"}) }}".replace("1",id),
+                                    method: 'POST',
+                                    data: {} ,
+                                    success: function(response) {
+                                        if (response.success) {
+                                            //update lel quantiy +1 w total mta row heki
+                                            var $row = $('tr[data-id=' + id + ']');
+                                            var quantity = parseInt($row.find('.cart__quantity').text()) - 1;
+                                            var price = parseFloat($row.find('.cart__price').text());
+                                            var total = quantity * price;
+                                            $row.find('.cart__quantity').text(quantity);
+                                            $row.find('.cart__total').text(total.toFixed(2) + ' Tnd');
+                                            //update lel totalMontant kol
+                                            var totalAmount = 0;
+                                            $('.cart__total').each(function() { {# call el class eli yaml calcule awka fou9 bshwya #}
+                                                totalAmount += parseFloat($(this).text()); {# calcule mta total 7asb rows eli mezlou after el delete  #}
+                                            });
+                                            $('#total-amount').text(totalAmount.toFixed(2) + ' Tnd'); {# we update total  #}
+
+                                        } else {
+                                            alert('You Cant`t decrease Further ! ' );
+                                        }console.log(response.state)
+                                        if (response.state){
+                                            $('#percentage').text('20%');
+                                            $('#Discount-total-amount').text((totalAmount * 0.8).toFixed(2) + ' Tnd' ); {# we update total  #}
+                                        }else{
+                                            $('#Discount-total-amount').text(totalAmount.toFixed(2)  + ' Tnd'); {# we update total  #}
+                                        }
+                                    },
+                                    error: function() {
+                                        alert('An error occurred while updating 2 the record.');
+                                    }
+                                });
+                            });
+                        });
+
+                    </script>
+
+                    <a href="{{ path('app_ligne_panier_new') }}">Create new</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn">
+                    <a href="#">Continue Shopping</a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn update__btn">
+                    <a href="#"><span class="icon_loading"></span> Update cart</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="discount__content">
+                    <h6>Discount codes</h6>
+                      <form id="discount-form"  >
+                        <input type="text"  name="code"   placeholder="Enter your coupon code" id="coupon_code">
+                        <button type="submit" class="site-btn" id="apply_coupon">Apply</button>
+                    </form>
+                </div>
+            </div>
+            <script>
+                $('#discount-form').submit(function(event) {
+                    // Prevent the form from submitting normally
+                    event.preventDefault();
+
+                    // Get the form data
+                    var formData = {
+                        code: $('#coupon_code').val()
+                    };
+                    // Send the form data to the controller
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ path('app_promocode_verify') }}',
+                        data: JSON.stringify(formData),
+                        contentType: 'application/json',
+                        success: function(response) {
+
+                            // Handle the response from the controller
+                            if (response.success) {
+
+                                var totalAmount = 0;
+                                $('.cart__total').each(function() { {# call el class eli yaml calcule awka fou9 bshwya #}
+                                    totalAmount += parseFloat($(this).text()); {# calcule mta total 7asb rows eli mezlou after el delete  #}
+                                });
+                                $('#percentage').text('20%');
+                                $('#Discount-total-amount').text(totalAmount.toFixed(2) * 0.8 + ' Tnd'); {# we update total b discount  #}
+                                alert('Promocode verified! Congratzulation you got 20%  discount !');
+                            } else {
+                                alert('Wrong promocode , try Again ! ');
+                            }
+                        }
+                    });
+                });
+            </script>
+
+
+            {#            <script>#}
+{#                $(document).ready( function() {#}
+{#                    $('#discount-form').submit(function (event) {#}
+{#                        //event.preventDefault();#}
+{#                        var code = $('input[name=code]').val();#}
+{#                        $.ajax({#}
+{#                            url: "{{ path('app_promocode_verify') }}",#}
+{#                            type: "POST",#}
+{#                            data: {code: code},#}
+{#                            success: function (response) {#}
+{#                                if (response.success) {#}
+{#                                    alert('Promo code applied successfully!');#}
+{#                                } else {#}
+{#                                    alert('Promo code is Wrong!');#}
+{#                                }#}
+{#                            },#}
+{#                            error: function () {#}
+{#                                alert('An error occurred while processing your request.');#}
+{#                            }#}
+{#                        });#}
+{#                        return false; // Add this line#}
+{#                    });#}
+{#                });#}
+{#            </script>#}
+
+
+            <div class="col-lg-4 offset-lg-2">
+                {% set total = 0 %}
+                {% for ligne_panier in ligne_paniers %}
+                    {% set subtotal = ligne_panier.quantity * ligne_panier.prixUnitaire %}
+                    {% set total = total + subtotal %}
+                {% endfor %}
+                <div class="cart__total__procced">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Discount <span id ="percentage">0</span></li>
+                        <li>SubTotal <span id="total-amount">{{ total }} Tnd</span></li>
+                        <li>Total <span id="Discount-total-amount">{{ total }} Tnd</span></li>
+                    </ul>
+                    <a href="../commande" class="primary-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shop Cart Section End -->
+
+
+<!-- Instagram Begin -->
+{#<div class="instagram">#}
+{#    <div class="container-fluid">#}
+{#        <div class="row">#}
+{#            <div class="col-lg-2 col-md-4 col-sm-4 p-0">#}
+{#                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-1.jpg">#}
+{#                    <div class="instagram__text">#}
+{#                        <i class="fa fa-instagram"></i>#}
+{#                        <a href="#">@ ashion_shop</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-2 col-md-4 col-sm-4 p-0">#}
+{#                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-2.jpg">#}
+{#                    <div class="instagram__text">#}
+{#                        <i class="fa fa-instagram"></i>#}
+{#                        <a href="#">@ ashion_shop</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-2 col-md-4 col-sm-4 p-0">#}
+{#                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-3.jpg">#}
+{#                    <div class="instagram__text">#}
+{#                        <i class="fa fa-instagram"></i>#}
+{#                        <a href="#">@ ashion_shop</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-2 col-md-4 col-sm-4 p-0">#}
+{#                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-4.jpg">#}
+{#                    <div class="instagram__text">#}
+{#                        <i class="fa fa-instagram"></i>#}
+{#                        <a href="#">@ ashion_shop</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-2 col-md-4 col-sm-4 p-0">#}
+{#                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-5.jpg">#}
+{#                    <div class="instagram__text">#}
+{#                        <i class="fa fa-instagram"></i>#}
+{#                        <a href="#">@ ashion_shop</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-2 col-md-4 col-sm-4 p-0">#}
+{#                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-6.jpg">#}
+{#                    <div class="instagram__text">#}
+{#                        <i class="fa fa-instagram"></i>#}
+{#                        <a href="#">@ ashion_shop</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#<!-- Instagram End -->#}
+
+{#<!-- Footer Section Begin -->#}
+{#<footer class="footer">#}
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <div class="col-lg-4 col-md-6 col-sm-7">#}
+{#                <div class="footer__about">#}
+{#                    <div class="footer__logo">#}
+{#                        <a href="./index.html"><img src="img/logo.png" alt=""></a>#}
+{#                    </div>#}
+{#                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt#}
+{#                        cilisis.</p>#}
+{#                    <div class="footer__payment">#}
+{#                        <a href="#"><img src="img/payment/payment-1.png" alt=""></a>#}
+{#                        <a href="#"><img src="img/payment/payment-2.png" alt=""></a>#}
+{#                        <a href="#"><img src="img/payment/payment-3.png" alt=""></a>#}
+{#                        <a href="#"><img src="img/payment/payment-4.png" alt=""></a>#}
+{#                        <a href="#"><img src="img/payment/payment-5.png" alt=""></a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-2 col-md-3 col-sm-5">#}
+{#                <div class="footer__widget">#}
+{#                    <h6>Quick links</h6>#}
+{#                    <ul>#}
+{#                        <li><a href="#">About</a></li>#}
+{#                        <li><a href="#">Blogs</a></li>#}
+{#                        <li><a href="#">Contact</a></li>#}
+{#                        <li><a href="#">FAQ</a></li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-2 col-md-3 col-sm-4">#}
+{#                <div class="footer__widget">#}
+{#                    <h6>Account</h6>#}
+{#                    <ul>#}
+{#                        <li><a href="#">My Account</a></li>#}
+{#                        <li><a href="#">Orders Tracking</a></li>#}
+{#                        <li><a href="#">Checkout</a></li>#}
+{#                        <li><a href="#">Wishlist</a></li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-lg-4 col-md-8 col-sm-8">#}
+{#                <div class="footer__newslatter">#}
+{#                    <h6>NEWSLETTER</h6>#}
+{#                    <form action="#">#}
+{#                        <input type="text" placeholder="Email">#}
+{#                        <button type="submit" class="site-btn">Subscribe</button>#}
+{#                    </form>#}
+{#                    <div class="footer__social">#}
+{#                        <a href="#"><i class="fa fa-facebook"></i></a>#}
+{#                        <a href="#"><i class="fa fa-twitter"></i></a>#}
+{#                        <a href="#"><i class="fa fa-youtube-play"></i></a>#}
+{#                        <a href="#"><i class="fa fa-instagram"></i></a>#}
+{#                        <a href="#"><i class="fa fa-pinterest"></i></a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="row">#}
+{#            <div class="col-lg-12">#}
+{#                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->#}
+{#                <div class="footer__copyright__text">#}
+{#                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>#}
+{#                </div>#}
+{#                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</footer>#}
+<!-- Footer Section End -->
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+
+<!-- Js Plugins -->
+<script src="{{ asset('front/js/jquery-3.3.1.min.js') }}"></script>
+<script src="{{ asset('front/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('front/js/jquery.magnific-popup.min.js') }}"></script>
+<script src="{{ asset('front/js/jquery-ui.min.js') }}js/jquery-ui.min.js"></script>
+<script src="{{ asset('front/js/mixitup.min.js') }}"></script>
+<script src="{{ asset('front/js/jquery.countdown.min.js') }}"></script>
+<script src="{{ asset('front/js/jquery.slicknav.js') }}"></script>
+<script src="{{ asset('front/js/owl.carousel.min.js') }}"></script>
+<script src="{{ asset('front/js/jquery.nicescroll.min.js') }}"></script>
+<script src="{{ asset('front/js/main.js') }}"></script>
+</body>
+
+</html>

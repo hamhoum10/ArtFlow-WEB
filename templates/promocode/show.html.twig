@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Promocode{% endblock %}
+
+{% block body %}
+    <h1>Promocode</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ promocode.id }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ promocode.code }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_promocode_index') }}">back to list</a>
+
+    <a href="{{ path('app_promocode_edit', {'id': promocode.id}) }}">edit</a>
+
+    {{ include('promocode/_delete_form.html.twig') }}
+{% endblock %}
