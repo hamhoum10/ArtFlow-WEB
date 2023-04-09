@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\CommandeRepository;
+use Symfony\Component\Validator\Constraints\Date;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
@@ -34,8 +36,8 @@ class Commande
     #[ORM\Column]
     private ?float $totalAmount=null;
 
-
-    private $createdAt = null; //radithha null mesh te5dem
+    #[ORM\Column]
+    private ?string $createdAt = null; //radithha null mesh te5dem
 
 
     #[ORM\Column]
@@ -122,14 +124,14 @@ class Commande
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?string
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(\DateTime $createdAt ): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = $createdAt->format('Y-m-d H:i:s');
 
         return $this;
     }

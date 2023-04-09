@@ -38,6 +38,10 @@
 </div>
 
 <!-- Offcanvas Menu Begin -->
+{% set nbr = 0 %}
+{% for ligne_panier in ligne_paniers %}
+    {% set nbr = nbr + 1 %}
+{% endfor %}
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__close">+</div>
@@ -47,7 +51,7 @@
                 <div class="tip">2</div>
             </a></li>
         <li><a href="#"><span class="icon_bag_alt"></span>
-                <div class="tip">2</div>
+                <div class="tip">{{ nbr }}</div>
             </a></li>
     </ul>
     <div class="offcanvas__logo">
@@ -102,7 +106,7 @@
                                 <div class="tip">2</div>
                             </a></li>
                         <li><a href="../lignepanier"><span class="icon_bag_alt"></span>
-                                <div class="tip">2</div>
+                                <div class="tip">{{ nbr }}</div>
                             </a></li>
                     </ul>
                 </div>
@@ -316,11 +320,11 @@
                     <a href="#">Continue Shopping</a>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="cart__btn update__btn">
-                    <a href="#"><span class="icon_loading"></span> Update cart</a>
-                </div>
-            </div>
+{#            <div class="col-lg-6 col-md-6 col-sm-6">#}
+{#                <div class="cart__btn update__btn">#}
+{#                    <a href="#"><span class="icon_loading"></span> Update cart</a>#}
+{#                </div>#}
+{#            </div>#}
         </div>
         <div class="row">
             <div class="col-lg-6">
@@ -367,38 +371,13 @@
                 });
             </script>
 
-
-            {#            <script>#}
-{#                $(document).ready( function() {#}
-{#                    $('#discount-form').submit(function (event) {#}
-{#                        //event.preventDefault();#}
-{#                        var code = $('input[name=code]').val();#}
-{#                        $.ajax({#}
-{#                            url: "{{ path('app_promocode_verify') }}",#}
-{#                            type: "POST",#}
-{#                            data: {code: code},#}
-{#                            success: function (response) {#}
-{#                                if (response.success) {#}
-{#                                    alert('Promo code applied successfully!');#}
-{#                                } else {#}
-{#                                    alert('Promo code is Wrong!');#}
-{#                                }#}
-{#                            },#}
-{#                            error: function () {#}
-{#                                alert('An error occurred while processing your request.');#}
-{#                            }#}
-{#                        });#}
-{#                        return false; // Add this line#}
-{#                    });#}
-{#                });#}
-{#            </script>#}
-
-
             <div class="col-lg-4 offset-lg-2">
                 {% set total = 0 %}
+                {% set nbr = 0 %}
                 {% for ligne_panier in ligne_paniers %}
                     {% set subtotal = ligne_panier.quantity * ligne_panier.prixUnitaire %}
                     {% set total = total + subtotal %}
+                    {% set nbr = nbr + 1 %}
                 {% endfor %}
                 <div class="cart__total__procced">
                     <h6>Cart total</h6>

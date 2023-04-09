@@ -25,10 +25,12 @@ class CommandeController extends AbstractController
             ->getRepository(Commande::class)
             ->findAll(); //nbadlou hena to show the commande 7asb id or smth
 
-        return $this->render('commande/index.html.twig', [
+        return $this->render('commande/show.html.twig', [
             'commandes' => $commandes,
         ]);
     }//fi app te3i i don't need to show the user commmande but only after creating one and before payment
+
+
     #[Route('/', name: 'app_showarticles_index', methods: ['GET'])]
     public function showarticles(EntityManagerInterface $entityManager): Response
     {//tafishi les article fi interface mta commande
@@ -37,7 +39,6 @@ class CommandeController extends AbstractController
 
         $lignePaniers = $entityManager
             ->getRepository(LignePanier::class)
-            //->findAll();
             ->findBy(['idPanier' => $panierparclient]);
 
         return $this->render('commande/index.html.twig', [

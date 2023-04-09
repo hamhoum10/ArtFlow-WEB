@@ -39,7 +39,7 @@ class Article
 
 
     #[ORM\ManyToOne(targetEntity: Artiste::class )]
-    #[ORM\JoinColumn(name: 'id_artiste', referencedColumnName: 'username')]
+    #[ORM\JoinColumn(name: 'id_artiste', referencedColumnName: 'id_artiste')] //referencedColumnName: 'username' i change it
     private ?Artiste $idArtiste;
 
 
