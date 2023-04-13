@@ -52,8 +52,8 @@ class Enchere
 
 
     /**
-     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="enchere", orphanRemoval=true)
-     */
+     * @ ORM\OneToMany(targetEntity=Participant::class, mappedBy="enchere", orphanRemoval=true)
+
     private $participant;
 
     // ...
@@ -69,8 +69,25 @@ class Enchere
 
         return $this;
     }
+     */
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $images = [];
 
+    // getters and setters for all properties
 
+    public function getImages(): ?array
+    {
+        return $this->images;
+    }
+
+    public function setImages(?array $images): self
+    {
+        $this->images = $images;
+
+        return $this;
+    }
     public function getIde(): ?int
     {
         return $this->ide;

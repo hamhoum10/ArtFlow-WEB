@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -68,10 +69,10 @@
             <div class="col-xl-6 col-lg-7">
                 <nav class="header__menu">
                     <ul>
-                        <li><a href="./index.html">Home</a></li>
-                        <li><a href="#">auction</a></li>
+                        <li><a href="{{ path('app_welcomepage') }}">Home</a></li>
+                        <li><a href="#">products</a></li>
                         <li><a href="#">events</a></li>
-                        <li class="active"><a href="./shop.html">Shop</a></li>
+                        <li class="active"><a href="./shop.html">Auction</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="./product-details.html">Product Details</a></li>
@@ -110,32 +111,54 @@
 </header>
 <!-- Header Section End -->
 
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <i class="fa fa-home"></i> Home > Auction
 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
 
 
 <!-- Product Details Section Begin -->
 
 <section class="product-details spad">
-
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
                 <div class="product__details__pic">
                     <div class="product__details__pic__left product__thumb nice-scroll">
-                        <a class="pt active" href="#product-1">
-                            <img src="{{ asset('uploads/' ~ enchere.image) }}"  alt="{{ enchere.image }}">
-                        </a>
-                    <!--    <a class="pt" href="#product-2">
-                            <img src="img/product/details/thumb-2.jpg" alt="">
-                        </a>
-                        <a class="pt" href="#product-3">
-                            <img src="img/product/details/thumb-3.jpg" alt="">
-                        </a>
-                        <a class="pt" href="#product-4">
-                            <img src="img/product/details/thumb-4.jpg" alt="">
-                        </a>--!>
+                        {% for image in enchere.images %}
+                            <a class="pt {% if loop.first %}active{% endif %}" href="#product-{{ loop.index }}">
+                                <img src="{{ asset('uploads/' ~ image) }}" alt="{{ image }}" onmouseover="loopImage()" onmouseout="resetImage()">
+                            </a>
+                        {% endfor %}
                     </div>
 
+                    <script>
+                        function loopImage() {
+                            const img = event.target;
+                            img.style.transform = "scale(1.2)";
+                        }
+
+                        function resetImage() {
+                            const img = event.target;
+                            img.style.transform = "scale(1)";
+                        }
+                    </script>
+
+                    <div class="product__details__slider__content">
+                        <div class="owl-item active" style="width: 518.2px;">
+                            <img data-hash="product-1" class="product__big__img" src="{{ asset('uploads/' ~ enchere.image) }}"  alt="{{ enchere.image }}"></div>
+
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -145,32 +168,59 @@
                     <div class="product__details__price">DT {{ enchere.prixdepart }}<span></span></div>
                     <p>{{ enchere.description }}</p>
                     <p>{{ enchere.dateLimite|date('Y-m-d') }}</p>
+                    <p>{{ enchere.prixdepart }}</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!--
+                                        <form id="my-form" action="/submit-form" method="post">
+                                            <label for="name">Name:</label>
+                                            <input type="text" id="name" name="name" required>
+
+                                            <label for="email">Email:</label>
+                                            <input type="email" id="email" name="email" required>
+
+                                            <button type="submit">Submit</button>
+                                        </form>
+
+                                        <script>
+                                            const form = document.getElementById('my-form');
+
+                                            form.addEventListener('submit', (event) => {
+                                                const nameInput = document.getElementById('name');
+                                                const emailInput = document.getElementById('email');
+
+                                                if (!nameInput.value || !emailInput.value) {
+                                                    alert('Please fill in all required fields.');
+                                                    event.preventDefault();
+                                                }
+                                            });
+                                        </script>
+
+                   -->
 
 
 
                     <a href="{{ path('app_participant_new') }}" class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple" onclick="createNew(x)">
-                        <span>create_new</span>
+                        <span>Participate</span>
                         <svg
                                 class="w-5 h-5 mr-2"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                         >
 
-                    <div class="product__details__button">
-                        <div class="quantity">
-                            <span>Montant</span>
-                            <div class="pro-qty">
-                                <input type="text" value="1">
-                            </div>
-                        </div>
 
-
-                        <a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
-                        <ul>
-                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                            <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
-                        </ul>
-                    </div>
 
 
 

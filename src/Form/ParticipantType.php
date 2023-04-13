@@ -9,13 +9,41 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 
 class ParticipantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('montant')
+
+               ->add('montant', null, [
+                   'constraints' => [
+                       new Callback([
+                           'callback' => function ($value, ExecutionContextInterface $context) {
+                               $encheres = $context->getRoot()->getData();
+                               $lastMontant = 0;
+
+                               foreach ($encheres as $enchere) {
+                                   if ($enchere->getIde() == $encheres[count($encheres)-1]->getIde()) {
+                                       $lastMontant = $enchere->getMontant();
+                                       break;
+                                   }
+                               }
+
+                               if ($value <= $lastMontant) {
+                                   $context->buildViolation('Le montant doit être supérieur à {{ lastMontant }}.')
+                                       ->setParameter('{{ lastMontant }}', $lastMontant)
+                                       ->addViolation();
+                               }
+                           },
+                       ]),
+                   ],
+               ])
             ->add('id', EntityType::class, [
                 'label'=> 'Clients',
                 'class' => Client::class,
@@ -45,4 +73,39 @@ class ParticipantType extends AbstractType
             'data_class' => Participant::class,
         ]);
     }
+
+
+
+
+
+
+
+
+    public function validate($value, Constraint $constraint)
+    {
+        $encheres = $this->context->getRoot()->getData();
+        $lastMontant = 0;
+
+        foreach ($encheres as $enchere) {
+            if ($enchere->getIde() == $encheres[count($encheres)-1]->getIde()) {
+                $lastMontant = $enchere->getMontant();
+                break;
+            }
+        }
+
+        if ($value <= $lastMontant) {
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ lastMontant }}', $lastMontant)
+                ->addViolation();
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
