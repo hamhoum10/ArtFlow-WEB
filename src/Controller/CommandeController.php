@@ -18,22 +18,11 @@ use Symfony\Component\Validator\Constraints\DateTime;
 #[Route('/commande')]
 class CommandeController extends AbstractController
 {
-    #[Route('/show', name: 'app_commande_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
-    {
-        $commandes = $entityManager
-            ->getRepository(Commande::class)
-            ->findAll(); //nbadlou hena to show the commande 7asb id or smth
-
-        return $this->render('commande/show.html.twig', [
-            'commandes' => $commandes,
-        ]);
-    }//fi app te3i i don't need to show the user commmande but only after creating one and before payment
 
 
     #[Route('/', name: 'app_showarticles_index', methods: ['GET'])]
     public function showarticles(EntityManagerInterface $entityManager): Response
-    {//tafishi les article fi interface mta commande
+    {       //tafishi les article fi interface mta commande---------------
         $client = $entityManager->getRepository(Client::class)->find(3); //tjib client bid 3 maybe nada send me the client when login
         $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
 
@@ -41,10 +30,23 @@ class CommandeController extends AbstractController
             ->getRepository(LignePanier::class)
             ->findBy(['idPanier' => $panierparclient]);
 
-        return $this->render('commande/index.html.twig', [
+        return $this->render('commande/commandeBase.html.twig', [ //ma3tesh render lel /new view w na7it el extend eli fiha
             'ligne_paniers' => $lignePaniers,
         ]);
     }
+
+    #[Route('/show', name: 'app_commande_index', methods: ['GET'])]
+    public function index(EntityManagerInterface $entityManager): Response
+    {
+        $commandes = $entityManager
+            ->getRepository(Commande::class)
+            ->findAll(); //nbadlou hena to show the commande 7asb id or smth
+
+        return $this->render('commande/admin-order.html.twig', [ //commande/show.html.twig before
+            'commandes' => $commandes,
+        ]);
+    }//fi app te3i i don't need to show the user commmande but only after creating one and before payment
+
 
 //    #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
 //    public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -102,7 +104,7 @@ class CommandeController extends AbstractController
         $lastname= trim($requestData['lastname']);
         $number= trim($requestData['number']);
         $address= trim($requestData['address']);
-        $codepostal= trim($requestData['codepostal']);
+        $codePostal= trim($requestData['codePostal']);
         $email= trim($requestData['email']);
 
 
@@ -126,10 +128,10 @@ class CommandeController extends AbstractController
         $commande->setCreatedAt($currentDate);
         $commande->setStatus("en attente");
         //if the form is nicely filled the commande will be added
-        if ($firstname != "" && $lastname != "" && $email !="" && $address !="" && $codepostal !="" && $number !="") {
+        if ($firstname != "" && $lastname != "" && $email !="" && $address !="" && $codePostal !="" && $number !="") {
             $commande->setNom($firstname);
             $commande->setPrenom($lastname);
-            $commande->setCodepostal($codepostal);
+            $commande->setCodepostal($codePostal);
             $commande->setAdresse($address);
             $commande->setNumero((int)$number);
             $entityManager->persist($commande);

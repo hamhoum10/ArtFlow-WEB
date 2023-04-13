@@ -18,9 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StripeController extends AbstractController
 {
-    /**
-     * @throws ApiErrorException
-     */
+//    /**
+//     * @throws ApiErrorException
+//     */
     #[Route('/pay', name: 'app_stripe_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager)
     {

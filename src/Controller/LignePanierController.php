@@ -31,7 +31,7 @@ class LignePanierController extends AbstractController
             //->findAll();
             ->findBy(['idPanier' => $panierparclient]);
 
-        return $this->render('ligne_panier/index.html.twig', [
+        return $this->render('ligne_panier/PanierBase.html.twig', [  //ligne_panier/index.html.twig before
             'ligne_paniers' => $lignePaniers,
         ]);
     }
