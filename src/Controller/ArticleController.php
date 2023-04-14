@@ -49,7 +49,7 @@ class ArticleController extends AbstractController
 
 
 
-    #[Route('/{id}', name: 'app_article_indexdescription', methods: ['GET', 'POST'])]
+    #[Route('/description/{id}', name: 'app_article_indexdescription', methods: ['GET', 'POST'])]
     public function indexdescription(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,Request $request,$id): Response
     {
         # dd($articleRepository->findAll());
