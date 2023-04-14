@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+
+{% block title %}Evemt index{% endblock %}
+
+{% block body %}
+    <h1>Evemt index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>DateEvemt</th>
+                <th>Description</th>
+                <th>FinishHour</th>
+                <th>StartHour</th>
+                <th>Location</th>
+                <th>Capacity</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Prix</th>
+                <th>Username</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for evemt in evemts %}
+            <tr>
+                <td>{{ evemt.id }}</td>
+                <td>{{ evemt.dateEvemt ? evemt.dateEvemt|date('Y-m-d') : '' }}</td>
+                <td>{{ evemt.description }}</td>
+                <td>{{ evemt.finishHour }}</td>
+                <td>{{ evemt.startHour }}</td>
+                <td>{{ evemt.location }}</td>
+                <td>{{ evemt.capacity }}</td>
+                <td>{{ evemt.image }}</td>
+                <td>{{ evemt.name }}</td>
+                <td>{{ evemt.prix }}</td>
+                <td>{{ evemt.username }}</td>
+                <td>
+                    <a href="{{ path('app_evemt_show', {'id': evemt.id}) }}">show</a>
+                    <a href="{{ path('app_evemt_edit', {'id': evemt.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_evemt_new') }}">Create new</a>
+{% endblock %}

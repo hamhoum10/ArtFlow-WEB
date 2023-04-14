@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Parler{% endblock %}
+
+{% block body %}
+    <h1>Edit Parler</h1>
+
+    {{ include('parler/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_parler_index') }}">back to list</a>
+
+    {{ include('parler/_delete_form.html.twig') }}
+{% endblock %}

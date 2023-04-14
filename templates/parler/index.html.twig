@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Parler index{% endblock %}
+
+{% block body %}
+    <h1>Parler index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdComment</th>
+                <th>Commentaire</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for parler in parlers %}
+            <tr>
+                <td>{{ parler.idComment }}</td>
+                <td>{{ parler.commentaire }}</td>
+                <td>
+                    <a href="{{ path('app_parler_show', {'idComment': parler.idComment}) }}">show</a>
+                    <a href="{{ path('app_parler_edit', {'idComment': parler.idComment}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_parler_new') }}">Create new</a>
+{% endblock %}
