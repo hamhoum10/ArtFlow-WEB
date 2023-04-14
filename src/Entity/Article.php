@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Entity\Artiste;
 use App\Entity\Categorie;
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -59,6 +61,14 @@ class Article
     #[ORM\ManyToOne(targetEntity: Categorie::class)]
     #[ORM\JoinColumn(name: 'id_categorie', referencedColumnName: 'id_categorie')]
     private ?Categorie $id_categorie = null;
+
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: Favori::class)]
+    private Collection $favoris;
+
+    public function __construct()
+    {
+        $this->favoris = new ArrayCollection();
+    }
 
 
     public function getIdArticle(): ?int
@@ -158,6 +168,36 @@ class Article
     public function setIdCategorie( Categorie $id_categorie): self
     {
         $this->id_categorie = $id_categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favori>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Favori $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Favori $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            // set the owning side to null (unless already changed)
+            if ($favori->getArticle() === $this) {
+                $favori->setArticle(null);
+            }
+        }
 
         return $this;
     }

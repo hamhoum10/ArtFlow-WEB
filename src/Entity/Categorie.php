@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CategorieRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 
@@ -18,10 +19,12 @@ class Categorie
 
 
     #[ORM\Column(length:255)]
+    #[Assert\NotBlank(message:"nom requis")]
     private ?string $nameCategorie = null;
 
 
     #[ORM\Column(length:255)]
+    #[Assert\NotBlank(message:"nom requis")]
     private ?string $description = null;
 
     public function getIdCategorie(): ?int
