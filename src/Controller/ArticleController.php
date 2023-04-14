@@ -16,19 +16,84 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/article')]
 class ArticleController extends AbstractController
 {
-    #[Route('/', name: 'app_article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository): Response
+    #[Route('/', name: 'app_article_index', methods: ['GET', 'POST'])]
+    public function index(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,Request $request): Response
     {
        # dd($articleRepository->findAll());
         $categories = $categorieRepository->findAll();
         $artiste=$artisteRepository->findBy(array('username'=>'mou'))[0];
+
         #dd($artiste);
+        $article=new Article();
+          $article=$articleRepository->findAll();
+        if($request->isMethod("POST"))
+        {
+            $minamount = $request->get('minamount');
+            $maxamount = $request->get('maxamount');
+            #dd((float)substr($minamount, 1));
+
+            $article=$articleRepository->findByPriceRange((float)substr($minamount, 1),(float)substr($maxamount, 1));
+
+
+        }
+
         return $this->render('article/indexfront.html.twig',[
-            'articles' => $articleRepository->findAll(),
+            'articles' => $article,
             'Artiste' => $artiste,
             'categories' => $categories,
+
         ]);
     }
+
+
+
+
+
+    #[Route('/{id}', name: 'app_article_indexdescription', methods: ['GET', 'POST'])]
+    public function indexdescription(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,Request $request,$id): Response
+    {
+        # dd($articleRepository->findAll());
+        $categories = $categorieRepository->findAll();
+        $artiste=$artisteRepository->findBy(array('username'=>'mou'))[0];
+
+        #dd($artiste);
+        $article=new Article();
+
+        $article=$articleRepository->find($id);
+        $articlee=$articleRepository->findAll();
+
+        #dd($id);
+        if($request->isMethod("POST"))
+        {
+            $minamount = $request->get('minamount');
+            $maxamount = $request->get('maxamount');
+            #dd((float)substr($minamount, 1));
+
+            $article=$articleRepository->findByPriceRange((float)substr($minamount, 1),(float)substr($maxamount, 1));
+
+
+        }
+
+        return $this->render('article/description.html.twig',[
+            'article' => $article,
+            'articles' => $articlee,
+            'Artiste' => $artiste,
+            'categories' => $categories,
+
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     #[Route('/recherche/{categorie}', name: 'recherchearticle', methods: ['GET', 'POST'])]
     public function recherchearticle(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,$categorie): Response
@@ -43,6 +108,11 @@ class ArticleController extends AbstractController
             'categories' => $categories,
         ]);
     }
+
+
+
+
+
 
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ArticleRepository $articleRepository): Response
