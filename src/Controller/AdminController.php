@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Admin;
+use App\Entity\User;
 use App\Form\AdminType;
 use App\Repository\AdminRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/admin')]
@@ -22,15 +25,24 @@ class AdminController extends AbstractController
     }
 
     #[Route('/new', name: 'app_admin_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, AdminRepository $adminRepository): Response
+    public function new(Request $request, AdminRepository $adminRepository, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        $user =new User();
+
         $admin = new Admin();
         $form = $this->createForm(AdminType::class, $admin);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $adminRepository->save($admin, true);
-
+            $user->setUsername($admin->getUsername());
+            $user->setPassword($admin->getPassword());
+            $user->setRoles(['admin']);
+            $user->setPassword( $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('password')->getData()
+            ));
+            $userRepository->save($user, true);
             return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
         }
 

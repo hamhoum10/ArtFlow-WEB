@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Filesystem\Filesystem;
+
 
 
 #[Route('/artiste')]
@@ -46,8 +48,6 @@ class ArtisteController extends AbstractController
             if ($file instanceof UploadedFile) {
                 $filename = md5(uniqid()) . '.' . $file->guessExtension();
                 $file->move($this->getParameter('images_directory'), $filename);
-
-                //$file->move($this->getParameter('uploads'), $filename);
                 $artiste->setImage($filename); // set image value to $event, not $form->getData()
             } else {
                 // Set default image filename here
@@ -86,7 +86,7 @@ class ArtisteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $image = $form->get('Image')->getData();
+            $image = $form->get('image')->getData();
 
             $fichier = md5(uniqid()) . '.' . $image->guessExtension();
             $image->move(
@@ -100,6 +100,7 @@ class ArtisteController extends AbstractController
         }
 
         return $this->renderForm('artiste/edit.html.twig', [
+            'img'=>$artiste->getImage(),
             'artiste' => $artiste,
             'form' => $form,
         ]);

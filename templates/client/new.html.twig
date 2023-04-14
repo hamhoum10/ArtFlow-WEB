@@ -11,32 +11,40 @@
 				</div>
 				{{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
 				<form action="">
-					<h3>Registration Form</h3>
+					<h3>Client Registration Form</h3>
 					<div class="form-group">
-	 				{{ form_widget(form.firstname,{attr:{ class:"form-control", placeholder:"firstname"}}) }}
-						<input type="text" placeholder="Last Name" class="form-control" {{ form_widget(form.lastname) }}>
+	 				{{ form_widget(form.firstname,{attr:{ class:"form-control", placeholder:"First name"}}) }}
+						<span style="color: red">{{ form_errors(form.firstname,{attr:{'class':'text-danger'}} ) }}</span>
+						{{ form_widget(form.lastname,{attr:{ class:"form-control", placeholder:"Lasr name"}}) }}
+						<span style="color: red">{{ form_errors(form.lastname,{attr:{'class':'text-danger'}} ) }}</span>
+
 					</div>
 					<div class="form-group">
-						<input type="text" placeholder="Address" class="form-control" {{ form_widget(form.address) }}>
-						<input type="text" placeholder="Phone Number" class="form-control"{{ form_widget(form.phonenumber) }}>
+						{{ form_widget(form.address,{attr:{ class:"form-control", placeholder:"Address"}}) }}
+						<span style="color: red">{{ form_errors(form.address,{attr:{'class':'text-danger'}} ) }}</span>
+						{{ form_widget(form.phonenumber,{attr:{ class:"form-control", placeholder:"Pne number"}}) }}
+						<span style="color: red">{{ form_errors(form.phonenumber,{attr:{'class':'text-danger'}} ) }}</span>
 					</div>
 
 					<div class="form-wrapper">
-						<input type="text" placeholder="Email" class="form-control" {{ form_widget(form.email) }}>
-						<i class="zmdi zmdi-account"></i>
+						{{ form_widget(form.email,{attr:{ class:"form-control", placeholder:"Email"}}) }}
+						<span style="color: red">{{ form_errors(form.email,{attr:{'class':'text-danger'}} ) }}</span>
 					</div>
 					<div class="form-wrapper">
-						<input type="text" placeholder="Username" class="form-control"{{ form_widget(form.username) }}>
-						<i class="zmdi zmdi-account"></i>
+						{{ form_widget(form.username,{attr:{ class:"form-control", placeholder:"Username"}}) }}
+						<span style="color: red">
+							{{ form_errors(form.username,{attr:{'class':'text-danger'}} ) }}
+						</span>
 					</div>
 
 					<div class="form-group">
-						<input type="text" placeholder="Password" class="form-control"{{ form_widget(form.password.first) }}>
-						{{ form_errors(form.password.first) }}
-						<input type="text" placeholder="Confirm Password" class="form-control"{{ form_widget(form.password.second) }}>
+						{{ form_widget(form.password.first,{attr:{ class:"form-control", placeholder:"Password"}}) }}
+						<span style="color: red">{{ form_errors(form.password.first) }}</span>
+						{{ form_widget(form.password.second,{attr:{ class:"form-control", placeholder:"Comfirm password"}}) }}
+						<span style="color: red">{{ form_errors(form.password.first) }}</span>
 					</div>
 					<div class="form-wrapper">
-						<input type="checkbox" placeholder="terms" class="form-check-input" value="" id="acceptTerms" required="" {{ form_widget(form.agreeTerms) }}>
+						<input type="checkbox" placeholder="terms" class="form-check-input" value="" id="acceptTerms" required="" {{ form_widget(form.agreeTerms,{attr:{ class:"form-check-input", placeholder:"terms", value:"", id:"acceptTerms", required:""}}) }}>
 						<label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
 					</div>
 

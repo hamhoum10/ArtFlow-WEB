@@ -4,8 +4,12 @@ namespace App\Entity;
 
 use App\Repository\ArtisteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ArtisteRepository::class)]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class Artiste
 {
     #[ORM\Id]
@@ -14,30 +18,40 @@ class Artiste
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"first name required")]
+
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"last name required")]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"birthplace required")]
     private ?string $birthplace = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"birthdate required")]
     private ?string $birthdate = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"description required")]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"address required")]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"phone number should only containt 8 numbers")]
+    #[Assert\Regex(array('pattern' => '/^[0-9]\d*$/'))]
     private ?string $phonenumber = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email(message:"email not valid")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]

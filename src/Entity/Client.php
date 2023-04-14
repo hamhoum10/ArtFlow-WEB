@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class Client
 {
     #[ORM\Id]
@@ -14,18 +17,24 @@ class Client
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"first name required")]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"last name required")]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"address required")]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"phone number should only containt numbers")]
+    #[Assert\Regex(array('pattern' => '/^[0-9]\d*$/'))]
     private ?string $phonenumber = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email(message:"email not valid")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]

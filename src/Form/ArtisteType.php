@@ -28,7 +28,7 @@ class ArtisteType extends AbstractType
             ->add('birthdate')
             ->add('description')
             ->add('image', FileType::class, [
-                'label' => 'Choose an image',
+                'label' => 'image',
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
