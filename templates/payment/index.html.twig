@@ -1,0 +1,23 @@
+{% extends 'paymentBase.html.twig' %}
+
+{% block title %}Payment {% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <div style="text-align:center;">
+        <h1 style="font-size: 2.5rem; color: black; text-align: center; text-transform: uppercase; font-weight:bold /*margin-top: 20px;*/">Complete Your Payment with Stripe</h1>
+        <div style="margin-top: 40px"></div>
+        <p>To complete your purchase, please proceed to the payment page where you will be redirected to Stripe's secure payment gateway.</p>
+        <p>Stripe is a fast, reliable, and secure payment processing platform that accepts a variety of payment methods, including credit cards and digital wallets like Apple Pay and Google Pay.</p>
+        <p>If you encounter any issues during the payment process, please don't hesitate to contact our customer support team for assistance.</p>
+        <p>Thank you for choosing us and trusting Stripe with your payment.</p>
+        <div style="margin-top: 40px"></div>
+        <form action="/checkout" method="POST">
+            <button type="submit" class="btn primary-btn btn-lg" >Checkout</button>
+        </form>
+    </div>
+
+
+
+{% endblock %}

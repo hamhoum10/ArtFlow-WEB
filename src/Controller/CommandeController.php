@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -21,8 +22,11 @@ class CommandeController extends AbstractController
 
 
     #[Route('/', name: 'app_showarticles_index', methods: ['GET'])]
-    public function showarticles(EntityManagerInterface $entityManager): Response
-    {       //tafishi les article fi interface mta commande---------------
+    public function showarticles(EntityManagerInterface $entityManager,SessionInterface $session): Response
+    {
+        //tafishi les article fi interface mta commande---------------
+
+        //extraact the panier of the current user
         $client = $entityManager->getRepository(Client::class)->find(3); //tjib client bid 3 maybe nada send me the client when login
         $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
 
@@ -30,75 +34,37 @@ class CommandeController extends AbstractController
             ->getRepository(LignePanier::class)
             ->findBy(['idPanier' => $panierparclient]);
 
+        // we put in session the total amount and render the total to the template commndeBase
+
+        $total=0;
+        $etatcode = $session->get('etatcode', false);//extract lel etat mel session eli amlenlha set fi function verif eli fi promocode controller
+        if ($etatcode===true){
+
+            foreach ($lignePaniers as /** @var LignePanier $lp */$lp) {
+                $total0 = $lp->getQuantity()*$lp->getPrixUnitaire();
+                $total+=$total0*0.8; //discount
+        }
+         $session->set('total' , $total);
+        }else {//no promocode
+            foreach ($lignePaniers as /** @var LignePanier $lp */ $lp) {
+                $total0 = $lp->getQuantity() * $lp->getPrixUnitaire();
+                $total += $total0; //no discount
+            }
+            $session->set('total' , $total);
+        }
+
         return $this->render('commande/commandeBase.html.twig', [ //ma3tesh render lel /new view w na7it el extend eli fiha
             'ligne_paniers' => $lignePaniers,
+            'totalfinal' => $total
         ]);
     }
 
-    #[Route('/show', name: 'app_commande_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
-    {
-        $commandes = $entityManager
-            ->getRepository(Commande::class)
-            ->findAll(); //nbadlou hena to show the commande 7asb id or smth
-
-        return $this->render('commande/admin-order.html.twig', [ //commande/show.html.twig before
-            'commandes' => $commandes,
-        ]);
-    }//fi app te3i i don't need to show the user commmande but only after creating one and before payment
-
-
-//    #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
-//    public function new(Request $request, EntityManagerInterface $entityManager): Response
-//    {   $client = new Client();
-//        $commande = new Commande();
-//        $panier = new Panier();
-//        $lignepanier = new LignePanier();
-//
-//        //instantiate form of type Commande
-//        $form = $this->createForm(CommandeType::class, $commande);
-//        $form->handleRequest($request);
-//
-//
-//
-//        //PRIX TOTAL--------------------------------------------------------------
-//        //we get the cart that we need ama it's better extract cart by it's user so we get the client by id w baed we get panier by that client
-//        $client = $entityManager->getRepository(Client::class)->find(3); //tjib client bid 3 maybe nada send me the client when login
-//        $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
-//        $listlignepanier =$entityManager->getRepository(LignePanier::class)->findBy(['idPanier'=> $panierparclient]); //idPanier hwa de type Panier ......
-//        $prixTotal=0;
-//        foreach ($listlignepanier as /** @var LignePanier $lp */ $lp) {
-//                $prixTotal += $lp->getPrixUnitaire() * $lp->getQuantity();
-//        }
-//
-//
-//        //LES ATTRIBUTS DE COMMANDE that user get automaclly
-//        $commande->setIdPanier($panierparclient); //wala b $panier direct
-//        $commande->setTotalAmount($prixTotal);
-//        $currentDate = new \DateTime();
-//        $commande->setCreatedAt($currentDate);
-//        $commande->setStatus("en attente");
-//        //if the form is nicely filled the commande will be added
-//        if ($form->isSubmitted() && $form->isValid() && $panierparclient != null) {
-//            $entityManager->persist($commande);
-//            $entityManager->flush();
-//            $donemsg ='this commande is created with success !';
-//            //maybe n7othou $commande en type static mesh nest3mlouha fi pages okhrin wala fazet render
-//            return $this->redirectToRoute('app_commande_index', ['DoneMsg' => $donemsg], Response::HTTP_SEE_OTHER);
-//        }
-//
-//        return $this->renderForm('commande/new.html.twig', [
-//            'commande' => $commande,
-//            'form' => $form,
-//        ]);
-//
-//
-//    }
     #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function new(Request $request, EntityManagerInterface $entityManager, SessionInterface $session): JsonResponse
     {
         $commande = new Commande();
 
+        //we extract the data comming from  the script after submitting the form
         $requestData = json_decode($request->getContent(), true);
         $firstname = trim($requestData['firstname']);
         $lastname= trim($requestData['lastname']);
@@ -116,13 +82,18 @@ class CommandeController extends AbstractController
         $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
         $listlignepanier =$entityManager->getRepository(LignePanier::class)->findBy(['idPanier'=> $panierparclient]); //idPanier hwa de type Panier ......
         $prixTotal=0;
-        foreach ($listlignepanier as /** @var LignePanier $lp */ $lp) {
-            $prixTotal += $lp->getPrixUnitaire() * $lp->getQuantity();
-        }
+
+
+        //we extract the total from session which i created in the above function
+        $prixTotal=$session->get('total');
+
+//        foreach ($listlignepanier as /** @var LignePanier $lp */ $lp) {
+//            $prixTotal += $lp->getPrixUnitaire() * $lp->getQuantity();
+//        }
 
 
         //LES ATTRIBUTS DE COMMANDE that user get automaclly
-        $commande->setIdPanier($panierparclient); //wala b $panier direct
+        $commande->setIdPanier($panierparclient);
         $commande->setTotalAmount($prixTotal);
         $currentDate = new \DateTime();
         $commande->setCreatedAt($currentDate);
@@ -143,6 +114,20 @@ class CommandeController extends AbstractController
         return new JsonResponse( ['success' => false ]);
 
     }
+
+    //admin panel
+    #[Route('/show', name: 'app_commande_index', methods: ['GET'])]
+    public function index(EntityManagerInterface $entityManager): Response
+    {
+        $commandes = $entityManager
+            ->getRepository(Commande::class)
+            ->findAll();
+
+        return $this->render('commande/admin-order.html.twig', [ //commande/show.html.twig before
+            'commandes' => $commandes,
+        ]);
+    }
+
 
     #[Route('/{id}', name: 'app_commande_show', methods: ['GET'])]
     public function show(Commande $commande): Response

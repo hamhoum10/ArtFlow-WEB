@@ -83,28 +83,6 @@ class PromocodeController extends AbstractController
 
         return $this->redirectToRoute('app_promocode_index', [], Response::HTTP_SEE_OTHER);
     }
-//    #[Route('/', name: 'app_promocode_verify', methods: ['POST'])]
-//    public function verifcode(Request $request, EntityManagerInterface $entityManager)
-//    {   $promocode= New Promocode();
-//        $code = $request->request->get('code');
-//        $response =[];
-//        var_dump($code);
-//        /** @var Promocode $codeDatabase */ $codeDatabase=$entityManager->getRepository(Promocode::class)->findOneBy(['code'=>$code]);
-//        if ($codeDatabase !== null) {
-//            var_dump($codeDatabase->getCode());
-//            $randomNumber = strval(mt_rand(10000000, 99999999));
-//            $promocode->setCode($randomNumber);
-//
-//            $entityManager->persist($promocode);
-//            $entityManager->flush();
-//           // return new JsonResponse(['success' => true]);
-//            $response['success'] = true;
-//        }else{
-//            $response['success'] = false;
-//           // return new JsonResponse(['success' => false]);
-//        }
-//        return $this->json($response);
-//    }
 
     #[Route('/', name: 'app_promocode_verify', methods: ['POST','GET'])]
     public function verifcode(Request $request, EntityManagerInterface $entityManager, SessionInterface $session): JsonResponse

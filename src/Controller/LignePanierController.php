@@ -20,6 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/lignepanier')]
 class LignePanierController extends AbstractController
 {
+    //Display the product of the current user
     #[Route('/', name: 'app_ligne_panier_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -28,7 +29,6 @@ class LignePanierController extends AbstractController
 
         $lignePaniers = $entityManager
             ->getRepository(LignePanier::class)
-            //->findAll();
             ->findBy(['idPanier' => $panierparclient]);
 
         return $this->render('ligne_panier/PanierBase.html.twig', [  //ligne_panier/index.html.twig before
@@ -36,12 +36,12 @@ class LignePanierController extends AbstractController
         ]);
     }
 
+
+    //adding a product to the cart
     #[Route('/new', name: 'app_ligne_panier_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $lignePanier = new LignePanier();
-//        $form = $this->createForm(LignePanierType::class, $lignePanier);
-//        $form->handleRequest($request);
 
         //we extract the cart of user by his id
         $client = $entityManager->getRepository(Client::class)->find(3); //tjib client bid 3 maybe nada send me the client when login
@@ -59,29 +59,22 @@ class LignePanierController extends AbstractController
         $lignePanier->setNomArtiste($article->getIdArtiste()->getFirstname());
         $lignePanier->setQuantity(1);
 
-        if (/*$form->isSubmitted() && $form->isValid() &&*/ $panierparclient != null && $article->getIdArtiste() != null ) {
-            //quantity to add if lignepanier deja existe
-            //$quantity = $form->get('quantity')->getData();
+        if ($panierparclient != null && $article->getIdArtiste() != null ) {
 
+            //quantity to add if lignepanier deja existe
             //do lp exist si oui nzido quantity , maybe i add condition for the specific panier to udpdate not all ligne panier who have that article
             /** @var LignePanier $lpexist */ $lpexist = $entityManager->getRepository(LignePanier::class)->findOneBy(['idArticle' => $article]);
             if ($lpexist != null){
-                $lpexist->setQuantity($lpexist->getQuantity()+ 1 /*$quantity*/);
+                $lpexist->setQuantity($lpexist->getQuantity()+ 1 );
                 $entityManager->persist($lpexist);
-                $entityManager->flush();
-                var_dump($lpexist->getQuantity());
-                //$addedq = " quantity added succesfuly !";
-                //return $this->redirectToRoute('app_ligne_panier_index', ['DoneMsg' => $addedq], Response::HTTP_SEE_OTHER);
-            }else{
 
+            }else{//the product dosen't existe in the cart
             $entityManager->persist($lignePanier);
+        }
             $entityManager->flush();
-            //$added ="this article is added to you're cart !";
-            //return $this->redirectToRoute('app_ligne_panier_index', ['DoneMsg' => $added], Response::HTTP_SEE_OTHER);
-        }}
+        }
         return $this->render('ligne_panier/new.html.twig', [
             'ligne_panier' => $lignePanier,
-            //'form' => $form,
         ]);
     }
 
@@ -93,23 +86,6 @@ class LignePanierController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_ligne_panier_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, LignePanier $lignePanier, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(LignePanierType::class, $lignePanier);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_ligne_panier_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('ligne_panier/edit.html.twig', [
-            'ligne_panier' => $lignePanier,
-            'form' => $form,
-        ]);
-    }
 
     #[Route('/{id}/delete', name: 'app_ligne_panier_delete_ajax', methods: ['POST'])]
     public function deleteAjax(Request $request, LignePanier $lignePanier, EntityManagerInterface $entityManager,SessionInterface $session): JsonResponse
@@ -130,6 +106,8 @@ class LignePanierController extends AbstractController
             $lignePanier->setQuantity($lignePanier->getQuantity()+1);
             $entityManager->persist($lignePanier);
             $entityManager->flush();
+
+            //extract el etatcode, and we send it to the script if true the value will be calculated *0.8 in very add or minus or delete
             $etatcode = $session->get('etatcode', false);//extract lel etat mel session eli amlenlha set fi function verif eli fi promocode controller
             return new JsonResponse(['success' => true ,'state'=>$etatcode]);
     }
@@ -140,7 +118,7 @@ class LignePanierController extends AbstractController
         $lignePanier->setQuantity($lignePanier->getQuantity() - 1);
         $entityManager->persist($lignePanier);
         $entityManager->flush();
-        $etatcode = $session->get('etatcode', false); //extract lel etat mel session eli amlenlha set fi function verif eli fi promocode controller
+        $etatcode = $session->get('etatcode', false);
         return new JsonResponse(['success' => true , 'state'=>$etatcode]);
     }
         return new JsonResponse(['success' => false]);

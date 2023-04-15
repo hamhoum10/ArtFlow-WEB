@@ -210,7 +210,7 @@
                             {% endfor %}
                             <ul>
                                 <li>Subtotal <span>{{ total }} Tnd</span></li>
-                                <li>Total <span>{{ total }} Tnd</span></li>
+                                <li>Total <span>{{ totalfinal }} Tnd</span></li>
                             </ul>
                         </div>
                         <div class="checkout__order__widget">
@@ -294,6 +294,7 @@
                     $numberState=1;
                 }
 
+
                 //codepostal------------------------------------
                 if ( !/^[0-9]+$/.test($codePostal) ){
                     $('#codepostal-error').text('Please enter a valid code postal').show();
@@ -335,6 +336,7 @@
                             if (response.success) {
 
                                 alert(" you're order Has been Established successfully ! ");
+                                window.location.href = '/payment';
                             } else {
                                 alert(" Don't Leave Empty Fields ");
                             }
