@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commande;
 use App\Entity\Livraison;
 use App\Entity\Retour;
 use App\Entity\Stock;
@@ -11,9 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\CommandeRepository;
 
 #[Route('/livraison')]
 class LivraisonController extends AbstractController
+
 {
     #[Route('/', name: 'app_livraison_index', methods: ['GET'])]
     public function index(LivraisonRepository $livraisonRepository): Response
@@ -24,11 +27,12 @@ class LivraisonController extends AbstractController
     }
     #[Route('/shift-row/{id}', name: 'shift_row1')]
 
-    public function shiftRowAction($id)
+    public function shiftRowAction($id,CommandeRepository $CommandeRepository)
     {
+
         // Retrieve the row to be shifted from the source table
         $row = $this->getDoctrine()->getRepository(Livraison::class)->find($id);
-
+        $s= $CommandeRepository->find($row->getIdCommende()->getId());
         // Remove the row from the source table
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($row);
@@ -42,19 +46,22 @@ class LivraisonController extends AbstractController
         $destinationRow->setUserName($row->getUserName());
         $destinationRow->setIdCommende($row->getIdCommende());
         $destinationRow->setNameProduit($row->getNameProduit());
+        $s->setStatuLiv("ON Retour");
         $entityManager->persist($destinationRow);
+        $entityManager->persist($s);
         $entityManager->flush();
 
         // Redirect the user to the original page
         return $this->redirectToRoute('app_livraison_index');
     }
-    #[Route('/shift-row/{id}', name: 'shift_row3')]
+    #[Route('/shift-row3/{id}', name: 'shift_row3')]
 
-    public function shiftRowAction1($id)
+    public function shiftRowAction1($id,CommandeRepository $CommandeRepository)
     {
+        $s = new Commande();
         // Retrieve the row to be shifted from the source table
         $row = $this->getDoctrine()->getRepository(Livraison::class)->find($id);
-
+        $s= $CommandeRepository->find($row->getIdCommende()->getId());
         // Remove the row from the source table
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($row);
@@ -68,7 +75,9 @@ class LivraisonController extends AbstractController
         $destinationRow->setUserName($row->getUserName());
         $destinationRow->setIdCommende($row->getIdCommende());
         $destinationRow->setNameProduit($row->getNameProduit());
+        $s->setStatuLiv("ON Stock");
         $entityManager->persist($destinationRow);
+        $entityManager->persist($s);
         $entityManager->flush();
 
         // Redirect the user to the original page
@@ -81,6 +90,8 @@ class LivraisonController extends AbstractController
         $livraison = new Livraison();
         $form = $this->createForm(LivraisonType::class, $livraison);
         $form->handleRequest($request);
+
+//       $test= $form->get('id_commende')->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $livraisonRepository->save($livraison, true);

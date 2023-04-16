@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Commande;
 use App\Entity\Livraison;
 use App\Entity\Retour;
 use App\Form\RetourType;
+use App\Repository\CommandeRepository;
 use App\Repository\RetourRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,11 +25,12 @@ class RetourController extends AbstractController
     }
     #[Route('/shift-row/{id}', name: 'shift_row')]
 
-    public function shiftRowAction($id)
+    public function shiftRowAction($id,CommandeRepository $commandeRepository)
     {
+
         // Retrieve the row to be shifted from the source table
         $row = $this->getDoctrine()->getRepository(Retour::class)->find($id);
-
+        $s= $commandeRepository -> find($row->getIdCommende()->getId());
         // Remove the row from the source table
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($row);
@@ -41,6 +44,8 @@ class RetourController extends AbstractController
         $destinationRow->setUserName($row->getUserName());
         $destinationRow->setIdCommende($row->getIdCommende());
         $destinationRow->setNameProduit($row->getNameProduit());
+        $s->setStatuLiv("ON Livraison");
+        $entityManager->persist($s);
         $entityManager->persist($destinationRow);
         $entityManager->flush();
 

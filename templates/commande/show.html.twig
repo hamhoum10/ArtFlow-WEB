@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Commande</h1>
 
-    <table class="table">
+    <table class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -47,12 +47,18 @@
                 <th>Adresse</th>
                 <td>{{ commande.adresse }}</td>
             </tr>
+            <tr>
+                <th>Staatu Livraison</th>
+                <td>{{ commande.statuLiv}}</td>
+            </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_commande_index') }}">back to list</a>
+    <a href="{{ path('app_commande_index') }}"class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg
+    active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">back to list</a>
 
-    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a>
+    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}"class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg
+     active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">edit</a>
 
     {{ include('commande/_delete_form.html.twig') }}
 {% endblock %}

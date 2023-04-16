@@ -40,6 +40,9 @@ class Commande
     #[ORM\Column(length: 255)]
     private ?string $adresse = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Statu_liv = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,6 +160,18 @@ class Commande
     public function __toString(): string
     {
        return $this->getNom();
+    }
+
+    public function getStatuLiv(): ?string
+    {
+        return $this->Statu_liv;
+    }
+
+    public function setStatuLiv(?string $Statu_liv): self
+    {
+        $this->Statu_liv = $Statu_liv;
+
+        return $this;
     }
 
 }

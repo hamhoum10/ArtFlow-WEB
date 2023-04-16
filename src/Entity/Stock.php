@@ -16,25 +16,27 @@ class Stock
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:"nom requis")]
+    #[Assert\NotBlank(message:"Product Name required")]
     private ?string $name_produit = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:"nom requis")]
+    #[Assert\NotBlank(message:"Artiste required")]
     private ?string $artiste = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:"nom requis")]
+    #[Assert\NotBlank(message:"addres required")]
     private ?string $addres = null;
 
     #[ORM\OneToOne()]
+    #[Assert\NotNull(message:"Please select one")]
     private ?Commande $id_commende = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:"nom requis")]
+    #[Assert\NotBlank(message:"User Name required")]
     private ?string $user_name = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\LessThanOrEqual('today',message:"We Do NOT LIVE IN THE FUTURE")]
     private ?\DateTimeInterface $date_entr = null;
 
     public function getId(): ?int

@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Livraison;
 use App\Entity\Retour;
 use App\Entity\Stock;
+use App\Entity\Commande;
 use App\Form\StockType;
+use App\Repository\CommandeRepository;
 use App\Repository\StockRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,11 +26,12 @@ class StockController extends AbstractController
     }
     #[Route('/shift-row/{id}', name: 'shift_row2')]
 
-    public function shiftRowAction($id)
+    public function shiftRowAction($id,CommandeRepository $commandeRepository)
     {
+
         // Retrieve the row to be shifted from the source table
         $row = $this->getDoctrine()->getRepository(Stock::class)->find($id);
-
+        $s=$commandeRepository->find($row->getIdCommende()->getId());
         // Remove the row from the source table
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($row);
@@ -43,6 +46,9 @@ class StockController extends AbstractController
         $destinationRow->setIdCommende($row->getIdCommende());
         $destinationRow->setNameProduit($row->getNameProduit());
         $entityManager->persist($destinationRow);
+        $entityManager->flush();
+        $s->setStatuLiv("ON Livraison");
+        $entityManager->persist($s);
         $entityManager->flush();
 
         // Redirect the user to the original page

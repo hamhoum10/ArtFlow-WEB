@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Commande;
+use App\Entity\Livraison;
+use App\Entity\Stock;
 use App\Form\CommandeType;
 use App\Repository\CommandeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,12 +15,51 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/commande')]
 class CommandeController extends AbstractController
 {
+    #[Route('/2', name: 'app_commande_index2', methods: ['GET'])]
+    public function index2(CommandeRepository $commandeRepository): Response
+    {$entityManager = $this->getDoctrine()->getManager();
+        $id=16;
+        $row1 = $entityManager->getRepository(Commande::class)->findAll($id);
+
+
+        return $this->render('commande/index2.html.twig', [
+            'commandes1' => $row1,
+        ]);
+    }
     #[Route('/', name: 'app_commande_index', methods: ['GET'])]
     public function index(CommandeRepository $commandeRepository): Response
     {
         return $this->render('commande/index.html.twig', [
             'commandes' => $commandeRepository->findAll(),
         ]);
+    }
+    #[Route('/shift-row/{id}', name: 'shift_row4')]
+
+    public function shiftRowAction($id)
+    {
+        // Retrieve the row to be shifted from the source table
+        $row = $this->getDoctrine()->getRepository(Commande::class)->find($id);
+
+        // Remove the row from the source table
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+        // Add the row to the destination table
+        $destinationRow = new Stock();
+        $destinationRow->setNameProduit("test");
+        $destinationRow->setArtiste("also_TEST");
+        $destinationRow->setAddres($row->getAdresse());//****
+        $destinationRow->setDateEntr($row->getCreatedAt());//****
+        $destinationRow->setUserName($row->getNom());//***
+        $destinationRow->setIdCommende($row);//***
+
+        $row->setStatuLiv("ON STOCK");
+        $entityManager->persist($destinationRow);
+        $entityManager->flush();
+
+
+        // Redirect the user to the original page
+        return $this->redirectToRoute('app_stock_index');
     }
 
     #[Route('/new', name: 'app_commande_new', methods: ['GET', 'POST'])]
