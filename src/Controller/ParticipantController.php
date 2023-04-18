@@ -3,16 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Entity\Enchere;
+use App\Form\EnchereType;
+use App\Repository\EnchereRepository;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 #[Route('/participant')]
 class ParticipantController extends AbstractController
 {
+
     #[Route('/', name: 'app_participant_index', methods: ['GET'])]
     public function index(ParticipantRepository $participantRepository): Response
     {
@@ -20,6 +27,9 @@ class ParticipantController extends AbstractController
             'participants' => $participantRepository->findAll(),
         ]);
     }
+
+
+
 
     #[Route('/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ParticipantRepository $participantRepository): Response
@@ -29,9 +39,23 @@ class ParticipantController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $participantRepository->save($participant, true);
+            $encheresParticipants = $participantRepository->findBy(['ide' => $participant->getIde()]);
+            $maxMontant = 0;
 
-            return $this->redirectToRoute('app_welcomepage', [], Response::HTTP_SEE_OTHER);
+            foreach ($encheresParticipants as $encheresParticipant) {
+                $montant = $encheresParticipant->getMontant();
+                if ($montant > $maxMontant) {
+                    $maxMontant = $montant;
+                }
+            }
+
+            if ($participant->getMontant() < $maxMontant) {
+                $this->addFlash('error',sprintf('The bid must be superior to (%s DT).', $maxMontant));
+            } else {
+                $participantRepository->save($participant, true);
+
+                return $this->redirectToRoute('app_welcomepage', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->renderForm('participant/new.html.twig', [
@@ -39,6 +63,17 @@ class ParticipantController extends AbstractController
             'form' => $form,
         ]);
     }
+
+
+
+
+
+
+
+
+
+
+
 
     #[Route('/{idp}', name: 'app_participant_show', methods: ['GET'])]
     public function show(Participant $participant): Response

@@ -113,8 +113,11 @@
 
     {{ include('participant/_form.html.twig') }}
 
-
 {% endblock %}
+{% for message in app.flashes('error') %}
+    <div class="alert alert-danger"> <strong><i class="fas fa-times"></i> Erreur!</strong> {{ message }} </div>
+{% endfor %}
+
 <footer class="footer">
     <div class="container">
         <div class="row">

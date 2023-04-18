@@ -7,6 +7,7 @@ use App\Entity\Participant;
 use App\Entity\Enchere;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraint;
@@ -21,29 +22,8 @@ class ParticipantType extends AbstractType
     {
         $builder
 
-               ->add('montant', null, [
-                   'constraints' => [
-                       new Callback([
-                           'callback' => function ($value, ExecutionContextInterface $context) {
-                               $encheres = $context->getRoot()->getData();
-                               $lastMontant = 0;
+             ->add('montant', TextType::class)
 
-                               foreach ($encheres as $enchere) {
-                                   if ($enchere->getIde() == $encheres[count($encheres)-1]->getIde()) {
-                                       $lastMontant = $enchere->getMontant();
-                                       break;
-                                   }
-                               }
-
-                               if ($value <= $lastMontant) {
-                                   $context->buildViolation('Le montant doit être supérieur à {{ lastMontant }}.')
-                                       ->setParameter('{{ lastMontant }}', $lastMontant)
-                                       ->addViolation();
-                               }
-                           },
-                       ]),
-                   ],
-               ])
             ->add('id', EntityType::class, [
                 'label'=> 'Clients',
                 'class' => Client::class,
