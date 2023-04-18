@@ -29,7 +29,7 @@ class PaymentController extends AbstractController
      * @throws ApiErrorException
      */
     #[Route('/checkout', name: 'app_checkout')]
-    public function checkout(SessionInterface $session1): Response
+    public function checkout(SessionInterface $session1): Response //we go to stripe checkout url
     {
         Stripe::setApiKey('sk_test_51MgCPXKJx2ljBQl3EIxLiyZEKush4tOgcLj9PzUtbqP5vLDDOgyfRQVXxYJOJwF4w36CZpLLFBB8t71hZrTRZUCr00Q6asBogP');
 

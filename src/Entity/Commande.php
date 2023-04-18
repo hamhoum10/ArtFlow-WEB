@@ -47,14 +47,7 @@ class Commande
     #[ORM\Column(length: 150)]
     private ?string $adresse=null;
 
-//    /**
-//     * @var \Panier
-//     *
-//     * @ORM\ManyToOne(targetEntity="Panier")
-//     * @ORM\JoinColumns({
-//     *   @ORM\JoinColumn(name="id_panier", referencedColumnName="id_panier")
-//     * })
-//     */
+
     #[ORM\ManyToOne(targetEntity: Panier::class)]
     #[ORM\JoinColumn(name: 'id_panier', referencedColumnName: 'id_panier')]
     private ?Panier $idPanier =null;
