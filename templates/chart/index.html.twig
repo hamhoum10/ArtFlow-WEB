@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    <canvas id="myChart"></canvas>
+{% endblock %}
+
+{% block body %}
+
+    <script src="{{ asset('js/chart.js') }}"></script>
+
+    <script>
+
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {{ data|json_encode|raw }},
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+
+{% endblock %}

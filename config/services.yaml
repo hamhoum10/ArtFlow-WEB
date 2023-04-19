@@ -7,6 +7,16 @@ parameters:
 
 services:
     # default configuration for services in *this* file
+#
+#    twilio:
+#        class: Twilio\Rest\Client
+#        arguments:
+#            $sid: 'TWILIO_ACCOUNT_SID'
+#            $token: 'TWILIO_AUTH_TOKEN'
+
+
+
+
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
