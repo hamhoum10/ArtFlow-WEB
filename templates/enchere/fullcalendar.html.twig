@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <title>auction calendar</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ asset('assets/css/main.min.css')}}" type="text/css">
+
+</head>
+<body>
+
+<div id="calendar"></div>
+<script src="{{ asset('assets/js/main.min.js') }}"></script>
+<script>
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+        },
+        initialDate: '2020-09-12',
+        navLinks: true, // can click day/week names to navigate views
+        businessHours: true, // display business hours
+        editable: true,
+        selectable: true,
+        events: [
+            // Add the enchere events here
+            {% for event in events %}
+            {
+                title: '{{ event.title }}',
+                description: '{{ event.description }}',
+                start: '{{ event.start|date('Y-m-d H:i:s') }}',
+
+                price: '{{ event.price }}'
+            },
+        {% endfor %}
+]
+
+    });
+
+    calendar.render();
+
+</script>
+</body>
+</html> 

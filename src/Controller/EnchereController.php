@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Enchere;
 use App\Entity\Participant;
 use App\Form\EnchereType;
+use App\Controller\ParticipantController;
 use App\Form\ParticipantType;
 use App\Repository\EnchereRepository;
 use App\Repository\ParticipantRepository;
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 #[Route('/enchere')]
@@ -53,6 +55,55 @@ class EnchereController extends AbstractController
         ]);
     }
 
+    #[Route('/calendar', name: 'app_enchere_cal')]
+    public function calendar(EnchereRepository $enchereRepository): Response
+    {
+        $encheres = $enchereRepository->findAll();
+
+        // Create an array of events for the FullCalendar
+
+        foreach ($encheres as $enchere) {
+            $events[] = [
+                'title' => $enchere->getTitre(),
+                'description' => $enchere->getDescription(),
+                'start' => $enchere->getDateLimite(),
+                'color' => '#257e4a',
+                'price' => $enchere->getPrixdepart(),
+
+            ];
+        }
+
+
+        return $this->render('enchere/fullcalendar.html.twig', [
+            'events' => $events
+        ]);
+    }
+
+
+
+
+/*
+    #[Route('/calendar-events', name: 'calendar_events')]
+    public function calendarEvents(EnchereRepository $enchereRepository)
+    {
+        $encheres = $enchereRepository->findAll();
+
+        $events = [];
+
+        foreach ($encheres as $enchere) {
+            $event = [
+                'title' => $enchere->getTitre(),
+                'start' => $enchere->getDateLimite()->format('Y-m-d'),
+
+            ];
+
+            $events[] = $event;
+        }
+
+        return $this->json($events);
+    }
+
+*/
 
 
 
@@ -97,6 +148,13 @@ class EnchereController extends AbstractController
         ]);
 
     }
+    #[Route('/{ide}/test', name: 'test')]
+    public  function test ($id,){
+        $test = new Participant();
+
+
+    }
+
 
     #[Route('/{ide}/delete', name: 'app_enchere_delete')]
     public function delete(Request $request, EnchereRepository $enchereRepository,$ide,ManagerRegistry $doctrine): Response
