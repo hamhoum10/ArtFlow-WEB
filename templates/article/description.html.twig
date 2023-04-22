@@ -111,6 +111,8 @@
     </div>
 </header>
 <!-- Header Section End -->
+{# NOTIFICATION IS FILLED IN THE SCRIPT---------------------------#}
+<div  id="flash-message" ></div>
 
 <!-- Breadcrumb Begin -->
 <div class="breadcrumb-option">
@@ -227,14 +229,15 @@
                                         success: function (response) {
                                             // Handle the response from the controller
                                             if (response.success) {
-
-                                                alert(" Product Added To Cart ! ");
-                                                // window.location.href = '/payment';
+                                                $('#flash-message').addClass('alert alert-success').html("Product Added Successfully to Your Cart").show();
+                                                setTimeout(function () {
+                                                    $('#flash-message').fadeOut("slow");
+                                                }, 2000);
                                             } else {
-                                                alert(" An Error Has accured ");
+                                                alert("An Error Has Occurred");
                                             }
                                         }
-                                    });
+                                        });
                                 }
                             });
                         </script>
@@ -272,31 +275,31 @@
                                     </label>
                                 </div>
                             </li>
-                            <li>
-                                <span>Available size:</span>
-                                <div class="size__btn">
-                                    <label for="xs-btn" class="active">
-                                        <input type="radio" id="xs-btn">
-                                        xs
-                                    </label>
-                                    <label for="s-btn">
-                                        <input type="radio" id="s-btn">
-                                        s
-                                    </label>
-                                    <label for="m-btn">
-                                        <input type="radio" id="m-btn">
-                                        m
-                                    </label>
-                                    <label for="l-btn">
-                                        <input type="radio" id="l-btn">
-                                        l
-                                    </label>
-                                </div>
-                            </li>
-                            <li>
-                                <span>Promotions:</span>
-                                <p>Free shipping</p>
-                            </li>
+{#                            <li>#}
+{#                                <span>Available size:</span>#}
+{#                                <div class="size__btn">#}
+{#                                    <label for="xs-btn" class="active">#}
+{#                                        <input type="radio" id="xs-btn">#}
+{#                                        xs#}
+{#                                    </label>#}
+{#                                    <label for="s-btn">#}
+{#                                        <input type="radio" id="s-btn">#}
+{#                                        s#}
+{#                                    </label>#}
+{#                                    <label for="m-btn">#}
+{#                                        <input type="radio" id="m-btn">#}
+{#                                        m#}
+{#                                    </label>#}
+{#                                    <label for="l-btn">#}
+{#                                        <input type="radio" id="l-btn">#}
+{#                                        l#}
+{#                                    </label>#}
+{#                                </div>#}
+{#                            </li>#}
+{#                            <li>#}
+{#                                <span>Promotions:</span>#}
+{#                                <p>Free shipping</p>#}
+{#                            </li>#}
                         </ul>
                     </div>
                 </div>

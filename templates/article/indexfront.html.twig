@@ -113,6 +113,10 @@
 </header>
 <!-- Header Section End -->
 
+{# NOTIFICATION IS FILLED IN THE SCRIPT---------------------------#}
+<div  id="flash-message" ></div>
+
+
 <!-- Breadcrumb Begin -->
 <div class="breadcrumb-option">
     <div class="container">
@@ -311,7 +315,13 @@
                                     contentType: 'application/json',
                                     success: function (response) {
                                         if (response.success) {
-                                            alert(" Product Added To Cart ! ");
+                                            // alert(" Product Added To Cart ! ");
+                                            $('#flash-message').addClass('alert alert-success').html("Product Added Successfully to Your Cart").show();
+                                            setTimeout(function() {
+                                                $('#flash-message').fadeOut("slow", function() {
+                                                });
+                                            }, 2000);
+
                                         } else {
                                             alert(" An Error Has accured ");
                                         }

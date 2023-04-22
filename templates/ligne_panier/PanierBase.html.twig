@@ -116,6 +116,10 @@
 </header>
 <!-- Header Section End -->
 
+{# NOTIFICATION IS FILLED IN THE SCRIPT---------------------------#}
+<div  id="flash-message-succes" ></div>
+<div  id="flash-message-error" ></div>
+
 <!-- Breadcrumb Begin -->
 <div class="breadcrumb-option">
     <div class="container">
@@ -151,7 +155,11 @@
                         {% for ligne_panier in ligne_paniers %}
                            <tr data-id={{ ligne_panier.id }}>
                             <td class="cart__product__item">
-                                <img src="{{ asset('front/img/logo.png') }}" alt="">
+{#                                <div class="product__item__pic set-bg" data-setbg="{{ asset('/uploads/'~ligne_panier.idArticle.Image)}}">#}
+
+                                <img width="300
+
+                                px" height="250px" src="{{ asset('/uploads/'~ligne_panier.idArticle.Image) }}" alt="">
                                 <div class="cart__product__item__title">
                                     <h6>{{ ligne_panier.nomArticle }}</h6>
                                     <div class="rating">
@@ -206,9 +214,16 @@
                                                 totalAmount += parseFloat($(this).text()); {# calcule mta total 7asb rows eli mezlou after el delete  #}
                                             });
                                             $('#total-amount').text(totalAmount.toFixed(2) + ' Tnd'); {# we update total  #}
+
+                                            //flash
+                                            $('#flash-message-succes').addClass('alert alert-success').html("Product Deleted Successfully From You're Cart !").show();
+                                            setTimeout(function() {
+                                                $('#flash-message-succes').fadeOut("slow", function() {
+                                                });
+                                            }, 1000);
                                         } else {
                                             alert('An error occurred while deleting the record.');
-                                        }console.log(response.state)
+                                        }
                                         if (response.state){
                                             $('#percentage').text('20%');
                                             $('#Discount-total-amount').text((totalAmount * 0.8).toFixed(2) + ' Tnd' ); {# we update total  #}
@@ -246,6 +261,14 @@
                                                 totalAmount += parseFloat($(this).text()); {# calcule mta total 7asb rows eli mezlou after el delete  #}
                                             });
                                             $('#total-amount').text(totalAmount.toFixed(2) + ' Tnd'); {# we update total  #}
+
+                                            //flash
+                                            $('#flash-message-succes').addClass('alert alert-success').html("Quantity Added Successfully !").show();
+                                            setTimeout(function() {
+                                                $('#flash-message-succes').fadeOut("slow", function() {
+                                                });
+                                            }, 1000);
+
                                         } else {
                                             alert('An error occurred while updating1 the record.');
                                         }console.log(response.state)
@@ -288,9 +311,23 @@
                                             });
                                             $('#total-amount').text(totalAmount.toFixed(2) + ' Tnd'); {# we update total  #}
 
+                                            //flash
+                                            $('#flash-message-succes').addClass('alert alert-success').html("Quantity Decreased Successfully !").show();
+                                            setTimeout(function() {
+                                                $('#flash-message-succes').fadeOut("slow", function() {
+                                                });
+                                            }, 1000);
+
+
                                         } else {
-                                            alert('You Cant`t decrease Further ! ' );
-                                        }console.log(response.state)
+
+                                            $('#flash-message-error').addClass('alert alert-danger').html("You Cant`t decrease Further !").show();
+                                            setTimeout(function() {
+                                                $('#flash-message-error').fadeOut("slow", function() {
+                                                });
+                                            }, 1000);
+
+                                        }
                                         if (response.state){
                                             $('#percentage').text('20%');
                                             $('#Discount-total-amount').text((totalAmount * 0.8).toFixed(2) + ' Tnd' ); {# we update total  #}
@@ -359,7 +396,12 @@
                                 });
                                 $('#percentage').text('20%');
                                 $('#Discount-total-amount').text(totalAmount.toFixed(2) * 0.8 + ' Tnd'); {# we update total b discount  #}
-                                alert('Promocode verified! Congratzulation you got 20%  discount !');
+
+                                $('#flash-message-succes').addClass('alert alert-success').html("Promocode verified! Congratzulation you got 20%  discount !").show();
+                                setTimeout(function() {
+                                    $('#flash-message-succes').fadeOut("slow", function() {
+                                    });
+                                }, 4000);
                             } else {
                                 alert('Wrong promocode , try Again ! ');
                             }

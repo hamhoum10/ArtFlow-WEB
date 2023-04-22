@@ -109,6 +109,10 @@
 </header>
 <!-- Header Section End -->
 
+{# NOTIFICATION IS FILLED IN THE SCRIPT---------------------------#}
+<div  id="flash-message-succes" ></div>
+<div  id="flash-message-error" ></div>
+
 <!-- Breadcrumb Begin -->
 <div class="breadcrumb-option">
     <div class="container">
@@ -331,14 +335,25 @@
 
                             // Handle the response from the controller
                             if (response.success) {
-
-                                alert(" you're order Has been Established successfully ! You're Order has been send to the Email Adresse you provided ! ");
-                                window.location.href = '/payment';
+                                // alert(" you're order Has been Established successfully ! You're Order has been send to the Email Adresse you provided ! ");
+                                $('#flash-message-succes').addClass('alert alert-success').html("you're order Has been Established successfully ! You're Order has been send to the Email Adresse you provided !").show();
+                                setTimeout(function() {
+                                    $('#flash-message-succes').fadeOut("slow", function() {
+                                    });
+                                    window.location.href = '/payment';
+                                }, 2000);
                             } else {
                                 alert(" Don't Leave Empty Fields ");
                             }
                         }
                     });
+                }else{
+                    //if the fields are left empty or some of them
+                    $('#flash-message-error').addClass('alert alert-danger').html("Don't Leave Empty Fields").show();
+                    setTimeout(function() {
+                        $('#flash-message-error').fadeOut("slow", function() {
+                        });
+                    }, 2000);
                 }
             });
         </script>

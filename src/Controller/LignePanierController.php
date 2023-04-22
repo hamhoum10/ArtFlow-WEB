@@ -67,6 +67,7 @@ class LignePanierController extends AbstractController
         $lignePanier->setPrixUnitaire($article->getPrice());
         $lignePanier->setPrenomArtiste($article->getIdArtiste()->getLastname());
         $lignePanier->setNomArtiste($article->getIdArtiste()->getFirstname());
+//        $lignePanier->getIdArticle()->getImage()
 
         if ($panierparclient != null && $article->getIdArtiste() != null ) {
 
@@ -180,7 +181,6 @@ class LignePanierController extends AbstractController
     }
         return new JsonResponse(['success' => false]);
     }
-
 
 
 
