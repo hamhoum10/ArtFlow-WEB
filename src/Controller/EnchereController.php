@@ -5,17 +5,30 @@ namespace App\Controller;
 use App\Entity\Enchere;
 use App\Entity\Participant;
 use App\Form\EnchereType;
-use App\Controller\ParticipantController;
+use App\Controller\QrCodeGeneratorController;
 use App\Form\ParticipantType;
 use App\Repository\EnchereRepository;
 use App\Repository\ParticipantRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use ContainerJsZKEGQ\getManagerRegistryAwareConnectionProviderService;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Component\Routing\Generator;
+
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 
 #[Route('/enchere')]
@@ -55,6 +68,8 @@ class EnchereController extends AbstractController
         ]);
     }
 
+
+
     #[Route('/calendar', name: 'app_enchere_cal')]
     public function calendar(EnchereRepository $enchereRepository): Response
     {
@@ -82,28 +97,6 @@ class EnchereController extends AbstractController
 
 
 
-/*
-    #[Route('/calendar-events', name: 'calendar_events')]
-    public function calendarEvents(EnchereRepository $enchereRepository)
-    {
-        $encheres = $enchereRepository->findAll();
-
-        $events = [];
-
-        foreach ($encheres as $enchere) {
-            $event = [
-                'title' => $enchere->getTitre(),
-                'start' => $enchere->getDateLimite()->format('Y-m-d'),
-
-            ];
-
-            $events[] = $event;
-        }
-
-        return $this->json($events);
-    }
-
-*/
 
 
 
@@ -119,6 +112,9 @@ class EnchereController extends AbstractController
         ]);
     }
 
+
+
+
     #[Route('/welcomepage', name: 'app_welcomepage')]
     public function welcomepage(EnchereRepository $enchereRepository): Response
     {  $encheres = $enchereRepository->findAll();
@@ -133,10 +129,91 @@ class EnchereController extends AbstractController
             'encheres' => $encheres,
             'images' => $images,
 
-
-
         ]);
     }
+
+
+
+
+
+
+
+
+        #[Route('/{ide}', name: 'app_enchere_showfront', methods: ['GET', 'POST'])]
+        public function frontshow(Enchere $enchere, ParticipantRepository $participantRepository, Participant $participant, Request $request): Response
+        {
+            $writer = new PngWriter();
+            $qrCode = QrCode::create('https://www.binaryboxtuts.com/')
+                ->setEncoding(new Encoding('UTF-8'))
+                ->setErrorCorrectionLevel(new ErrorCorrectionLevelLow())
+                ->setSize(120)
+                ->setMargin(0)
+                ->setForegroundColor(new Color(0, 0, 0))
+                ->setBackgroundColor(new Color(255, 255, 255));
+            $logo = Logo::create('img/logo.png')
+                ->setResizeToWidth(60);
+            $label = Label::create('')->setFont(new NotoSans(8));
+
+            // Add Enchere information to the QR code
+            $qrCodeText = "Enchere: " . $enchere->getIde() . "\n";
+            $qrCodeText .= "Titre: " . $enchere->getTitre() . "\n";
+            $qrCodeText .= "Description: " . $enchere->getDescription() . "\n";
+            $qrCodeText .= "Prix départ: " . $enchere->getPrixdepart() . "\n";
+            $qrCodeText .= "Date limite: " . $enchere->getDateLimite()->format('Y-m-d') . "\n";
+            $qrCode = $qrCode->setData($qrCodeText);
+
+            $qrCodes = [];
+            $qrCodes['img'] = $writer->write($qrCode, $logo)->getDataUri();
+            $qrCodes['simple'] = $writer->write(
+                $qrCode,
+                null,
+                $label->setText('Simple')
+            )->getDataUri();
+
+// Generate the QR code and pass it to the view
+            //$qrCodeUri = $this->generateUrl('app_qr_codes', ['ide' => $enchere->getIde()], UrlGeneratorInterface::ABSOLUTE_URL);
+            //  $qrCode = file_get_contents($qrCodeUri);
+            //  $qrCodeDataUri = 'data:image/png;base64,' . base64_encode($qrCode);
+            $newParticipant = new Participant();
+            $newParticipantForm = $this->createForm(ParticipantType::class, $newParticipant);
+            $newParticipantForm->handleRequest($request);
+
+            if ($newParticipantForm->isSubmitted() && $newParticipantForm->isValid()) {
+                $encheresParticipants = $participantRepository->findBy(['ide' => $newParticipant->getIde()]);
+                $maxMontant = 0;
+
+                foreach ($encheresParticipants as $encheresParticipant) {
+                    $montant = $encheresParticipant->getMontant();
+                    if ($montant > $maxMontant) {
+                        $maxMontant = $montant;
+                    }
+                }
+
+                if ($newParticipant->getMontant() < $maxMontant) {
+                    $this->addFlash('error', sprintf('The bid must be superior to (%s DT).', $maxMontant));
+                } else {
+                    $participantRepository->save($newParticipant, true);
+
+                    return $this->redirectToRoute('app_welcomepage', [], Response::HTTP_SEE_OTHER);
+                }
+            }
+
+            return $this->render('enchere/frontshow.html.twig', [
+                'participants' => $participantRepository->findAll(),
+                'enchere' => $enchere,
+                'participant' => $participant,
+                'newParticipantForm' => $newParticipantForm->createView(),
+                //  'qrCodeDataUri' => $qrCodeDataUri, // pass the QR code data URI to the view
+                'qrCodes' => $qrCodes,
+            ]);
+        }
+
+
+
+
+
+    /*
+       ---------------- THIS IS OLD FRONTSHOW
     #[Route('/{ide}', name: 'app_enchere_showfront', methods: ['GET'])]
     public function frontshow( Enchere $enchere,ParticipantRepository $participantRepository, Participant $participant): Response
     {
@@ -148,13 +225,8 @@ class EnchereController extends AbstractController
         ]);
 
     }
-    #[Route('/{ide}/test', name: 'test')]
-    public  function test ($id,){
-        $test = new Participant();
 
-
-    }
-
+*/
 
     #[Route('/{ide}/delete', name: 'app_enchere_delete')]
     public function delete(Request $request, EnchereRepository $enchereRepository,$ide,ManagerRegistry $doctrine): Response
