@@ -13,40 +13,40 @@ class Favori
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(targetEntity: Artiste::class )]
+    #[ORM\JoinColumn(name: 'id_user', referencedColumnName: 'id_artiste')]
+    private ?Artiste $id_user=Null;
 
-    #[ORM\ManyToOne(targetEntity: Artiste::class)]
-    #[ORM\JoinColumn(name: 'Artiste', referencedColumnName: 'idArtiste')]
-    private ?Artiste $Artiste = null;
 
-    #[ORM\ManyToOne(targetEntity: Article::class)]
-    #[ORM\JoinColumn(name: 'article', referencedColumnName: 'idArticle')]
-    private ?Article $article = null;
+    #[ORM\ManyToOne(targetEntity: Article::class )]
+    #[ORM\JoinColumn(name: 'id_article', referencedColumnName: 'id_article')]
+    private ?Article $id_article=Null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getArtiste(): ?Artiste
+    public function getIdUser(): ?Artiste
     {
-        return $this->Artiste;
+        return $this->id_user;
     }
 
-    public function setArtiste(?Artiste $Artiste): self
+    public function setIdUser(?Artiste $id_user): self
     {
-        $this->Artiste = $Artiste;
+        $this->id_user = $id_user;
 
         return $this;
     }
 
-    public function getArticle(): ?Article
+    public function getIdArticle(): ?Article
     {
-        return $this->article;
+        return $this->id_article;
     }
 
-    public function setArticle(?Article $article): self
+    public function setIdArticle(?Article $id_article): self
     {
-        $this->article = $article;
+        $this->id_article = $id_article;
 
         return $this;
     }

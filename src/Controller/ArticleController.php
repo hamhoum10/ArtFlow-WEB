@@ -7,11 +7,14 @@ use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\ArtisteRepository;
 use App\Repository\CategorieRepository;
+use App\Repository\FavoriRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 #[Route('/article')]
 class ArticleController extends AbstractController
@@ -44,6 +47,80 @@ class ArticleController extends AbstractController
 
         ]);
     }
+    #[Route('/articlefront', name: 'app_article_articlefront', methods: ['GET', 'POST'])]
+    public function articlefront(
+        ArticleRepository $articleRepository,
+        ArtisteRepository $artisteRepository,
+        CategorieRepository $categorieRepository,
+        Request $request,
+        FavoriRepository $favoriRepository,
+        PaginatorInterface $paginator
+    ): Response {
+        $articles = $articleRepository->createQueryBuilder('a');
+
+        $categories = $categorieRepository->findAll();
+        $artiste = $artisteRepository->findOneBy(['username' => 'mou']);
+
+        if ($request->isMethod("POST")) {
+            $minamount = $request->get('minamount');
+            $maxamount = $request->get('maxamount');
+
+            $articles = $articleRepository->findByPriceRange(
+                (float) substr($minamount, 1),
+                (float) substr($maxamount, 1)
+            );
+        }
+
+            $article = $paginator->paginate(
+            $articles,
+            $request->query->getInt('page', 1),
+            2
+        );
+
+        return $this->render('article/indexfront.html.twig', [
+            'articles' => $article,
+            'Artiste' => $artiste,
+            'categories' => $categories,
+            'nbr' => $favoriRepository->findBy(['id_user' => $artiste])
+        ]);
+    }
+
+
+
+
+    #[Route('/articlefavori', name: 'app_article_articlefavori', methods: ['GET', 'POST'])]
+    public function articlefavori(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,Request $request, FavoriRepository  $favoriRepository ): Response
+    {
+        # dd($articleRepository->findAll());
+        $categories = $categorieRepository->findAll();
+        $artiste=$artisteRepository->findBy(array('username'=>'mou'))[0];
+
+        #dd($artiste);
+        $article=new Article();
+        $article=$favoriRepository->findBy(array('id_user'=>$artisteRepository->find(1)));
+        if($request->isMethod("POST"))
+        {
+            $minamount = $request->get('minamount');
+            $maxamount = $request->get('maxamount');
+            #dd((float)substr($minamount, 1));
+
+            $article=$articleRepository->findByPriceRange((float)substr($minamount, 1),(float)substr($maxamount, 1));
+
+
+        }
+
+        return $this->render('article/FavoriArticle.html.twig',[
+            'articles' => $article,
+            'Artiste' => $artiste,
+            'categories' => $categories,
+
+        ]);
+    }
+
+
+
+
+
 
 
 
@@ -96,16 +173,28 @@ class ArticleController extends AbstractController
 
 
     #[Route('/recherche/{categorie}', name: 'recherchearticle', methods: ['GET', 'POST'])]
-    public function recherchearticle(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,$categorie): Response
+    public function recherchearticle(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,$categorie,Request $request,
+                                     FavoriRepository $favoriRepository,
+                                     PaginatorInterface $paginator): Response
     {
         # dd($articleRepository->findAll());
         $categories = $categorieRepository->findAll();
+
+        $articles = $articleRepository->createQueryBuilder('b')->where('b.id_categorie =:categorie')->setParameter('categorie',$categorie);
+
         $artiste=$artisteRepository->findBy(array('username'=>'mou'))[0];
         #dd($artiste);
+        $article = $paginator->paginate(
+            $articles,
+            $request->query->getInt('page', 1),
+            2
+        );
         return $this->render('article/indexfront.html.twig',[
-            'articles' => $articleRepository->findBy(array('id_categorie' =>$categorie)),
+            'articles' => $article,
             'Artiste' => $artiste,
             'categories' => $categories,
+            'nbr' => $favoriRepository->findBy(['id_user' => $artiste])
+
         ]);
     }
 

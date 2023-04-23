@@ -41,7 +41,7 @@
     <div class="offcanvas__close">+</div>
     <ul class="offcanvas__widget">
         <li><span class="icon_search search-switch"></span></li>
-        <li><a href={{ path('app_article_articlefavori') }}><span class="icon_heart_alt"></span>
+        <li><a href="#"><span class="icon_heart_alt"></span>
                 <div class="tip">2</div>
             </a></li>
         <li><a href="#"><span class="icon_bag_alt"></span>
@@ -96,8 +96,8 @@
                     </div>
                     <ul class="header__right__widget">
                         <li><span class="icon_search search-switch"></span></li>
-                        <li><a href={{ path('app_article_articlefavori') }}><span class="icon_heart_alt"></span>
-                                <div class="tip">{{ nbr|length }}</div>
+                        <li><a href="#"><span class="icon_heart_alt"></span>
+                                <div class="tip">2</div>
                             </a></li>
                         <li><a href="#"><span class="icon_bag_alt"></span>
                                 <div class="tip">2</div>
@@ -145,24 +145,24 @@
                         {% endfor %}
                     </div>
                     <form id="search-form" name="gs" method="post" role="search" action="#">
-                    <div class="sidebar__filter">
-                        <div class="section-title">
+                        <div class="sidebar__filter">
+                            <div class="section-title">
 
-                            <h4>Shop by price</h4>
-                        </div>
-                        <div class="filter-range-wrap">
-                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                 data-min="10" data-max="99"></div>
-                            <div class="range-slider">
-                                <div class="price-input">
-                                    <p>Price:</p>
-                                    <input type="text" id="minamount" name="minamount">
-                                    <input type="text" id="maxamount" name="maxamount">
+                                <h4>Shop by price</h4>
+                            </div>
+                            <div class="filter-range-wrap">
+                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                     data-min="10" data-max="99"></div>
+                                <div class="range-slider">
+                                    <div class="price-input">
+                                        <p>Price:</p>
+                                        <input type="text" id="minamount" name="minamount">
+                                        <input type="text" id="maxamount" name="maxamount">
+                                    </div>
                                 </div>
                             </div>
+                            <button type="submit">Filter</button>
                         </div>
-                        <button type="submit">Filter</button>
-                    </div>
                     </form>
                     <div class="sidebar__sizes">
                         <div class="section-title">
@@ -266,17 +266,19 @@
                     {% for article in articles %}
                         <div class="col-lg-4 col-md-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="{{ asset('/uploads/'~article.image)}}">
+                                <div class="product__item__pic set-bg" data-setbg="{{ asset('/uploads/'~article.getIdArticle().image)}}">
                                     {# <img src="{{ asset('/uploads/'~article.image)}}" class="image-popup"> #}
                                     <div class="label new">New</div>
                                     <ul class="product__hover">
-                                        <li><a href="{{ path('app_article_indexdescription',{'id':article.getIdArticle()} )}}" ><span class="bi bi-arrows-angle-expand"></span></a></li>
-                                        <li><a href="{{ path('app_favori_article_new',{'idArticle':article.getIdArticle()}) }}"><span class="icon_heart_alt"></span></a></li>
+                                        <li><a href="{{ path('app_article_indexdescription',{'id':article.getIdArticle().getIdArticle()} )}}" ><span class="bi bi-arrows-angle-expand"></span></a></li>
+
+
+                                        <li><a href={{path('app_favori_article_delete',{'idArticle':article.getIdArticle().getIdArticle()})}}><span class="icon_heart_alt"></span></a></li>
                                         <li><a href="#"><span class="icon_bag_alt"></span></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">{{ article.nomArticle }}</a></h6>
+                                    <h6><a href="#">{{ article.getIdArticle().nomArticle }}</a></h6>
                                     <div class="rating">
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
@@ -284,22 +286,19 @@
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                     </div>
-                                    <div class="product__price">$ {{ article.price }}</div>
+                                    <div class="product__price">$ {{ article.getIdArticle().price }}</div>
                                 </div>
                             </div>
                         </div>
                     {% endfor %}
-                    {{ knp_pagination_render(
-                        articles,
-                        '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig',
-                        {
-                            'queryParam1': 'param1 value',
-                            'queryParam2': 'param2 value'
-                        },
-                        {
-                            'align': 'center'
-                        }
-                    ) }}
+                    <div class="col-lg-12 text-center">
+                        <div class="pagination__option">
+                            <a href="#">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#"><i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

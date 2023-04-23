@@ -69,8 +69,8 @@ class ArticleRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('a')
             ->where('a.price<:max and a.price>:min')
             ->setParameters(['min'=>$min,'max'=>$max])
-            ->getQuery()
-            ->getResult();}
+            ->getQuery();
+            }
 
 
 

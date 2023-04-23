@@ -32,7 +32,7 @@ class ArticleType extends AbstractType
                 'label'=> 'artistes',
                 'class' => Artiste::class,
                 'choice_label' =>  function (Artiste $Artiste) {
-                    return sprintf('%s', $Artiste->getUsername());
+                    return sprintf('%s', $Artiste->getIdArtiste());
                 },
                 'placeholder' => 'Choosiness Artiste',
                 'attr' => ['class' => 'form-select'],

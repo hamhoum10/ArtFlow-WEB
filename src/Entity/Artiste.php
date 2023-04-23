@@ -13,9 +13,10 @@ class Artiste
 {
 
 
-
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int  $idArtiste;
+    private ?int  $idArtiste=Null;
 
 
     #[ORM\Column(length:255)]
@@ -55,22 +56,15 @@ class Artiste
     private ?string $email = null;
 
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+
+    #[ORM\Column(length:255)]
     private ?string $username = null;
 
 
     #[ORM\Column(length:255)]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'Artiste', targetEntity: Favori::class)]
-    private Collection $favoris;
 
-    public function __construct()
-    {
-        $this->favoris = new ArrayCollection();
-    }
 
     public function getIdArtiste(): ?int
     {
@@ -209,35 +203,7 @@ class Artiste
         return $this;
     }
 
-    /**
-     * @return Collection<int, Favori>
-     */
-    public function getFavoris(): Collection
-    {
-        return $this->favoris;
-    }
 
-    public function addFavori(Favori $favori): self
-    {
-        if (!$this->favoris->contains($favori)) {
-            $this->favoris->add($favori);
-            $favori->setArtiste($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFavori(Favori $favori): self
-    {
-        if ($this->favoris->removeElement($favori)) {
-            // set the owning side to null (unless already changed)
-            if ($favori->getArtiste() === $this) {
-                $favori->setArtiste(null);
-            }
-        }
-
-        return $this;
-    }
 
 
 }
