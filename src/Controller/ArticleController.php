@@ -3,10 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Rating;
+use App\Form\ArticleRatingFormType;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\ArtisteRepository;
 use App\Repository\CategorieRepository;
+use App\Repository\RatingRepository;
 use App\Repository\FavoriRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+
 
 
 #[Route('/article')]
@@ -75,13 +79,15 @@ class ArticleController extends AbstractController
             $articles,
             $request->query->getInt('page', 1),
             2
+
         );
 
         return $this->render('article/indexfront.html.twig', [
             'articles' => $article,
             'Artiste' => $artiste,
             'categories' => $categories,
-            'nbr' => $favoriRepository->findBy(['id_user' => $artiste])
+            'nbr' => $favoriRepository->findBy(['id_user' => $artiste]),
+
         ]);
     }
 
@@ -127,8 +133,16 @@ class ArticleController extends AbstractController
 
 
     #[Route('/description/{id}', name: 'app_article_indexdescription', methods: ['GET', 'POST'])]
-    public function indexdescription(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,Request $request,$id): Response
+    public function indexdescription(ArticleRepository $articleRepository, ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository, ManagerRegistry $doctrine, Request $request, $id, RatingRepository $ratingRepository): Response
     {
+        $rating = new Rating();
+        $form = $this->createForm(ArticleRatingFormType::class, $rating);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd($form);
+        }
+
+
         # dd($articleRepository->findAll());
         $categories = $categorieRepository->findAll();
         $artiste=$artisteRepository->findBy(array('username'=>'mou'))[0];
@@ -148,15 +162,27 @@ class ArticleController extends AbstractController
 
             $article=$articleRepository->findByPriceRange((float)substr($minamount, 1),(float)substr($maxamount, 1));
 
-
         }
+
+        if($ratingRepository->findOneBy(array('id_article'=>$articleRepository->find($id),'id_user'=>$artisteRepository->find(1))))
+            $oldrating = $ratingRepository->findOneBy(array('id_article'=>$articleRepository->find($id),'id_user'=>$artisteRepository->find(1)));
+        else
+        {
+            $oldrating = new Rating();
+            $oldrating->setRating(0);
+        }
+        $em = $doctrine->getManager();
+        $avgrating = $em->createQuery("SELECT avg(r.rating) as avg,count(r.rating) as num FROM APP\Entity\Rating r WHERE r.id_article = :idArticle")
+            ->setParameter('idArticle', $id)->getResult();
 
         return $this->render('article/description.html.twig',[
             'article' => $article,
             'articles' => $articlee,
             'Artiste' => $artiste,
             'categories' => $categories,
-
+            'form' => $form->createView(),
+            'oldrating' => $oldrating,
+            'avgrating' => $avgrating[0]
         ]);
     }
 

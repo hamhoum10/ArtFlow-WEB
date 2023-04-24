@@ -276,14 +276,43 @@
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">{{ article.nomArticle }}</a></h6>
                                     <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                                    <h6><a href="#">{{ article.nomArticle }}</a></h6>
+                                    {% set avgsum = 0 %}
+                                    {% set num = 0 %}
+                                    {% for r in article.ratings %}
+                                        {% set num = num+1 %}
+                                        {% set avgsum = r.rating+avgsum %}
+                                    {% endfor %}
+
+                                    {% if num==0 %}
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    {% endif %}
+                                    {% if num!=0 %}
+                                        {% set avg = avgsum/num %}
+                                        {% if avg!=5 %}
+                                            {% for i in 1..avg|round  %}
+                                                <i class="fa fa-star"></i>
+                                            {% endfor %}
+                                            {% for i in avg|round+1..5  %}
+                                                <i class="fa fa-star-o"></i>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if avg==5 %}
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        {% endif %}
+                                    {% endif %}
                                     </div>
+
+
                                     <div class="product__price">$ {{ article.price }}</div>
                                 </div>
                             </div>
@@ -448,6 +477,8 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="{{ asset('bundles/starrating/js/rating.js') }}"></script>
 <script src="{{ asset('assets/js/jquery-3.3.1.min.js')}}"></script>
 <script src="{{ asset('assets/js/bootstrap.min.js')}}"></script>
 <script src="{{ asset('assets/js/jquery.magnific-popup.min.js')}}"></script>

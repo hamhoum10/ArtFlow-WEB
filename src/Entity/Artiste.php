@@ -64,6 +64,14 @@ class Artiste
     #[ORM\Column(length:255)]
     private ?string $password = null;
 
+    #[ORM\OneToMany(mappedBy: 'id_user', targetEntity: Rating::class)]
+    private Collection $ratings;
+
+    public function __construct()
+    {
+        $this->ratings = new ArrayCollection();
+    }
+
 
 
     public function getIdArtiste(): ?int
@@ -199,6 +207,36 @@ class Artiste
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setIdUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getIdUser() === $this) {
+                $rating->setIdUser(null);
+            }
+        }
 
         return $this;
     }

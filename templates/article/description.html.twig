@@ -23,9 +23,36 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/slicknav.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{ asset('css/style.css')}}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/starrating/css/rating.css') }}"/>
+
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link data-require="fontawesome@*" data-semver="4.5.0" rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.css"/>
+    <style>
+        .ratiing {
+            cursor: pointer;
+        }
+
+        .ratiing .rating-star {
+            display: inline-block;
+            position: relative;
+            padding-right: 5px;
+            margin-left: -5px;
+            color: #ffe11c;
+        }
+
+        .ratiing .selected:before {
+            content: '\f005';
+        }
+
+        .avg_flash {
+            visibility: hidden;
+        }
+    </style>
+
+
 
 
 </head>
@@ -160,14 +187,52 @@
             <div class="col-lg-6">
                 <div class="product__details__text">
                     <h3>{{ article.nomArticle }} <span>{{ article.type }}</span></h3>
+                    <input type="number" style="visibility: hidden;" value={{article.getIdArticle()}}>
                     <div class="rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <span>( 138 reviews )</span>
+                            <!-- in Rails just use 1.upto(5) -->
+                            <i class="fa fa-star-o fa-2x ratingg-star" id="rating-1" data-rating="1" tabindex="0"
+                               aria-label="Rate as one out of 5 stars" role="radio"></i>
+                            <i class="fa fa-star-o fa-2x ratingg-star" id="rating-2" data-rating="2" tabindex="0"
+                               aria-label="Rate as two out of 5 stars" role="radio"></i>
+                            <i class="fa fa-star-o fa-2x ratingg-star" id="rating-3" data-rating="3" tabindex="0"
+                               aria-label="Rate as three out of 5 stars" role="radio"></i>
+                            <i class="fa fa-star-o fa-2x ratingg-star" id="rating-4" data-rating="4" tabindex="0"
+                               aria-label="Rate as four out of 5 stars" role="radio"></i>
+                            <i class="fa fa-star-o fa-2x ratingg-star" id="rating-5" data-rating="5" tabindex="0"
+                               aria-label="Rate as five out of 5 stars" role="radio"></i>
+                        <span id="num_span">( {{ avgrating.num }} reviews )</span>
+                        </div>
+                    <span id="avg_span">( {{avgrating.avg|round}} Stars )</span>
+
+
+                </div>
+                    <div class="col-8">
+                <span class="bid">
+                  Rate us!
+                  <br>
+                    <div class="ratiing" role="optgroup">
+                        <!-- in Rails just use 1.upto(5) -->
+                        <i class="fa fa-star-o fa-2x rating-star" id="rating-1" data-rating="1" tabindex="0"
+                           aria-label="Rate as one out of 5 stars" role="radio"></i>
+                        <i class="fa fa-star-o fa-2x rating-star" id="rating-2" data-rating="2" tabindex="0"
+                           aria-label="Rate as two out of 5 stars" role="radio"></i>
+                        <i class="fa fa-star-o fa-2x rating-star" id="rating-3" data-rating="3" tabindex="0"
+                           aria-label="Rate as three out of 5 stars" role="radio"></i>
+                        <i class="fa fa-star-o fa-2x rating-star" id="rating-4" data-rating="4" tabindex="0"
+                           aria-label="Rate as four out of 5 stars" role="radio"></i>
+                        <i class="fa fa-star-o fa-2x rating-star" id="rating-5" data-rating="5" tabindex="0"
+                           aria-label="Rate as five out of 5 stars" role="radio"></i>
                     </div>
+
+
+                      <div id="avg_flash" class="avg_flash">
+                        Thanks for your rating <i class="bi bi-check" style="width: 0;height: 100;color: #7453FC;"></i>
+                      </div>
+
+                    <br>
+                </span>
+                    </div>
+
                     <div class="product__details__price">{{ article.price }} $</div>
                     <p>{{ article.description }}</p>
                     <div class="product__details__button">
@@ -488,6 +553,9 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="{{ asset('bundles/starrating/js/rating.js') }}"></script
 <script src="{{ asset('js/jquery-3.3.1.min.js')}}"></script>
 <script src="{{ asset('js/bootstrap.min.js')}}"></script>
 <script src="{{ asset('js/jquery.magnific-popup.min.js')}}"></script>
@@ -498,6 +566,75 @@
 <script src="{{ asset('js/owl.carousel.min.js')}}"></script>
 <script src="{{ asset('js/jquery.nicescroll.min.js')}}"></script>
 <script src="{{ asset('js/main.js')}}"></script>
+<script>
+    $(document).ready(function () {
+        if({{oldrating.getRating()}})
+        {
+            setRating({{oldrating.getRating()}});
+            setRatingg({{avgrating.avg}});
+        }
+
+        function setRating(rating) {
+
+            $('#form_rating').val(rating);
+            // fill all the stars assigning the '.selected' class
+            $('.rating-star').removeClass('fa-star-o').addClass('selected');
+            // empty all the stars to the right of the mouse
+            $('.rating-star#rating-' + rating + ' ~ .rating-star').removeClass('selected').addClass('fa-star-o');
+        }
+
+        function setRatingg(rating) {
+            console.log(rating)
+            // fill all the stars assigning the '.selected' class
+            $('.ratingg-star').removeClass('fa-star-o').addClass('fa-star');
+            // empty all the stars to the right of the mouse
+            $('.ratingg-star#rating-' + rating + ' ~ .ratingg-star').removeClass('fa-star').addClass('fa-star-o');
+        }
+
+        $('.rating-star')
+            .on('mouseover', function (e) {
+                var rating = $(e.target).data('rating');
+                // fill all the stars
+                $('.rating-star').removeClass('fa-star-o').addClass('fa-star');
+                // empty all the stars to the right of the mouse
+                $('.rating-star#rating-' + rating+ ' ~ .rating-star').removeClass('fa-star').addClass('fa-star-o');
+            })
+            .on('mouseleave', function (e) {
+                // empty all the stars except those with class .selected
+                $('.rating-star').removeClass('fa-star').addClass('fa-star-o');
+            })
+            .on('click', function (e) {
+                var rating = $(e.target).data('rating');
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://127.0.0.1:8000/rating/new/'+$(e.target).data('rating')+'/'+parseInt(document.querySelector('input').value),
+                    success: function (response) {
+                        // Handle the response from the controller num_span
+                        document.getElementById("num_span").innerHTML =  "( "+response.avg.num+" reviews )";
+                        document.getElementById("avg_span").innerHTML =  "( "+Math.round(response.avg.avg)+" Stars )";
+                        document.getElementById("avg_flash").style.visibility = 'visible';
+                        setTimeout(myGreeting, 3000);
+                        function myGreeting() {
+
+                            document.getElementById("avg_flash").style.visibility = 'hidden';
+                            setRatingg(Math.round(response.avg.avg));
+                        }
+                    }
+                });
+                setRating(rating);
+            })
+            .on('keyup', function (e) {
+                // if spacebar is pressed while selecting a star
+                if (e.keyCode === 32) {
+                    // set rating (same as clicking on the star)
+                    var rating = $(e.target).data('rating');
+                    setRating(rating);
+                }
+            });
+
+
+    });
+</script>
 </body>
 
 </html>

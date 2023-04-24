@@ -1,4 +1,6 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-
+app_rating_new:
+  path: rating/new/{rating}/{idArticle}
+  controller: App\Controller\RatingController::new

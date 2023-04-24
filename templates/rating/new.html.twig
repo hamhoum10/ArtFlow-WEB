@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Rating{% endblock %}
+
+{% block body %}
+    <h1>Create new Rating</h1>
+
+    {{ include('rating/_form.html.twig') }}
+
+    <a href="{{ path('app_rating_index') }}">back to list</a>
+{% endblock %}

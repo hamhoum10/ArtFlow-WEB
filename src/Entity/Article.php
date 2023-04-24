@@ -62,6 +62,14 @@ class Article
     #[ORM\JoinColumn(name: 'id_categorie', referencedColumnName: 'id_categorie')]
     private ?Categorie $id_categorie = null;
 
+    #[ORM\OneToMany(mappedBy: 'id_article', targetEntity: Rating::class)]
+    private Collection $ratings;
+
+    public function __construct()
+    {
+        $this->ratings = new ArrayCollection();
+    }
+
    
 
 
@@ -163,6 +171,36 @@ class Article
     public function setIdCategorie( Categorie $id_categorie): self
     {
         $this->id_categorie = $id_categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setIdArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getIdArticle() === $this) {
+                $rating->setIdArticle(null);
+            }
+        }
 
         return $this;
     }
