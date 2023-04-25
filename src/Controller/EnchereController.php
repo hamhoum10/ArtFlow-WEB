@@ -24,6 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Component\Routing\Generator;
+use DateTime;
+//use Symfony\Component\Validator\Constraints\DateTime;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -70,29 +72,6 @@ class EnchereController extends AbstractController
 
 
 
-    #[Route('/calendar', name: 'app_enchere_cal')]
-    public function calendar(EnchereRepository $enchereRepository): Response
-    {
-        $encheres = $enchereRepository->findAll();
-
-        // Create an array of events for the FullCalendar
-
-        foreach ($encheres as $enchere) {
-            $events[] = [
-                'title' => $enchere->getTitre(),
-                'description' => $enchere->getDescription(),
-                'start' => $enchere->getDateLimite(),
-                'color' => '#257e4a',
-                'price' => $enchere->getPrixdepart(),
-
-            ];
-        }
-
-
-        return $this->render('enchere/fullcalendar.html.twig', [
-            'events' => $events
-        ]);
-    }
 
 
 
@@ -114,7 +93,8 @@ class EnchereController extends AbstractController
 
 
 
-
+        //welcome page of the website
+    // + the FullCalendar
     #[Route('/welcomepage', name: 'app_welcomepage')]
     public function welcomepage(EnchereRepository $enchereRepository): Response
     {  $encheres = $enchereRepository->findAll();
@@ -132,16 +112,41 @@ class EnchereController extends AbstractController
         ]);
     }
 
+    #[Route('/calendar', name: 'app_enchere_cal')]
+    public function calendar(EnchereRepository $enchereRepository): Response
+    {
+        $encheres = $enchereRepository->findAll();
+
+        // array of events for the FullCalendar
+
+        foreach ($encheres as $enchere) {
+            $events[] = [
+                'title' => $enchere->getTitre(),
+                'description' => $enchere->getDescription(),
+                'start' => $enchere->getDateLimite(),
+                'color' => '#257e4a',
+                'price' => $enchere->getPrixdepart(),
+
+            ];
+        }
+        return $this->render('enchere/fullcalendar.html.twig', [
+            'events' => $events
+        ]);
+    }
 
 
 
 
 
 
-
+        //this is where there's all the details about an auction
+        //i have the qrcode and the form to add a participation in the database
         #[Route('/{ide}', name: 'app_enchere_showfront', methods: ['GET', 'POST'])]
         public function frontshow(Enchere $enchere, ParticipantRepository $participantRepository, Participant $participant, Request $request): Response
         {
+            //$now for the date pdf download condition
+            $now = new DateTime();
+
             $writer = new PngWriter();
             $qrCode = QrCode::create('https://www.binaryboxtuts.com/')
                 ->setEncoding(new Encoding('UTF-8'))
@@ -170,28 +175,28 @@ class EnchereController extends AbstractController
                 $label->setText('Simple')
             )->getDataUri();
 
-// Generate the QR code and pass it to the view
-            //$qrCodeUri = $this->generateUrl('app_qr_codes', ['ide' => $enchere->getIde()], UrlGeneratorInterface::ABSOLUTE_URL);
-            //  $qrCode = file_get_contents($qrCodeUri);
-            //  $qrCodeDataUri = 'data:image/png;base64,' . base64_encode($qrCode);
+            //add the form for participation
+
             $newParticipant = new Participant();
             $newParticipantForm = $this->createForm(ParticipantType::class, $newParticipant);
             $newParticipantForm->handleRequest($request);
 
             if ($newParticipantForm->isSubmitted() && $newParticipantForm->isValid()) {
                 $encheresParticipants = $participantRepository->findBy(['ide' => $newParticipant->getIde()]);
+                //check montant > to the previous max(montant)
                 $maxMontant = 0;
 
                 foreach ($encheresParticipants as $encheresParticipant) {
                     $montant = $encheresParticipant->getMontant();
                     if ($montant > $maxMontant) {
                         $maxMontant = $montant;
+
                     }
                 }
 
-                if ($newParticipant->getMontant() < $maxMontant) {
-                    $this->addFlash('error', sprintf('The bid must be superior to (%s DT).', $maxMontant));
-                } else {
+                if (($newParticipant->getMontant() - $maxMontant) < 100) {
+                    $this->addFlash('error', sprintf('The bid must be at least 100 DT higher than the current highest bid (%s DT).', $maxMontant));
+                }else {
                     $participantRepository->save($newParticipant, true);
 
                     return $this->redirectToRoute('app_welcomepage', [], Response::HTTP_SEE_OTHER);
@@ -205,6 +210,7 @@ class EnchereController extends AbstractController
                 'newParticipantForm' => $newParticipantForm->createView(),
                 //  'qrCodeDataUri' => $qrCodeDataUri, // pass the QR code data URI to the view
                 'qrCodes' => $qrCodes,
+                'now' => $now,
             ]);
         }
 

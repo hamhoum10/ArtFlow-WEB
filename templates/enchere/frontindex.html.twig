@@ -106,7 +106,7 @@
             <img class="d-block w-100" src="{{ asset('uploads/AA.PNG') }}" alt="Second slide" height="400px"  width="50%">
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="{{ asset('uploads/AAA.PNG') }}" alt="Third slide">
+            <img class="d-block w-100" src="{{ asset('uploads/AAA.PNG') }}" alt="Third slide" height="400px"   width="50%">
         </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -119,20 +119,60 @@
     </a>
 </div>
 
-
-
-
-
-
-<div>
-    <a href={{ path('app_enchere_cal') }} style="display: flex>
-        <img src="{{ asset('uploads/go.PNG') }}" alt="calendar" style="width: 50px; height: 50px;">
-    </a>
+<div class="calendar-row">
 </div>
 
+<script>
+    const calendarRow = document.querySelector('.calendar-row');
 
+    for (let i = 0; i < 8; i++) {
+        const link = document.createElement('a');
+        link.href = "{{ path('app_enchere_cal') }}";
 
+        const item = document.createElement('div');
+        item.className = "item";
 
+        const img = document.createElement('img');
+        img.src = "{{ asset('uploads/go.PNG') }}";
+        img.alt = "calendar";
+
+        const span = document.createElement('span');
+        span.textContent = "check the auction calendar";
+
+        item.appendChild(img);
+        item.appendChild(span);
+        link.appendChild(item);
+        calendarRow.appendChild(link);
+    }
+</script>
+<style>
+    .calendar-row {
+        display: flex;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .item {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+        animation: scroll 10s linear infinite;
+    }
+
+    .item img {
+        max-width: 30px;
+        height: auto;
+    }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-100%);
+        }
+    }
+</style>
 
 
 

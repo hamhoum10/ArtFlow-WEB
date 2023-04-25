@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.9",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
+        "dompdf/dompdf": "^2.0",
         "endroid/qr-code-bundle": "^4.3",
         "illuminate/support": "^10.8",
         "phpdocumentor/reflection-docblock": "^5.3",

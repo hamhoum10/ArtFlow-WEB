@@ -16,7 +16,7 @@ use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Label\Font\NotoSans;
 
-
+//i'm gonna delete this qrcode controller and the twig 5ater 7atit kolchay fi encherecontroller
 class QrCodeGeneratorController extends AbstractController
 {
     #[Route('/qr-codes/{ide}', name: 'app_qr_codes')]

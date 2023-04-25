@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Resume</title>
+</head>
+<body>
+<div style="margin: 0 auto;display: block;width: 500px;">
+    <style>
+        .logo {
+            max-width: 100px;
+        }
+    </style>
+    <img class="logo" src="data:image/png;base64,{{ logoSrc }}" alt="Logo">
+
+    <p>Enchere ID: {{ enchere.ide }}</p>
+    <p>Titre: {{ enchere.titre }}</p>
+    <p>Description: {{ enchere.description }}</p>
+    <p>Prix départ: {{ enchere.prixdepart }}</p>
+    <p>Date limite: {{ enchere.dateLimite|date('Y-m-d') }}</p>
+    {% set imageSrc = 'data:image/png;base64,' ~ imageSrc %} {# base64 encoded image data #}
+    <img src="{{ imageSrc }}" alt="Enchere Image">
+
+
+<div>{% if client %}
+        <p>Client with maximum bid:</p>
+        <p>Name: {{ client.getFirstname() }} {{ client.getLastname() }}</p>
+        <p>Email: {{ client.getEmail() }}</p>
+    {% endif %}</div>
+
+</div>
+
+<div>Conditions générales : Paiement à effectuer de préférence par virement bancaire.
+    La facture doit être payée dans un délai de 30 jours après sa date démission. En cas de retard de paiement, les pénalités de retard
+    sélèvent à 10% du montant total de la facture. Lindemnité forfaitaire pour frais de recouvrement est de 200 Dinars. Indemnisation
+    complémentaire sur justification. Escompte pour paiement anticipé :néant</div>
+</body>
+</html>
