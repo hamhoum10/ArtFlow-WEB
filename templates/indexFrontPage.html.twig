@@ -81,8 +81,18 @@
     <div id="mobile-menu-wrap"></div>
         <a href="{{ path('app_client_new') }}">Login</a>
         <a href="{{ path('app_client_new') }}">Register</a>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+</div><h1>{{ app.user.email }}</h1>
+</div><h1>{{ app.user.username }}</h1>
 
-</div><h1>{{ app.user.userIdentifier }}</h1>
+{% endif %}
+{% if client is not null %}
+    <h2>Welcome {{ client.firstname }}!</h2>
+    <h2>Welcome {{ client.email }}!</h2>
+    <h2>Welcome {{ client.phonenumber }}!</h2>
+
+
+{% endif %}
 <!-- Offcanvas Menu End -->
 
 <!-- Header Section Begin -->
@@ -158,7 +168,8 @@
                                                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                                         ></path>
                                     </svg></li><li>
-                                    <span>Profile</span></li>
+                                            <a href="{{ path('app_client_new') }}">
+                                                <span>Profile</span></a></li>
                     </ul>
                                 </a>
                                 <a class="dropdown-item inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">

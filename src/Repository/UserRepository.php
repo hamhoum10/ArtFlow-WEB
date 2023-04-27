@@ -56,6 +56,18 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->save($user, true);
     }
 
+
+//    public function showclientbyusername( User $user){
+//        $entityManager = $this->getDoctrine()->getManager();
+//        $queryBuilder = $entityManager->createQueryBuilder();
+//
+//        return $this->createQueryBuilder('a')
+//            ->from('AppBundle\Entity\Client', 'a')
+//            ->where('a.username like ?1')
+//            ->setParameter('1', $user->getUserIdentifier())
+//            ->getQuery()
+//            ->getResult();
+//    }
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

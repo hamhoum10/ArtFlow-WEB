@@ -39,6 +39,15 @@ class ArtisteRepository extends ServiceEntityRepository
         }
     }
 
+    public function countAllArtistes()
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        return $qb->select($qb->expr()->count('a'))
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Artiste[] Returns an array of Artiste objects
 //     */

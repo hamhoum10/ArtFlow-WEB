@@ -7,40 +7,87 @@ use App\Entity\User;
 use App\Form\ClientType;
 use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 
 
 #[Route('/client')]
 class ClientController extends AbstractController
 {
+
+    private $security;
+
     #[Route('/welcomepage', name: 'app_welcomepage')]
-    public function welcomepage(): Response
+    public function welcomepage(EntityManagerInterface $entityManager,Request $request, Security $security): Response
     {
-        //SessionInterface $session
+//$request=$this->getUser()->getUserIdentifier();
         //$id_user = $session->get('id_user');
+        //$user= new User();
+        //$user = $this->security->getUser();
+        //$client=$entityManager->getRepository(Client::class)->findOneBy(['username'=>$user1->getUserIdentifier()]);
+       // $user=$this->getUser();
+        //$entityManager = $this->getDoctrine()->getManager();
+        $user = $security->getUser();
+
+        $client=$entityManager->getRepository(Client::class)->findOneBy(['username'=>$user->getUserIdentifier()]);
+
         return $this->render('indexFrontPage.html.twig', [
-            'controller_name' => 'ClientController',
+            'controller_name' => 'ClientController', 'client'=>$client,
+            //'username'=>$session->get('user'),
         ]);
     }
 
-    #[Route('/', name: 'app_client_index', methods: ['GET'])]
-    public function index(ClientRepository $clientRepository): Response
+    #[Route('/search', name: 'searchclient', methods: ['GET'])]
+    public function search(ClientRepository $clientRepository, Request $request): Response
     {
+
+
+        $searchTerm = $request->query->get('q');
+        $clients = $clientRepository->createQueryBuilder('p')
+            ->where('p.username LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
+
+
+        return $this->render('client/index.html.twig', [
+            'clients' => $clients,
+            'searchTerm' => $searchTerm,
+        ]);
+    }
+
+
+
+
+    #[Route('/', name: 'app_client_index', methods: ['GET'])]
+    public function index(ClientRepository $clientRepository, Request $request): Response
+    {
+        $searchTerm = $request->query->get('q');
+        $client = $clientRepository->createQueryBuilder('p')
+            ->where('p.username LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
 
         return $this->render('client/index.html.twig', [
             'clients' => $clientRepository->findAll(),
+            'searchTerm' => $searchTerm,
+
         ]);
     }
 
     #[Route('/new', name: 'app_client_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ClientRepository $clientRepository, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher): Response
     {
-
         $client = new Client();
         $user =new User();
         $form = $this->createForm(ClientType::class, $client);
@@ -49,9 +96,11 @@ class ClientController extends AbstractController
             $clientRepository->save($client, true);
             $user->setUsername($client->getUsername());
             $user->setPassword($client->getPassword());
+            $user->setEmail($client->getEmail());
             $user->setRoles(['client']);
             $user->setPassword( $userPasswordHasher->hashPassword(
                 $user,
+               // PASSWORD_BCRYPT,
                 $form->get('password')->getData()
             ));
             $userRepository->save($user, true);
@@ -73,9 +122,9 @@ class ClientController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_client_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Client $client, ClientRepository $clientRepository, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function edit(Request $request, Client $client, ClientRepository $clientRepository,EntityManagerInterface $entityManager, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher): Response
     {
-        $user =new User();
+        $user=$entityManager->getRepository(User::class)->findOneBy(['username'=>$client->getUsername()]);
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -87,6 +136,7 @@ class ClientController extends AbstractController
                 $user,
                 $form->get('password')->getData()
             ));
+            $user->setEmail($client->getEmail());
             $userRepository->save($user, true);
             return $this->redirectToRoute('app_client_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -98,15 +148,16 @@ class ClientController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_client_delete', methods: ['POST'])]
-    public function delete(Request $request, Client $client, ClientRepository $clientRepository): Response
+    public function delete(Request $request, Client $client, ClientRepository $clientRepository,EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         //$user =new User();
-
+        $user=$entityManager->getRepository(User::class)->findOneBy(['username'=>$client->getUsername()]);
         if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
            // $user = $client->getUser();
            // if ($user) {
             ////    $entityManager->remove($user);
             //}
+            $userRepository->remove($user, true);
             $clientRepository->remove($client, true);
            // $entityManager->flush();
 

@@ -3,10 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Admin;
+use App\Entity\Artiste;
+use App\Entity\Client;
 use App\Entity\User;
 use App\Form\AdminType;
 use App\Repository\AdminRepository;
+use App\Repository\ArtisteRepository;
+use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +21,18 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin')]
 class AdminController extends AbstractController
 {
+    #[Route('/statistics', name: 'app_statistics')]
+    public function someAction(ClientRepository $clientRepository, ArtisteRepository $artisteRepository, EntityManagerInterface $entityManager): Response
+    {
+        $num_clients = $entityManager->getRepository(Client::class)->createQueryBuilder('c')->select('count(c.id)')->getQuery()->getSingleScalarResult();
+        $num_artistes = $entityManager->getRepository(Artiste::class)->createQueryBuilder('a')->select('count(a.id)')->getQuery()->getSingleScalarResult();
+
+        return $this->render('admin/statistics.html.twig', [
+            'num_clients' => $num_clients,
+            'num_artistes' => $num_artistes,
+        ]);
+    }
+
     #[Route('/', name: 'app_admin_index', methods: ['GET'])]
     public function index(AdminRepository $adminRepository): Response
     {
@@ -37,6 +54,7 @@ class AdminController extends AbstractController
             $adminRepository->save($admin, true);
             $user->setUsername($admin->getUsername());
             $user->setPassword($admin->getPassword());
+            $user->setEmail($admin->getEmail());
             $user->setRoles(['admin']);
             $user->setPassword( $userPasswordHasher->hashPassword(
                 $user,
@@ -87,4 +105,5 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
+
 }

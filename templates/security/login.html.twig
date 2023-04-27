@@ -35,7 +35,7 @@
             </div>x
         {% endif %}#}
         <h3>LOGIN Form</h3>
-        <div class="form-wrapper">
+            <div class="form-wrapper">
         <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="First name" autocomplete="username" required autofocus>
         </div>
             <div class="form-wrapper">
@@ -59,6 +59,6 @@
         <button class="btn btn-lg btn-primary" type="submit">
             LOGIN
         </button>
-
+    <a href="{{ path('app_forgot_password_request') }}" style="color: #1a1c23; margin-top: 60px">you forgot you password! click here</a>
     </form></div></div></div></body>
         </html>

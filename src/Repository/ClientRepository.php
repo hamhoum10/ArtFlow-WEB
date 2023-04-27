@@ -39,6 +39,15 @@ class ClientRepository extends ServiceEntityRepository
         }
     }
 
+    public function countAllClients()
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        return $qb->select($qb->expr()->count('c'))
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Client[] Returns an array of Client objects
 //     */

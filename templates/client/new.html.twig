@@ -46,10 +46,13 @@
 					<div class="form-wrapper">
 						<input type="checkbox" placeholder="terms" class="form-check-input" value="" id="acceptTerms" required="" {{ form_widget(form.agreeTerms,{attr:{ class:"form-check-input", placeholder:"terms", value:"", id:"acceptTerms", required:""}}) }}>
 						<label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>
+						<br><a href="{{ path('app_login') }}" style="color: #1a1c23; margin-top: 60px">you already have an account! click here</a>
+
 					</div>
 
 					  <div>{{ include('client/_form.html.twig') }}</div>
-						<!--<i class="zmdi zmdi-arrow-right"></i>-->
+
+					<!--<i class="zmdi zmdi-arrow-right"></i>-->
 				</form>
 				{{ form_end(form) }}
 			</div>
