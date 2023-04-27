@@ -62,9 +62,11 @@
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
                         >
+
                             <path
                                     d="M7.988 12.158c-1.851 0-2.941-1.57-2.941-3.99V7.84c0-2.408 1.101-3.996 2.965-3.996 1.857 0 2.935 1.57 2.935 3.996v.328c0 2.408-1.101 3.99-2.959 3.99ZM8 4.951c-1.008 0-1.629 1.09-1.629 2.895v.31c0 1.81.627 2.895 1.629 2.895s1.623-1.09 1.623-2.895v-.31c0-1.8-.621-2.895-1.623-2.895Z"
                             ></path>
+                            <h1>{{ countliv }}</h1>
                         </svg>
 
                         <a href="{{ path('app_livraison_index') }}"> <span class="ml-4">Livraison</span></a>
@@ -91,7 +93,7 @@
                             <path
                                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
                             ></path>
-                        </svg>
+                        </svg><h1>{{ countre }}</h1>
                         <span class="ml-4"><a href="{{ path('app_retour_index') }}">Return</a></span>
                     </a>
                 </li>
@@ -114,6 +116,7 @@
                                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                             ></path>
                         </svg>
+                        <h1>{{ countsto }}</h1>
                         <span class="ml-4"><a href="{{ path('app_stock_index') }}"> Stock</a></span>
                     </a>
                 </li>
@@ -137,6 +140,7 @@
                             ></path>
                             <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                         </svg>
+                        <h1>{{ countcom }}</h1>
                         <span class="ml-4"><a href="{{ path('app_commande_index') }}">Commande</a></span>
                     </a>
                 </li>

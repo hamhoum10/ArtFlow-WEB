@@ -37,7 +37,7 @@
         "symfony/string": "5.4.*",
         "symfony/translation": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
-        git "symfony/ux-chartjs": "^2.7",
+        "symfony/ux-chartjs": "^2.7",
         "symfony/validator": "5.4.*",
         "symfony/webpack-encore-bundle": "^1.16",
         "symfony/yaml": "5.4.*",

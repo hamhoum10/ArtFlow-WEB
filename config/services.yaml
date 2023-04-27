@@ -4,15 +4,18 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+ twilio_number: '%env(TWILIO_NUMBER)%'
 
-services:
     # default configuration for services in *this* file
-#
-#    twilio:
-#        class: Twilio\Rest\Client
-#        arguments:
-#            $sid: 'TWILIO_ACCOUNT_SID'
-#            $token: 'TWILIO_AUTH_TOKEN'
+services:
+    twilio.client:
+        class: Twilio\Rest\Client
+        arguments: [ '%env(TWILIO_ACCOUNT_SID)%', '%env(TWILIO_AUTH_TOKEN)%' ]
+
+    Twilio\Rest\Client: '@twilio.client'
+    # default configuration for services in *this* file
+
+
 
 
 
