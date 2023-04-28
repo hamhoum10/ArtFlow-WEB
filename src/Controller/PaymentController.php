@@ -99,6 +99,9 @@ class PaymentController extends AbstractController
     #[Route('/pdf', name: 'pdf')]
     public function pdf(SessionInterface $session , EntityManagerInterface $entityManager , MailerInterface $mailer): Response
     {
+
+
+
         //logo
         $logoPath = $this->getParameter('kernel.project_dir') . '/public/front/img/artsy.jpg';
         $logoData = base64_encode(file_get_contents($logoPath));
@@ -144,7 +147,7 @@ class PaymentController extends AbstractController
 
         // Create the email
         $email = (new Email())
-            ->from('mohamedTEST12554@gmail.com')
+            ->from('mohamed.miaoui@esprit.tn')
             ->to('medyasuo@gmail.com')
             ->subject('Your PDF attachment')
             ->attach($pdfContent);

@@ -90,6 +90,9 @@ class CommandeController extends AbstractController
         //we extract the total from session which i created in the above function
         $prixTotal=$session->get('total');
 
+        //email session for pdf send
+        $session->set('email',$email);
+
 //        foreach ($listlignepanier as /** @var LignePanier $lp */ $lp) {
 //            $prixTotal += $lp->getPrixUnitaire() * $lp->getQuantity();
 //        }
