@@ -74,5 +74,12 @@ class ArticleRepository extends ServiceEntityRepository
 
 
 
+            public function StatistiqueParArtiste(){
+             return $query = $this->getEntityManager()->createQuery('SELECT p.firstname , count(a) as numberarticle from app\entity\artiste p , app\entity\article a  where  a.idArtiste=p.idArtiste Group By p.idArtiste')->getResult();
+
+            }
+
+
+
 
 }

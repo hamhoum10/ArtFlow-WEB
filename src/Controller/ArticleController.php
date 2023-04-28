@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 
 
@@ -51,6 +53,58 @@ class ArticleController extends AbstractController
 
         ]);
     }
+
+
+
+
+    #[Route('/statistique', name: 'app_article_statistique', methods: ['GET', 'POST'])]
+    public function statistique(ArticleRepository $articleRepository,ArtisteRepository $artisteRepository , CategorieRepository $categorieRepository,Request $request): Response
+    {
+        # dd($articleRepository->findAll());
+        $categories = $categorieRepository->findAll();
+        $artiste=$artisteRepository->findBy(array('username'=>'mou'))[0];
+        dd($articleRepository->StatistiqueParArtiste());
+        #dd($artiste);
+        $article=new Article();
+        $article=$articleRepository->findAll();
+        if($request->isMethod("POST"))
+        {
+            $minamount = $request->get('minamount');
+            $maxamount = $request->get('maxamount');
+            #dd((float)substr($minamount, 1));
+
+            $article=$articleRepository->findByPriceRange((float)substr($minamount, 1),(float)substr($maxamount, 1));
+
+
+
+
+        }
+
+        return $this->render('article/statistique.html.twig',[
+            'articles' => $article,
+            'Artiste' => $artiste,
+            'categories' => $categories,
+
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     #[Route('/articlefront', name: 'app_article_articlefront', methods: ['GET', 'POST'])]
     public function articlefront(
         ArticleRepository $articleRepository,
@@ -230,7 +284,7 @@ class ArticleController extends AbstractController
 
 
     #[Route('/new', name: 'app_article_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ArticleRepository $articleRepository): Response
+    public function new(Request $request, ArticleRepository $articleRepository, MailerInterface $mailer): Response
     {
 
         $article = new Article();
@@ -248,6 +302,20 @@ class ArticleController extends AbstractController
             );
             $article->setImage($fichier);}
             $articleRepository->save($article, true);
+             //************ */ Envoi de l'e-mail*****************
+             $email = (new Email())
+             ->from('malek.chtioui127@gmail.com')
+             ->to('malek.chtioui127@gmail.com')
+             ->subject('Nouvelle Article!')
+             ->html('<p>Un nouvelle Article a été soumise:</p>' .
+             '<ul>' .
+             '<li>Nom Article: ' . $article-> getNomArticle() . '</li>' .
+             '<li>Description: ' . $article->getDescription() . '</li>' .
+       
+             '</ul>');
+
+ 
+         $mailer->send($email);
 
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
         }

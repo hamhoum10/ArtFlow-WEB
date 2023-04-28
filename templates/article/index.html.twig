@@ -10,6 +10,28 @@
 
 <div class="w-full overflow-hidden rounded-lg shadow-xs">
     <div class="w-full overflow-x-auto">
+    <br>
+                <input type="text" class="form-control" placeholder="Recherche" id="rech">
+                <br>
+                <script>
+        function filterTable() {
+            const filter = document.getElementById('rech').value.toUpperCase();
+            const rows = document.querySelectorAll('table tr');
+            for (let i = 1; i < rows.length; i++) {
+                const cols = rows[i].querySelectorAll('td');
+                let visible = false;
+                for (let j = 0; j < cols.length; j++) {
+                    const cell = cols[j];
+                    if (cell.innerText.toUpperCase().indexOf(filter) > -1) {
+                        visible = true;
+                        break;
+                    }
+                }
+                rows[i].style.display = visible ? '' : 'none';
+            }
+        }
+        document.getElementById('rech').addEventListener('keyup', filterTable);
+    </script>
         <table class="w-full whitespace-no-wrap">
             <thead>
             <tr
@@ -186,5 +208,5 @@
                 })
             }
         </script>
-
+ {% include "chat/index.html.twig" %}
 {% endblock %}

@@ -34,7 +34,7 @@ const lineConfig = {
     responsive: true,
     /**
      * Default legends are ugly and impossible to style.
-     * See examples in charts.html to add your own legends
+     * See examples in charts.html.twig to add your own legends
      *  */
     legend: {
       display: false,

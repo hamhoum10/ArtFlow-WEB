@@ -22,7 +22,7 @@ const pieConfig = {
     cutoutPercentage: 80,
     /**
      * Default legends are ugly and impossible to style.
-     * See examples in charts.html to add your own legends
+     * See examples in charts.html.twig to add your own legends
      *  */
     legend: {
       display: false,
