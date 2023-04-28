@@ -211,6 +211,7 @@ class EnchereController extends AbstractController
                 //  'qrCodeDataUri' => $qrCodeDataUri, // pass the QR code data URI to the view
                 'qrCodes' => $qrCodes,
                 'now' => $now,
+
             ]);
         }
 

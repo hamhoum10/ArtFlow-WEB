@@ -3,36 +3,85 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Resume</title>
-</head>
-<body>
-<div style="margin: 0 auto;display: block;width: 500px;">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #333;
+            background-color: #f7f7f7;
+            line-height: 1.5;
+        }
+        .container {
+            margin: 0 auto;
+            display: block;
+            max-width: 500px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
         .logo {
             max-width: 100px;
+            display: block;
+            margin: 0 auto;
+            padding-bottom: 20px;
+        }
+        h1, h2, h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        h2 {
+            font-size: 20px;
+        }
+        p {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+        ul li, ol li {
+            margin-bottom: 5px;
+        }
+        .terms {
+            font-size: 12px;
+            color: #999;
+            margin-top: 20px;
+            text-align: justify;
         }
     </style>
+</head>
+<body>
+<div class="container">
     <img class="logo" src="data:image/png;base64,{{ logoSrc }}" alt="Logo">
-
-    <p>Enchere ID: {{ enchere.ide }}</p>
-    <p>Titre: {{ enchere.titre }}</p>
-    <p>Description: {{ enchere.description }}</p>
-    <p>Prix départ: {{ enchere.prixdepart }}</p>
-    <p>Date limite: {{ enchere.dateLimite|date('Y-m-d') }}</p>
-    {% set imageSrc = 'data:image/png;base64,' ~ imageSrc %} {# base64 encoded image data #}
+    <h1>{{ enchere.titre }}</h1>
+    <p>{{ enchere.description }}</p>
+    <ul>
+        <li>Prix départ: {{ enchere.prixdepart }}</li>
+        <li>Date limite: {{ enchere.dateLimite|date('Y-m-d') }}</li>
+    </ul>
+    {% set imageSrc = 'data:image/png;base64,' ~ imageSrc %}
     <img src="{{ imageSrc }}" alt="Enchere Image">
-
-
-<div>{% if client %}
-        <p>Client with maximum bid:</p>
-        <p>Name: {{ client.getFirstname() }} {{ client.getLastname() }}</p>
-        <p>Email: {{ client.getEmail() }}</p>
-    {% endif %}</div>
-
+    {% if client %}
+        <h2>Client with maximum bid:</h2>
+        <ul>
+            <li>Name: {{ client.getFirstname() }} {{ client.getLastname() }}</li>
+            <li>Email: {{ client.getEmail() }}</li>
+            <li>Email: {{ client.getPhonenumber() }}</li>
+            <li>Email: {{ client.getAddress() }}</li>
+        </ul>
+    {% endif %}
+    <div class="terms">
+        <p>Conditions générales : Paiement à effectuer de préférence par virement bancaire.
+            La facture doit être payée dans un délai de 30 jours après sa date démission. En cas de retard de paiement, les pénalités de retard
+            sélèvent à 10% du montant total de la facture. Lindemnité forfaitaire pour frais de recouvrement est de 200 Dinars. Indemnisation
+            complémentaire sur justification. Escompte pour paiement anticipé :néant</p>
+    </div>
 </div>
-
-<div>Conditions générales : Paiement à effectuer de préférence par virement bancaire.
-    La facture doit être payée dans un délai de 30 jours après sa date démission. En cas de retard de paiement, les pénalités de retard
-    sélèvent à 10% du montant total de la facture. Lindemnité forfaitaire pour frais de recouvrement est de 200 Dinars. Indemnisation
-    complémentaire sur justification. Escompte pour paiement anticipé :néant</div>
 </body>
 </html>

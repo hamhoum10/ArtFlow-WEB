@@ -8,7 +8,8 @@
     <meta name="keywords" content="Ashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ashion | Template</title>
+    <title>artflow</title>
+
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
@@ -227,6 +228,8 @@
 
 
                     <div class="product__details__price">DT {{ enchere.prixdepart }}<span></span></div>
+
+
                     <p>{{ enchere.description }}</p>
                     <p>{{ enchere.dateLimite|date('Y-m-d') }}</p>
                     <p>{{ enchere.prixdepart }}</p>
@@ -262,13 +265,14 @@
 
 
 
+
                                 {{ form_start(newParticipantForm) }}
 
 
                                 {{ form_row(newParticipantForm._token) }}
                                 <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
-
                                 {{ form_end(newParticipantForm) }}
+
 
                             </div>
                         </div>
@@ -302,9 +306,8 @@
 {% set datesys = now|date('Y-m-d H:i:s') %}
 
 {% if enchere.dateLimite|date('Y-m-d') < datesys %}
-    <a href="{{ path('pdf_generator', {'ide': enchere.ide}) }}" class="btn btn-primary" download="enchere_{{ enchere.ide }}.pdf">
-        Download PDF
-    </a>
+    <button class="btn btn-primary" onclick="window.location.href='{{ path('pdf_generator', {'ide': enchere.ide}) }}'; createNotification('PDF Download', 'Your PDF download has started !!')">Download PDF</button>
+
 
 {% else %}
     <p>Sorry, the auction deadline has not passed yet. You cannot download the PDF.</p>
@@ -441,6 +444,7 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
+<script src="{{ asset('assets/js/notif.js')}}" ></script>
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.magnific-popup.min.js"></script>
@@ -451,6 +455,7 @@
 <script src="js/owl.carousel.min.js"></script>
 <script src="js/jquery.nicescroll.min.js"></script>
 <script src="js/main.js"></script>
+
 </body>
 
 </html>
