@@ -6,14 +6,21 @@ use App\Entity\Client;
 use App\Entity\Commande;
 use App\Entity\Panier;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Attachment\MemoryAttachment;
+
 
 class PaymentController extends AbstractController
 {
@@ -83,5 +90,77 @@ class PaymentController extends AbstractController
     public function cancelUrl(): Response
     {
         return $this->render('payment/cancel.html.twig', []);
+    }
+
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    #[Route('/pdf', name: 'pdf')]
+    public function pdf(SessionInterface $session , EntityManagerInterface $entityManager , MailerInterface $mailer): Response
+    {
+        //logo
+        $logoPath = $this->getParameter('kernel.project_dir') . '/public/front/img/artsy.jpg';
+        $logoData = base64_encode(file_get_contents($logoPath));
+
+        //current date
+        $date = date("d/m/Y");
+
+        //njbo client
+        $client = $entityManager->getRepository(Client::class)->find(3);
+
+        // Copier les données du panier dans une variable temporaire
+        $lignepaniers = $session->get('ligne-panier');
+        $prixtotal = $session->get('total');
+
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('payment/pdf.html.twig', [
+            'lignesPanier' => $lignepaniers,
+            'total' => $prixtotal,
+            'client' =>$client,
+            'date' =>$date,
+            'logo' =>$logoData
+        ]);
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        $pdfContent = $dompdf->output();
+
+
+
+        // Create the email
+        $email = (new Email())
+            ->from('mohamedTEST12554@gmail.com')
+            ->to('medyasuo@gmail.com')
+            ->subject('Your PDF attachment')
+            ->attach($pdfContent);
+
+        // Send the email
+        $mailer->send($email);
+
+
+        // Generate the response with the PDF content
+        $response = new Response($dompdf->output(), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="example.pdf"'
+        ]);
+
+        return $response;
+
+
     }
 }

@@ -91,7 +91,7 @@ class LignePanierController extends AbstractController
 
     //adding from the shop ui because we can add only with 1
     #[Route('/newone', name: 'app_ligne_panier_newone', methods: ['GET', 'POST'])]
-    public function newOne(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function newOne(Request $request, EntityManagerInterface $entityManager, SessionInterface $session): JsonResponse
     {
         $lignePanier = new LignePanier();
 
@@ -129,6 +129,7 @@ class LignePanierController extends AbstractController
                 $entityManager->persist($lignePanier);
             }
             $entityManager->flush();
+
             return new JsonResponse( ['success' => true ]);
         }
         return new JsonResponse( ['success' => false ]);

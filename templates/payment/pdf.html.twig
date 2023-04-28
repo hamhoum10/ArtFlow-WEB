@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Facture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .invoice-details {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #eee;
+        }
+
+        table td.total {
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+        
+        .logo {
+            float: right;
+            max-width: 100px;
+            max-height: 100px;
+            margin-right: 20px;
+        }
+
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <img src="data:image/png;base64,{{ logo }}" class="logo"  alt="">
+        <h1>Facture </h1>
+        <p>Date: {{ date }}</p>
+        <p>Client: {{ client.firstname }} {{ client.lastname }}</p>
+    </header>
+
+    <div class="invoice-details">
+        <table>
+            <thead>
+            <tr>
+                <th>Nom de l'article</th>
+                <th>Prix Unitaire</th>
+                <th>quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ligne_panier in lignesPanier %}}
+                <tr>
+                    <td>{{ ligne_panier.nomArticle }}</td>
+                    <td>{{ ligne_panier.prixUnitaire }} Tnd</td>
+                    <td>{{ ligne_panier.quantity }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="3" class="total">Total</td>
+                <td class="total">{{ total }} TND</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>Merci pour votre achat.</p>
+    </footer>
+</div>
+</body>
+</html>

@@ -34,8 +34,11 @@ class CommandeController extends AbstractController
             ->getRepository(LignePanier::class)
             ->findBy(['idPanier' => $panierparclient]);
 
-        // we put in session the total amount and render the total to the template commndeBase
+        //will be added in the pdf file in the future, we fill the session now with ligne panier so we can get the data after modification are done
+        //the one in the lignepanier controller won t have the quantity changes in the pdf because the ligne panier is filled before the changes
+        $session->set("ligne-panier",$lignePaniers);
 
+        // we put in session the total amount and render the total to the template commndeBase
         $total=0;
         $etatcode = $session->get('etatcode', false);//extract lel etat mel session eli amlenlha set fi function verif eli fi promocode controller
         if ($etatcode===true){

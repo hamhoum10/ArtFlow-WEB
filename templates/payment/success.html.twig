@@ -18,9 +18,14 @@
     </p>
     <img src="{{ asset('img/done.png') }}" alt="" width="300" height="300">
     <div style="margin-top: 40px"></div>
-    <form action="/lignepanier" method="GET">
-        <button type="submit" class="btn primary-btn btn-lg" >Back to Cart</button>
-    </form>
+    <nav>
+        <form action="/lignepanier" method="GET" style="display: inline-block;">
+            <button type="submit" class="btn primary-btn btn-lg" >Back to Cart</button>
+        </form>
+        <form action="/pdf" method="GET" style="display: inline-block;">
+            <button type="submit" class="btn primary-btn btn-lg" > PDF </button>
+        </form>
+    </nav>
 </div>
 
 
