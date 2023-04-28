@@ -35,10 +35,12 @@ class EvemtController extends AbstractController
         // Create an array of events for the FullCalendar
 
         foreach ($evemts as $evemt) {
-            $episodes[] = [
+            $events[] = [
                 'name' => $evemt->getName(),
                 'description' => $evemt->getDescription(),
-                'startHour' => $evemt->getStartHour(),
+                'dateEvemt' =>$evemt->getDateEvemt(),
+
+//                'startHour' => $evemt->getStartHour(),
                 'color' => '#257e4a',
                 'prix' => $evemt->getPrix()
 
@@ -47,7 +49,7 @@ class EvemtController extends AbstractController
 
 
         return $this->render('evemt/fullcalendar.html.twig', [
-            'episodes' => $episodes
+            'events' => $events
         ]);
     }
 

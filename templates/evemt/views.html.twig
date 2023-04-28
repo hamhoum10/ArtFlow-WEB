@@ -906,7 +906,7 @@
     <meta name="keywords" content="Ashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Events</title>
+    <title>Ashion | Template</title>
 
 
     <!-- Google Font -->
@@ -949,7 +949,7 @@
             </a></li>
     </ul>
     <div class="offcanvas__logo">
-        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+        <a href="#"><img src="img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__auth">
@@ -965,7 +965,7 @@
         <div class="row">
             <div class="col-xl-3 col-lg-2">
                 <div class="header__logo">
-                    <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                    <a href="#"><img src="img/logo.png" alt=""></a>
                 </div>
             </div>
             <div class="col-xl-6 col-lg-7">
@@ -973,16 +973,12 @@
                     <ul>
                         {#                        <li><a href={{ path('app_reservation_index') }}>Reserved a evemt</a></li>#}
 
-                        <li class="active"><a href='{{ path('app_evemt_index') }}'>Home</a></li>
+                        <li class="active"><a href="#">Home</a></li>
 
 
                         </li>
-                        <li><a href='{{ path('app_evemt_new') }}'>Add new events</a></li>
-
-
-
                         <li><a href='{{ path('app_evemt_Map') }}'">Consult map</a></li>
-                        <li><a href='{{ path('app_evemt_cal') }}'">Consult calendar</a></li>
+                        <li><a href="#">Music</a></li>
 
                     </ul>
                 </nav>
@@ -1018,7 +1014,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb__links">
-                    <a href='{{ path('app_evemt_index') }}'><i class="fa fa-home"></i> Home</a>
+                    <a href="#"><i class="fa fa-home"></i> Home</a>
                     <span>Shop</span>
                 </div>
             </div>
@@ -1172,30 +1168,37 @@
 
             <div class="col-lg-9 col-md-9">
                 <div class="row">
-                    {% for evemt in evemts %}
+
                         <div class="col-lg-4 col-md-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="{{ asset('/uploads/'~evemt.image)}}">
+{#                                <div class="product__item__pic set-bg" data-setbg="{{ asset('/uploads/'~evemt.image)}}">#}
 
-                                    <!--                                <img src="{{ asset('/uploads/'~evemt.image)}}" class="image-popup">-->
+{#                                    <!--                                <img src="{{ asset('/uploads/'~evemt.image)}}" class="image-popup">-->#}
 
                                     {#                                    <div class="label new">New</div>#}
                                     <ul class="product__hover" >
                                         <h6><img src="{{ evemt.getImage() }}" alt="" width="300px" height="250px"></h6>
+                                        <li><button onclick="window.location.href='{{ path('app_reservation_new') }}'" class="btn btn-danger delete-btn">
+                                                <i class="icon_plus"></i>
+                                            </button></li>
 
-                                                                                <li><a href="{{ path('app_evemt_edit',{'id':evemt.getId()} )}}" ><span class="bi bi-arrows-angle-expand"></span></a></li>
+                                        <li><button onclick="window.location.href='{{ path('app_evemt_showclient') }}'" class="btn btn-danger delete-btn">
+                                                <i class="icon_refresh"></i>
+                                            </button></li>
 
-                                        {#                                        <li><a href="#"><span class="icon_heart_alt"></span></a></li>#}
-                                        {#                                        <li><a href="#"><span class="icon_bag_alt"></span></a></li>#}
+
+                                        <li><button onclick="window.location.href='{{ path('app_parler_new') }}'" class="btn btn-danger delete-btn">
+                                                <i class="icon_comment"></i>
+                                            </button></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
 
-                                    <h6><a href="#">name :{{ evemt.name }}</a></h6>
-                                    <h6><a href="#"> description :{{ evemt.description }}</a></h6>
-                                    <h6><a href="#">start : {{ evemt.startHour }}</a></h6>
-                                    <h6><a href="#">end : {{ evemt.finishHour }}</a></h6>
-                                    <h6><a href="#">location :{{ evemt.location }}</a></h6>
+                                    <h6><a href="#">{{ evemt.name }}</a></h6>
+                                    <h6><a href="#"> {{ evemt.description }}</a></h6>
+                                    <h6><a href="#"> {{ evemt.startHour }}</a></h6>
+                                    <h6><a href="#"> {{ evemt.finishHour }}</a></h6>
+                                    <h6><a href="#">{{ evemt.location }}</a></h6>
 
                                     {#                                    <div class="rating">#}
                                     {#                                        <i class="fa fa-star"></i>#}
@@ -1204,12 +1207,12 @@
                                     {#                                        <i class="fa fa-star"></i>#}
                                     {#                                        <i class="fa fa-star"></i>#}
                                     {#                                    </div>#}
-                                    <div class="product__price">prix :  {{ evemt.prix }} Tnd</div>
+                                    <h6 class="product__price"> Tnd {{ evemt.prix }} </h6>
 
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+
                     <div class="col-lg-12 text-center">
                         <div class="pagination__option">
                             <a href="#">1</a>
@@ -1289,7 +1292,7 @@
             <div class="col-lg-4 col-md-6 col-sm-7">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        <a href="#"><img src="img/logo.png" alt=""></a>
                     </div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                         cilisis.</p>
@@ -1358,7 +1361,8 @@
 <div class="search-model">
     <div class="h-100 d-flex align-items-center justify-content-center">
         <div class="search-close-switch">+</div>
-        <form class="search-model-form">
+        {#        <form class="search-model-form">#}
+        <form method="GET" action="{{ path('app_search_evemt') }}" class="search-model-form">
             <input type="text" id="search-input" placeholder="Search here.....">
         </form>
     </div>

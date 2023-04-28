@@ -978,7 +978,7 @@
 
                         </li>
                         <li><a href='{{ path('app_evemt_Map') }}'">Consult map</a></li>
-                        <li><a href="#">Music</a></li>
+                        <li><a href='{{ path('app_evemt_cal') }}'">Calendar</a></li>
 
                     </ul>
                 </nav>
@@ -1178,7 +1178,8 @@
                                     {#                                    <div class="label new">New</div>#}
                                     <ul class="product__hover" >
                                         <h6><img src="{{ evemt.getImage() }}" alt="" width="300px" height="250px"></h6>
-                                        <li><button onclick="window.location.href='{{ path('app_reservation_new') }}'" class="btn btn-danger delete-btn">
+                                        <li><button onclick="window.location.href='{{ path('app_reservation_new', {'id': evemt.id}) }}';
+                                                    " class="btn btn-danger delete-btn">
                                             <i class="icon_plus"></i>
                                         </button></li>
 
@@ -1361,7 +1362,8 @@
 <div class="search-model">
     <div class="h-100 d-flex align-items-center justify-content-center">
         <div class="search-close-switch">+</div>
-        <form class="search-model-form">
+{#        <form class="search-model-form">#}
+        <form method="GET" action="{{ path('app_search_evemt') }}" class="search-model-form">
             <input type="text" id="search-input" placeholder="Search here.....">
         </form>
     </div>
