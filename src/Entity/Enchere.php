@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use DateTime;
 use App\Repository\EnchereRepository;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ORM\Entity(repositoryClass: EnchereRepository::class)]
@@ -15,27 +16,32 @@ class Enchere
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("enchere")]
     private ?int $ide = null;
 
 
     #[ORM\Column(length: 200)]
     #[Assert\NotBlank(message:"titre requis")]
+    #[Groups("enchere")]
     private ?string $titre = null;
 
     #[ORM\Column(length: 200)]
     #[Assert\NotBlank(message:"description requise")]
+    #[Groups("enchere")]
     private ?string $description = null;
 
 
     #[ORM\Column]
     #[Assert\NotBlank(message:"prix requis")]
     #[Assert\Type(type: 'numeric', message: "Le prix doit être un nombre.")]
+    #[Groups("enchere")]
     private ?float $prixdepart =null;
 
 
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotNull(message: 'La date limite est requise.')]
+    #[Groups("enchere")]
     #[Assert\GreaterThanOrEqual(
         value: 'today',
         message: 'La date limite doit être supérieure ou égale à la date actuelle.'
@@ -47,6 +53,7 @@ class Enchere
 
     #[ORM\Column(length: 250)]
     #[Assert\NotBlank(message:"nom requis")]
+    #[Groups("enchere")]
     private ?string $image= null;
 
 

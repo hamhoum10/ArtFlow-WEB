@@ -39,7 +39,7 @@ class EnchereController extends AbstractController
 
 
 
-
+/*********************************ADD AN AUCTION *************************************/
 
     #[Route('/new', name: 'app_enchere_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EnchereRepository $enchereRepository): Response
@@ -77,10 +77,17 @@ class EnchereController extends AbstractController
 
 
 
+//     #[Route('/show', name: 'app_enchere_show', methods: ['GET'])]
+//     public function show(EnchereRepository $enchereRepository): Response
+//     {
+//         return $this->render('enchere/show.html.twig', [
+//               'enchere' => $enchereRepository->findAll(),
+//         ]);
+//     }
 
 
 
-
+/*********************************DISPLAY AUCTIONS FOR ADMIN *************************************/
 
     #[Route('/index', name: 'app_enchere_index', methods: ['GET'])]
     public function index(EnchereRepository $enchereRepository): Response
@@ -92,7 +99,7 @@ class EnchereController extends AbstractController
     }
 
 
-
+/*********************************HOME PAGE WITH ALL AUCTIONS  *************************************/
         //welcome page of the website
     // + the FullCalendar
     #[Route('/welcomepage', name: 'app_welcomepage')]
@@ -111,6 +118,8 @@ class EnchereController extends AbstractController
 
         ]);
     }
+
+/*********************************CALENDAR TO USE IN THE WELCOMEPAGE *************************************/
 
     #[Route('/calendar', name: 'app_enchere_cal')]
     public function calendar(EnchereRepository $enchereRepository): Response
@@ -138,9 +147,11 @@ class EnchereController extends AbstractController
 
 
 
-
+/********************************* PAGE DETAILS OF AN AUCTION  *************************************/
         //this is where there's all the details about an auction
         //i have the qrcode and the form to add a participation in the database
+        //have a pdf bundle
+
         #[Route('/{ide}', name: 'app_enchere_showfront', methods: ['GET', 'POST'])]
         public function frontshow(Enchere $enchere, ParticipantRepository $participantRepository, Participant $participant, Request $request): Response
         {
@@ -235,6 +246,8 @@ class EnchereController extends AbstractController
 
 */
 
+/*********************************delete AN AUCTION *************************************/
+
     #[Route('/{ide}/delete', name: 'app_enchere_delete')]
     public function delete(Request $request, EnchereRepository $enchereRepository,$ide,ManagerRegistry $doctrine): Response
     {
@@ -258,20 +271,7 @@ class EnchereController extends AbstractController
 
 
 
-
-
-
-
-
-
-
-    #[Route('/show', name: 'app_enchere_show', methods: ['GET'])]
-    public function show(Enchere $enchere): Response
-    {
-        return $this->render('enchere/show.html.twig', [
-            'enchere' => $enchere,
-        ]);
-    }
+/********************************* EDIT AN AUCTION *************************************/
 
     #[Route('/edit/{ide}', name: 'app_enchere_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Enchere $enchere, EnchereRepository $enchereRepository): Response
