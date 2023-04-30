@@ -58,7 +58,7 @@ class LignePanierController extends AbstractController
         //we point on the article that we will add on cart w ywali ana access to the artist who made this article
         $article = $entityManager->getRepository(Article::class)->find($idArticle);
 
-//        $lignePanier->setQuantity(1); //we get the quantity from malek also
+//      $lignePanier->setQuantity(1); //we get the quantity from malek also
         $lignePanier->setQuantity((int)$quantity);
         $lignePanier->setIdPanier($panierparclient);
         $lignePanier->setIdArticle( /** @var Article $article */$article);
@@ -67,7 +67,7 @@ class LignePanierController extends AbstractController
         $lignePanier->setPrixUnitaire($article->getPrice());
         $lignePanier->setPrenomArtiste($article->getIdArtiste()->getLastname());
         $lignePanier->setNomArtiste($article->getIdArtiste()->getFirstname());
-//        $lignePanier->getIdArticle()->getImage()
+
 
         if ($panierparclient != null && $article->getIdArtiste() != null ) {
 

@@ -2,12 +2,11 @@
 
 namespace App\Entity;
 
-use DateTime;
-use Doctrine\DBAL\Types\Types;
+
 use Doctrine\ORM\Mapping as ORM;
 
 use App\Repository\CommandeRepository;
-use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
@@ -15,36 +14,45 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("commande")]
     private ?int $id =null;
 
 
     #[ORM\Column(length: 150)]
+    #[Groups("commande")]
     private ?string $prenom =null;
 
 
     #[ORM\Column(length: 150)]
+    #[Groups("commande")]
     private ?string $nom=null;
 
 
     #[ORM\Column]
+    #[Groups("commande")]
     private ?int $numero=null;
 
 
     #[ORM\Column(length: 150)]
+    #[Groups("commande")]
     private ?string $status=null;
 
     #[ORM\Column]
+    #[Groups("commande")]
     private ?float $totalAmount=null;
 
     #[ORM\Column]
+    #[Groups("commande")]
     private ?string $createdAt = null; //radithha null mesh te5dem
 
 
     #[ORM\Column]
+    #[Groups("commande")]
     private ?int $codepostal=null;
 
 
     #[ORM\Column(length: 150)]
+    #[Groups("commande")]
     private ?string $adresse=null;
 
 

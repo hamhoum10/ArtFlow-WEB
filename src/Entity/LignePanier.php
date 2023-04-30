@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LignePanierRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ORM\Entity(repositoryClass: LignePanierRepository::class)]
@@ -12,35 +13,34 @@ class LignePanier
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("lp")]
     private ?int $id = null;
 
 
     #[ORM\Column]
+    #[Groups("lp")]
     private ?float $prixUnitaire = null;
 
     #[ORM\Column]
+    #[Groups("lp")]
     private ?int $quantity = null;
 
     #[ORM\Column(length:255)]
+    #[Groups("lp")]
     private ?string $nomArticle = null;
 
     #[ORM\Column(length:255)]
+    #[Groups("lp")]
     private ?string $description = null;
 
     #[ORM\Column(length:255)]
+    #[Groups("lp")]
     private ?string $nomArtiste = null;
 
     #[ORM\Column(length:255)]
+    #[Groups("lp")]
     private ?string $prenomArtiste = null;
 
-//    /**
-//     * @var \Article
-//     *
-//     * @ORM\ManyToOne(targetEntity="Article")
-//     * @ORM\JoinColumns({
-//     *   @ORM\JoinColumn(name="id_article", referencedColumnName="id_article")
-//     * })
-//     */
     #[ORM\ManyToOne(targetEntity: Article::class)]
     #[ORM\JoinColumn(name: 'id_article', referencedColumnName: 'id_article')]
     private ?Article $idArticle = null;

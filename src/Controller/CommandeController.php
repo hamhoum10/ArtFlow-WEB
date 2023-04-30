@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 #[Route('/commande')]
 class CommandeController extends AbstractController
@@ -56,7 +55,7 @@ class CommandeController extends AbstractController
             $session->set('total' , $total);
         }
 
-        return $this->render('commande/commandeBase.html.twig', [ //ma3tesh render lel /new view w na7it el extend eli fiha
+        return $this->render('commande/commandeBase.html.twig', [
             'ligne_paniers' => $lignePaniers,
             'totalfinal' => $total
         ]);
@@ -76,27 +75,16 @@ class CommandeController extends AbstractController
         $codePostal= trim($requestData['codePostal']);
         $email= trim($requestData['email']);
 
-
-
-
-        //PRIX TOTAL--------------------------------------------------------------
         //we get the cart that we need ama it's better extract cart by it's user so we get the client by id w baed we get panier by that client
         $client = $entityManager->getRepository(Client::class)->find(3); //tjib client bid 3 maybe nada send me the client when login
         $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
-        $listlignepanier =$entityManager->getRepository(LignePanier::class)->findBy(['idPanier'=> $panierparclient]); //idPanier hwa de type Panier ......
-        $prixTotal=0;
-
 
         //we extract the total from session which i created in the above function
+        $prixTotal=0;
         $prixTotal=$session->get('total');
 
         //email session for pdf send
         $session->set('email',$email);
-
-//        foreach ($listlignepanier as /** @var LignePanier $lp */ $lp) {
-//            $prixTotal += $lp->getPrixUnitaire() * $lp->getQuantity();
-//        }
-
 
         //LES ATTRIBUTS DE COMMANDE that user get automaclly
         $commande->setIdPanier($panierparclient);
@@ -120,20 +108,6 @@ class CommandeController extends AbstractController
         return new JsonResponse( ['success' => false ]);
 
     }
-
-    //admin panel
-    #[Route('/show', name: 'app_commande_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
-    {
-        $commandes = $entityManager
-            ->getRepository(Commande::class)
-            ->findAll();
-
-        return $this->render('commande/admin-order.html.twig', [ //commande/show.html.twig before
-            'commandes' => $commandes,
-        ]);
-    }
-
 
     #[Route('/{id}', name: 'app_commande_show', methods: ['GET'])]
     public function show(Commande $commande): Response
@@ -170,6 +144,19 @@ class CommandeController extends AbstractController
         }
 
         return $this->redirectToRoute('app_commande_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    //admin panel
+    #[Route('/show', name: 'app_commande_index', methods: ['GET'])]
+    public function index(EntityManagerInterface $entityManager): Response
+    {
+        $commandes = $entityManager
+            ->getRepository(Commande::class)
+            ->findAll();
+
+        return $this->render('commande/admin-order.html.twig', [
+            'commandes' => $commandes,
+        ]);
     }
 
 
