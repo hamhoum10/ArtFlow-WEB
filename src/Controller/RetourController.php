@@ -18,10 +18,10 @@ use Twilio\Rest\Client;
 
 #[Route('/retour')]
 class RetourController extends AbstractController
-{ public function sendSmsMessage(Client $twilioClient,$body):Response
+{ public function sendSmsMessage(Client $twilioClient,$body,$num):Response
 {
 
-    $twilioClient->messages->create("+21650660438", [
+    $twilioClient->messages->create("+216".$num, [
         "body" => $body,
         "from" => $this->getParameter('twilio_number')
     ]);
@@ -111,8 +111,9 @@ class RetourController extends AbstractController
         $entityManager->persist($s);
         $entityManager->persist($destinationRow);
         $entityManager->flush();
+        $num = $this->getDoctrine()->getRepository(Commande::class)->find($row->getIdCommende())->getNumero();
         $twilioClient = new Client('AC4730297eb72be182dde74c2a2143deb8','fba49a82e157a83953c49896694c44ec');
-        $test=$this-> sendSmsMessage($twilioClient,'ART_FLOW want you to know that your commande is in Livraison ');
+        $test=$this-> sendSmsMessage($twilioClient,'ART_FLOW want you to know that your commande is in Livraison ',$num);
 
 
         // Redirect the user to the original page

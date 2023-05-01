@@ -1,7 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    <canvas id="myChart"></canvas>
+    <canvas id="myChart" ></canvas>
+    <canvas id="myChart1" ></canvas>
+    <canvas id="myChart2" ></canvas>
+    <canvas id="myChart3" ></canvas>
 {% endblock %}
 
 {% block body %}
@@ -11,11 +14,13 @@
     <script>
 
 
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
+
+        var ctx2 = document.getElementById('myChart3').getContext('2d');
+        var myChart2 = new Chart(ctx2, {
             type: 'pie',
             data: {{ data|json_encode|raw }},
             options: {
+
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -25,6 +30,22 @@
                 }
             }
         });
+var ctx3 = document.getElementById('myChart2').getContext('2d');
+var myChart3 = new Chart(ctx3, {
+    type: 'bar',
+    data: {{ data|json_encode|raw }},
+    options: {
+
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+
     </script>
 
 

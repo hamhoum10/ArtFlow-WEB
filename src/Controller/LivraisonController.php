@@ -130,7 +130,7 @@ return $request;
         $entityManager->persist($destinationRow);
         $entityManager->persist($s);
         $entityManager->flush();
-        $num = $this->getDoctrine()->getRepository(Commande::class)->find($row->getIdCommende()->getNumero());
+        $num = $this->getDoctrine()->getRepository(Commande::class)->find($row->getIdCommende())->getNumero();
         $twilioClient = new Client('AC4730297eb72be182dde74c2a2143deb8','fba49a82e157a83953c49896694c44ec');
         $test=$this-> sendSmsMessage($twilioClient,'ART_FLOW want you to know that your commande is in return ',$num);
         // Redirect the user to the original page
@@ -166,7 +166,7 @@ return $request;
         $entityManager->persist($s);
         $entityManager->flush();
         $twilioClient = new Client('AC4730297eb72be182dde74c2a2143deb8','fba49a82e157a83953c49896694c44ec');
-        $num = $this->getDoctrine()->getRepository(Commande::class)->find($row->getIdCommende()->getNumero());
+        $num = $this->getDoctrine()->getRepository(Commande::class)->find($row->getIdCommende())->getNumero();
         $test=$this-> sendSmsMessage($twilioClient,'ART_FLOW want you to know that your commande is in Stock ',$num);
 
         // Redirect the user to the original page

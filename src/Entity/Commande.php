@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CommandeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
@@ -11,36 +12,47 @@ class Commande
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("commande")]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups("commande")]
     private ?int $id_panier = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("commande")]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("commande")]
     private ?string $nom = null;
 
     #[ORM\Column]
-    private ?int $numero = null;
+    #[Groups("commande")]
+    private ?string $numero = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("commande")]
     private ?string $status = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $total_amount = null;
+    #[ORM\Column]
+    #[Groups("commande")]
+    private ?int $total_amount = null;
 
     #[ORM\Column]
+    #[Groups("commande")]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column]
+    #[Groups("commande")]
     private ?int $codepostal = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("commande")]
     private ?string $adresse = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("commande")]
     private ?string $Statu_liv = null;
 
     public function getId(): ?int

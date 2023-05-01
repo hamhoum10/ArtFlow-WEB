@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\RetourRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RetourRepository::class)]
@@ -13,22 +14,27 @@ class Retour
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("retour")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"Product Name required")]
+    #[Groups("retour")]
     private ?string $name_produit = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"Artiste required")]
+    #[Groups("retour")]
     private ?string $artiste = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"addres required")]
+    #[Groups("retour")]
     private ?string $addres = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\LessThanOrEqual('today',message:"We Do NOT LIVE IN THE FUTURE")]
+    #[Groups("retour")]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\OneToOne()]
@@ -37,6 +43,7 @@ class Retour
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message:"User Name required")]
+    #[Groups("retour")]
     private ?string $user_name = null;
 
     public function getId(): ?int
