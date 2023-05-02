@@ -53,7 +53,7 @@ class MobileLignePanierController extends AbstractController
     }
 
     //adding from the detailed interface (description) because it contains a quantity field
-    #[Route('/newLP', name: 'app_ligne_panier_new')]
+    #[Route('/newLP', name: 'app_ligne_panier_newLP')]
     public function new(Request $request, EntityManagerInterface $entityManager,NormalizerInterface $normalizer)
     {
         //https://127.0.0.1:8000/newLP?id-client=3&&id-article=36&&quantity=1
@@ -82,7 +82,7 @@ class MobileLignePanierController extends AbstractController
             //quantity to add if lignepanier deja existe
             //do lp exist si oui nzido quantity , maybe i add condition for the specific panier to udpdate not all ligne panier who have that article
             /** @var LignePanier $lpexist */
-            $lpexist = $entityManager->getRepository(LignePanier::class)->findOneBy(['idArticle' => $article]);
+            $lpexist = $entityManager->getRepository(LignePanier::class)->findOneBy(['idArticle' => $article,'idPanier' => ['NOT' => $panierparclient]]);
             if ($lpexist != null) {
                 $lpexist->setQuantity($lpexist->getQuantity() + (int)$request->get("quantity"));//we add the quantity the user wrote
                 $entityManager->persist($lpexist);
@@ -131,7 +131,7 @@ class MobileLignePanierController extends AbstractController
             //quantity to add if lignepanier deja existe
             //do lp exist si oui nzido quantity , maybe i add condition for the specific panier to udpdate not all ligne panier who have that article
             /** @var LignePanier $lpexist */
-            $lpexist = $entityManager->getRepository(LignePanier::class)->findOneBy(['idArticle' => $article]);
+            $lpexist = $entityManager->getRepository(LignePanier::class)->findOneBy(['idArticle' => $article,'idPanier' => ['NOT' => $panierparclient]]);
             if ($lpexist != null) {
                 $lpexist->setQuantity($lpexist->getQuantity() + 1);//we add the quantity the user wrote
                 $entityManager->persist($lpexist);

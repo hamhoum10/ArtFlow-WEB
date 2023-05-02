@@ -16,15 +16,15 @@ class MobilePanierController extends AbstractController
 {
     //API FOR MOBILE ----------------------------------------------------------------------------------------------------------------
 
-    #[Route('/mobile-new', name: 'app_panier_mobile_new')]
+    #[Route('mobile/new', name: 'app_panier_mobile_new')]
     public function mobilenew(Request $request, EntityManagerInterface $entityManager, NormalizerInterface $Normalizer): Response
     {
-        //https://127.0.0.1:8000/mobile-new?id-client=nbr
+        //https://127.0.0.1:8000/mobile/new?id_client=nbr
 
         $panier = new Panier();
 
 
-        $client = $entityManager->getRepository(Client::class)->find($request->get('id-client'));
+        $client = $entityManager->getRepository(Client::class)->find($request->get('id_client'));
         $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
 
         $panier->setIdClient($client);
