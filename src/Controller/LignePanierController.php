@@ -73,7 +73,7 @@ class LignePanierController extends AbstractController
 
             //quantity to add if lignepanier deja existe
             //do lp exist si oui nzido quantity , maybe i add condition for the specific panier to udpdate not all ligne panier who have that article
-            /** @var LignePanier $lpexist */ $lpexist = $entityManager->getRepository(LignePanier::class)->findOneBy(['idArticle' => $article]);
+            /** @var LignePanier $lpexist */ $lpexist = $entityManager->getRepository(LignePanier::class)->findOneBy(['idArticle' => $article,'idPanier' => ['NOT' => $panierparclient]]);
             if ($lpexist != null){
                 $lpexist->setQuantity($lpexist->getQuantity()+ (int)$quantity );//we add the quantity the user wrote
                 $entityManager->persist($lpexist);
@@ -119,7 +119,7 @@ class LignePanierController extends AbstractController
 
             //quantity to add if lignepanier deja existe
             //do lp exist si oui nzido quantity , maybe i add condition for the specific panier to udpdate not all ligne panier who have that article
-            /** @var LignePanier $lpexist */ $lpexist = $entityManager->getRepository(LignePanier::class)->findOneBy(['idArticle' => $article]);
+            /** @var LignePanier $lpexist */ $lpexist = $entityManager->getRepository(LignePanier::class)->findOneBy(['idArticle' => $article,'idPanier' => ['NOT' => $panierparclient]]);
             if ($lpexist != null){
                 $lpexist->setQuantity($lpexist->getQuantity()+ 1);
                 $entityManager->persist($lpexist);
