@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New LignePanier{% endblock %}
+
+{% block body %}
+    <h1>Create new LignePanier</h1>
+
+{#    {{ include('ligne_panier/_form.html.twig') }}#}
+
+    <a id ="back" href="{{ path('app_ligne_panier_index') }}">back to list</a>
+    <script>
+        // Submit the form automatically when the page loads
+        window.onload = function() {
+            document.getElementById('back').click()
+        };
+    </script>
+{% endblock %}

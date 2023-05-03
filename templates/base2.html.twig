@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>RegistrationForm_v1 by Colorlib</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- MATERIAL DESIGN ICONIC FONT -->
+    <link rel="stylesheet" href="{{ asset('assets/Front/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css')}}">
+    <script src="{{ asset('assets/js/Notification.js')}}"></script>
+
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/Front/css/style.css')}}">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+    <body>
+        {% block body %}{% endblock %}
+
+    </body>
+    </html>

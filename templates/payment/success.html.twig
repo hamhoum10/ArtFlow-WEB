@@ -1,0 +1,33 @@
+{% extends 'paymentBase.html.twig' %}
+
+{% block title %}Payment has been approved ! {% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+
+<div style="text-align:center;">
+    <h1 style="font-size: 2.5rem; color: limegreen; text-align: center; text-transform: uppercase; font-weight:bold /*margin-top: 20px;*/">Thank You For Your Order!</h1>
+    <div style="margin-top: 40px"></div>
+    <p>We appreciate your business and hope you enjoy your purchase.</p>
+    <p>If you have any questions or concerns, please don't hesitate to contact our customer support team.</p>
+    <p>Thanks again for choosing us!</p>
+    <p>
+        If you have any questions, please email
+        <a href="mailto:orders@example.com">orders@example.com</a>.
+    </p>
+    <img src="{{ asset('img/done.png') }}" alt="" width="300" height="300">
+    <div style="margin-top: 40px"></div>
+    <nav>
+        <form action="/lignepanier" method="GET" style="display: inline-block;">
+            <button type="submit" class="btn primary-btn btn-lg" >Back to Cart</button>
+        </form>
+        <form action="/pdf" method="GET" style="display: inline-block;">
+            <button type="submit" class="btn primary-btn btn-lg" > PDF </button>
+        </form>
+    </nav>
+</div>
+
+
+
+{% endblock %}

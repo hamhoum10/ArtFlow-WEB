@@ -1,0 +1,14 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Edit Article{% endblock %}
+
+{% block contenu %}
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+    <h1>Edit Article</h1>
+
+    {{ include('article/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_article_index') }}">back to list</a>
+
+    {{ include('article/_delete_form.html.twig') }}
+{% endblock %}

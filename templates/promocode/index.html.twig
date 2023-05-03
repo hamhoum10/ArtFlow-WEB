@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Promocode index{% endblock %}
+
+{% block body %}
+    <h1>Promocode index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Code</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for promocode in promocodes %}
+            <tr>
+                <td>{{ promocode.id }}</td>
+                <td>{{ promocode.code }}</td>
+                <td>
+                    <a href="{{ path('app_promocode_show', {'id': promocode.id}) }}">show</a>
+                    <a href="{{ path('app_promocode_edit', {'id': promocode.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_promocode_new') }}">Create new</a>
+{% endblock %}

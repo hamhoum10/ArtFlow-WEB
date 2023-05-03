@@ -1,0 +1,12 @@
+{% if error_message is defined %}
+<script>
+    alert("This user panier already exist");
+    window.location.href = "{{ redirect_url }}";
+</script>
+{% endif %}
+
+{% if app.flashes('error')|length > 0 %}
+    <div class="alert alert-danger">
+        {{ app.flashes('error')[0] }}
+    </div>
+{% endif %}
