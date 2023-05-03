@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ashion Template">
+    <meta name="keywords" content="Ashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Ashion | Template</title>
+
+
+    <!--hhhhh-->
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ asset('assets/css/tailwind.output.css')}}"/>
+    <script
+            src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+            defer
+    ></script>
+    <script src="{{ asset('assets/js/init-alpine.js')}}"></script>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
+    />
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+            defer
+    ></script>
+    <script src="{{ asset('assets/js/charts-lines.js')}}" defer></script>
+    <script src="{{ asset('assets/js/charts-pie.js')}}" defer></script>
+
+
+    <!-- end hhh-->
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/elegant-icons.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/slicknav.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}" type="text/css">
+</head>
+
+<body>
+<!-- Page Preloder -->
+<!--<div id="preloder">
+    <div class="loader"></div>
+</div>-->
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__close">+</div>
+    <ul class="offcanvas__widget">
+        <li><span class="icon_search search-switch"></span></li>
+        <li><a href="#"><span class="icon_heart_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+        <li><a href="#"><span class="icon_bag_alt"></span>
+                <div class="tip">2</div>
+            </a></li>
+    </ul>
+    <div class="offcanvas__logo">
+        <a href="./index.html"><img src="../../public/assets/img/logo.png" alt=""></a>
+    </div>
+    <div id="mobile-menu-wrap"></div>
+    <a href="{{ path('app_artiste_new') }}">Login</a>
+    <a href="{{ path('app_artiste_new') }}">Register</a>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+</div><h1>{{ app.user.email }}</h1>
+</div><h1>{{ app.user.username }}</h1>
+
+{% endif %}
+{% if artiste is not null %}
+    <h2>Welcome {{ artiste.firstname }}!</h2>
+    <h2>Welcome {{ artiste.email }}!</h2>
+    <h2>Welcome {{ artiste.phonenumber }}!</h2>
+{% endif %}
+<!-- Offcanvas Menu End -->
+
+<!-- Header Section Begin -->
+<header class="header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-2">
+                <div class="header__logo">
+                    <a href="./index.html"><img src="../../public/assets/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-7">
+                <nav class="header__menu">
+                    <ul>
+                        <li class="active"><a href="{{ path('app_welcomepage') }}">Home</a></li>
+                        <li><a href="#">Women’s</a></li>
+                        <li><a href="#">Men’s</a></li>
+                        <li><a href="./shop.html">Shop</a></li>
+                        <li><a href="#">Pages</a>
+                            <ul class="dropdown">
+                                <li><a href="./product-details.html">Product Details</a></li>
+                                <li><a href="./shop-cart.html">Shop Cart</a></li>
+                                <li><a href="./checkout.html">Checkout</a></li>
+                                <li><a href="./blog-details.html">Blog Details</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="./blog.html">Blog</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3">
+                <div class="header__right">
+                    <div class="header__right__auth">
+                        <a href="{{ path('app_artiste_new') }}">Login</a>
+                        <a href="{{ path('app_artiste_new') }}">Register</a>
+                    </div>
+                    <ul class="header__right__widget">
+                        <li><span class="icon_search search-switch"></span></li>
+                        <li><a href="#"><span class="icon_heart_alt"></span>
+                                <div class="tip">2</div>
+                            </a></li>
+                        <li><a href="#"><span class="icon_bag_alt"></span>
+                                <div class="tip">2</div>
+                            </a></li>
+                        <!----hhhhhhhhhhhhhhhh-->
+                        <li>
+                            <div class="dropdown ">
+                                <button
+                                        class="" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                >
+                                    <img
+                                            class="object-cover w-8 h-8 rounded-full"
+                                            src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
+                                            alt=""
+                                            aria-hidden="true"
+                                    />
+                                </button>
+                                <div  class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="{{ path('app_profile') }}">
+                                        <ul> <li style="margin-right: 0px"><svg
+                                                        class="w-4 h-4 mr-3"
+                                                        aria-hidden="true"
+                                                        fill="none"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                >
+
+                                                    <path
+                                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                                    ></path>
+                                                </svg></li><li>
+                                                <span>Profile</span></li>
+                                        </ul>
+                                    </a>
+
+                                    <a class="dropdown-item inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="#">
+                                        <ul> <li style="margin-right: 0px"><svg
+                                                        class="w-4 h-4 mr-3"
+                                                        aria-hidden="true"
+                                                        fill="none"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                >
+
+                                                    <path
+                                                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                                                    ></path>
+                                                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                </svg></li><li>
+                                                <span>Setting</span></li>
+                                        </ul>
+                                    </a>
+                                    {% if app.user %}
+                                        <a class="dropdown-item inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200" href="{{ path('app_logout') }}">
+                                            <ul> <li style="margin-right: 0px"><svg
+                                                            class="w-4 h-4 mr-3"
+                                                            aria-hidden="true"
+                                                            fill="none"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            viewBox="0 0 24 24"
+                                                            stroke="currentColor"
+                                                    >
+
+                                                        <path
+                                                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                                                        ></path>
+                                                    </svg></li><li>
+                                                    <span>Log out</span></li>
+                                            </ul>
+                                        </a>
+                                    {% endif %}
+
+
+
+                                </div></div>
+                        </li>
+
+                        <!----hhhhhhhhhhhhhhhh-->
+                    </ul>
+                    </template>
+                    </li>
+
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<!-- Header Section End -->
+
+<!--body section-->
+<div
+        class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
+>
+    {{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}
+
+
+
+
+    <label class="block text-sm" >
+        <span class="text-gray-700 dark:text-gray-400">First Name</span>
+
+        {{ form_widget(form.firstname, { attr:{'class':'block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Last Name</span>
+
+        {{ form_widget(form.lastname, { attr:{'class':' block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Birthplace</span>
+
+        {{ form_widget(form.birthplace, { attr:{'class':' block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Birthdate</span>
+
+        {{ form_widget(form.birthdate, { attr:{'class':' block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Description</span>
+
+        {{ form_widget(form.description, { attr:{'class':' block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Image</span></label>
+
+    {{ form_widget(form.image, { attr:{'class':'mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input','accept': 'image/*',
+        'onchange': 'previewimage(event)' }}) }}
+
+    {% if form.image.vars.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ form.image.vars.errors|join(', ') }}</p>
+    {% endif %}
+    <div class="mt-2">
+
+        {% if(artiste.image =="") %}
+            <img id="preview-image" class="hidden w-full max-w-md" alt="Preview Image" >
+        {% else %}
+            <img id="preview-image" style=" width:60px; height:50px;" alt="Preview Image" src={{ asset('uploads/' ~artiste.image) }}>
+        {% endif %}
+    </div>
+    </li>
+    </ul>
+    <script>
+        function previewImage(event) {
+            var preview = document.getElementById('preview-image');
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                preview.classList.remove('hidden');
+            };
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                preview.classList.add('hidden');
+            }
+        }
+    </script>
+    <br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Adress</span>
+
+        {{ form_widget(form.address, { attr:{'class':'block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Phone number</span>
+
+        {{ form_widget(form.phonenumber, { attr:{'class':'block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Email</span>
+
+        {{ form_widget(form.email, { attr:{'class':'block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Username</span>
+
+        {{ form_widget(form.username, { attr:{'class':'block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Password</span>
+
+        {{ form_widget(form.password.first, { attr:{'class':'block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Confirm Password</span>
+
+        {{ form_widget(form.password.second, { attr:{'class':'block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input' }}) }}
+
+    </label><br>
+    <label class="block text-sm">
+        <span class="text-gray-700 dark:text-gray-400">Agree Terms</span>
+
+        {{ form_widget(form.agreeTerms) }}
+
+    </label><br>
+    <button                   class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+    >{{ button_label|default('Update') }}</button>
+    {{ form_end(form) }}
+
+    <form class="flex items-center space-x-4 text-sm" method="post" action="{{ path('app_artiste_delete', {'id': artiste.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ artiste.id) }}">
+
+        <button
+                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                aria-label="delete"
+                type="submit"
+
+        >
+            <svg
+                    class="w-5 h-5"
+                    aria-hidden="true"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+            >
+                <path
+                        fill-rule="evenodd"
+                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                        clip-rule="evenodd"></path>
+            </svg>
+        </button></form>
+
+
+</div>
+<!--body end-->
+
+<!-- Footer Section Begin -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-7">
+                <div class="footer__about">
+                    <div class="footer__logo">
+                        <a href="./index.html"><img src="../../public/assets/img/logo.png" alt=""></a>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                        cilisis.</p>
+                    <div class="footer__payment">
+                        <a href="#"><img src="../../public/assets/img/payment/payment-1.png" alt=""></a>
+                        <a href="#"><img src="../../public/assets/img/payment/payment-2.png" alt=""></a>
+                        <a href="#"><img src="../../public/assets/img/payment/payment-3.png" alt=""></a>
+                        <a href="#"><img src="../../public/assets/img/payment/payment-4.png" alt=""></a>
+                        <a href="#"><img src="../../public/assets/img/payment/payment-5.png" alt=""></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-5">
+                <div class="footer__widget">
+                    <h6>Quick links</h6>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blogs</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-4">
+                <div class="footer__widget">
+                    <h6>Account</h6>
+                    <ul>
+                        <li><a href="#">My Account</a></li>
+                        <li><a href="#">Orders Tracking</a></li>
+                        <li><a href="#">Checkout</a></li>
+                        <li><a href="#">Wishlist</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-8 col-sm-8">
+                <div class="footer__newslatter">
+                    <h6>NEWSLETTER</h6>
+                    <form action="#">
+                        <input type="text" placeholder="Email">
+                        <button type="submit" class="site-btn">Subscribe</button>
+                    </form>
+                    <div class="footer__social">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-youtube-play"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                <div class="footer__copyright__text">
+                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                </div>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section End -->
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+
+<!-- Js Plugins -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/mixitup.min.js"></script>
+<script src="js/jquery.countdown.min.js"></script>
+<script src="js/jquery.slicknav.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.nicescroll.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+
+</html>

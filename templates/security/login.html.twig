@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>RegistrationForm_v1 by Colorlib</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- MATERIAL DESIGN ICONIC FONT -->
+    <link rel="stylesheet" href="{{ asset('assets/Front/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css')}}">
+
+    <!-- STYLE CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/Front/css/style.css')}}">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+
+    <div class="wrapper" style="background-image: url({{ asset('assets/Front/images/login1.jpg')}});">
+        <div class="inner">
+            <div class="image-holder">
+                <img src="{{ asset('assets/Front/images/login0.jpg')}}" alt="">
+            </div>
+    <form method="post" >
+        {% if error %}
+            <div class="alert alert-danger" style="color: red">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {# {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>x
+        {% endif %}#}
+        <h3>LOGIN Form</h3>
+            <div class="form-wrapper">
+        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="First name" autocomplete="username" required autofocus>
+        </div>
+            <div class="form-wrapper">
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" autocomplete="current-password" required>
+            </div>
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+        {#
+            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+            See https://symfony.com/doc/current/security/remember_me.html
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" name="_remember_me"> Remember me
+                </label>
+            </div>
+        #}
+
+        <button class="btn btn-lg btn-primary" type="submit">
+            LOGIN
+        </button>
+    <a href="{{ path('app_forgot_password_request') }}" style="color: #1a1c23; margin-top: 60px">you forgot you password! click here</a>
+    </form></div></div></div></body>
+        </html>

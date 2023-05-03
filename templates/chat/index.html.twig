@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Hello World!</title>
+    {% endblock %}
+</head>
+<body>
+{% block content %}
+
+
+<script>
+    var botmanWidget = {
+        frameEndpoint: '{{ path("chat_frame") }}',
+        chatServer: '{{ path("chat_message") }}',
+        introMessage: 'sssur',
+        title: 'Robot',
+        mainColor: '#4227d7',
+        color: '#ea5f5f',
+        bubbleBackground: '#4227d7',
+        aboutText: ''
+    };
+</script>
+<script src='https://cdn.jsdelivr.net/npm/botman-web-widget@0/build/js/widget.js'></script>
+
+{% endblock %}
+</body>
+</html>

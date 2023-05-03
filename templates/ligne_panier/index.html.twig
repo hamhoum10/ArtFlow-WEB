@@ -1,0 +1,77 @@
+{% extends 'PanierBase.html.twig' %}
+
+
+{% block title %}LignePanier index{% endblock %}
+
+
+
+
+{% block body %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>PrixUnitaire</th>
+                <th>Quantity</th>
+                <th>NomArticle</th>
+                <th>Description</th>
+                <th>NomArtiste</th>
+                <th>PrenomArtiste</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ligne_panier in ligne_paniers %}
+            <tr>
+                <td>{{ ligne_panier.id }}</td>
+                <td>{{ ligne_panier.prixUnitaire }}</td>
+                <td>{{ ligne_panier.quantity }}</td>
+                <td>{{ ligne_panier.nomArticle }}</td>
+                <td>{{ ligne_panier.description }}</td>
+                <td>{{ ligne_panier.nomArtiste }}</td>
+                <td>{{ ligne_panier.prenomArtiste }}</td>
+                <td>
+                    <a href="{{ path('app_ligne_panier_show', {'id': ligne_panier.id}) }}">show</a>
+                    <a href="{{ path('app_ligne_panier_edit', {'id': ligne_panier.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ligne_panier_new') }}">Create new</a>
+
+    {# pop up ki panier t creata successfuly  ---------------------------------  #}
+    {% if app.request.query.get('DoneMsg') is not empty %}
+        <script>
+
+            var popup = document.createElement('div');
+            popup.innerHTML = "{{ app.request.query.get('DoneMsg')|e('js') }}";
+            popup.style.position = 'fixed';
+            popup.style.top = '10%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.padding = '20px';
+            popup.style.border = '1px solid black';
+            popup.style.backgroundColor = 'white';
+            popup.style.zIndex = '9999';
+            document.body.appendChild(popup);
+            popup.style.fontSize = '1.2rem';
+            popup.style.color = '#333';
+            popup.style.backgroundColor = '#fff';
+            popup.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.3)';
+            popup.style.borderRadius = '5px';
+            popup.style.padding = '20px';
+            setTimeout(function() {
+                document.body.removeChild(popup);
+            }, 3000);
+        </script>
+    {% endif %}
+{% endblock %}
+
+

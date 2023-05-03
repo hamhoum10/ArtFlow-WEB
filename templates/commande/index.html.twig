@@ -1,0 +1,77 @@
+{% extends 'commandeBase.html.twig' %}
+
+{% block title %}Commande index{% endblock %}
+
+{% block body %}
+    <h1>Commande index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Prenom</th>
+                <th>Nom</th>
+                <th>Numero</th>
+                <th>Status</th>
+                <th>TotalAmount</th>
+                <th>CreatedAt</th>
+                <th>Codepostal</th>
+                <th>Adresse</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes %}
+            <tr>
+                <td>{{ commande.id }}</td>
+                <td>{{ commande.prenom }}</td>
+                <td>{{ commande.nom }}</td>
+                <td>{{ commande.numero }}</td>
+                <td>{{ commande.status }}</td>
+                <td>{{ commande.totalAmount }}</td>
+                <td>{{ commande.createdAt ? commande.createdAt|date('Y-m-d') : '' }}</td>
+                <td>{{ commande.codepostal }}</td>
+                <td>{{ commande.adresse }}</td>
+                <td>
+                    <a href="{{ path('app_commande_show', {'id': commande.id}) }}">show</a>
+                    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_commande_new') }}">Create new</a>
+
+
+    {# pop up ki panier t creata successfuly  ---------------------------------  #}
+    {% if app.request.query.get('DoneMsg') is not empty %}
+        <script>
+
+            var popup = document.createElement('div');
+            popup.innerHTML = "{{ app.request.query.get('DoneMsg')|e('js') }}";
+            popup.style.position = 'fixed';
+            popup.style.top = '10%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.padding = '20px';
+            popup.style.border = '1px solid black';
+            popup.style.backgroundColor = 'white';
+            popup.style.zIndex = '9999';
+            document.body.appendChild(popup);
+            popup.style.fontSize = '1.2rem';
+            popup.style.color = '#333';
+            popup.style.backgroundColor = '#fff';
+            popup.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.3)';
+            popup.style.borderRadius = '5px';
+            popup.style.padding = '20px';
+            setTimeout(function() {
+                document.body.removeChild(popup);
+            }, 3000);
+        </script>
+    {% endif %}
+{% endblock %}
