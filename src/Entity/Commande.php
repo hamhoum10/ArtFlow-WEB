@@ -18,6 +18,10 @@ class Commande
     private ?int $id =null;
 
 
+
+
+
+
     #[ORM\Column(length: 150)]
     #[Groups("commande")]
     private ?string $prenom =null;
@@ -60,6 +64,10 @@ class Commande
     #[ORM\JoinColumn(name: 'id_panier', referencedColumnName: 'id_panier')]
     private ?Panier $idPanier =null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups("commande")]
+    private ?string $statu_liv = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +77,9 @@ class Commande
     {
         return $this->prenom;
     }
+
+
+
 
     public function setPrenom(string $prenom): self
     {
@@ -169,6 +180,22 @@ class Commande
     public function setIdPanier(?Panier $idPanier): self
     {
         $this->idPanier = $idPanier;
+
+        return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->getNom();
+    }
+
+    public function getStatuLiv(): ?string
+    {
+        return $this->statu_liv;
+    }
+
+    public function setStatuLiv(string $statu_liv): self
+    {
+        $this->statu_liv = $statu_liv;
 
         return $this;
     }

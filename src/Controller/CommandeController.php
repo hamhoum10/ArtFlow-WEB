@@ -6,7 +6,9 @@ use App\Entity\Client;
 use App\Entity\Commande;
 use App\Entity\LignePanier;
 use App\Entity\Panier;
+use App\Entity\Stock;
 use App\Form\CommandeType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,6 +20,20 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/commande')]
 class CommandeController extends AbstractController
 {
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+    public function sendSmsMessage(\Twilio\Rest\Client $twilioClient, String $body, String $num):Response
+    {
+
+        $twilioClient->messages->create("+216".$num, [
+            "body" => $body,
+            "from" => $this->getParameter('twilio_number')
+        ]);
+        return new Response();
+    }
 
 
     #[Route('/', name: 'app_showarticles_index', methods: ['GET'])]
@@ -98,7 +114,7 @@ class CommandeController extends AbstractController
             $currentDate = new \DateTime();
             $commande->setCreatedAt($currentDate);
             $commande->setStatus("en attente");
-
+            $commande->setStatuLiv("waiting");
             $commande->setNom($firstname);
             $commande->setPrenom($lastname);
             $commande->setCodepostal($codePostal);
@@ -152,16 +168,49 @@ class CommandeController extends AbstractController
     }
 
     //admin panel
-    #[Route('/show', name: 'app_commande_index', methods: ['GET'])]
+    #[Route('/showall', name: 'app_commande_show', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $commandes = $entityManager
             ->getRepository(Commande::class)
             ->findAll();
 
+
         return $this->render('commande/admin-order.html.twig', [
             'commandes' => $commandes,
         ]);
+    }
+    #[Route('/shift-row/{id}', name: 'shift_row4')]
+
+    public function shiftRowAction($id)
+    {
+        // Retrieve the row to be shifted from the source table
+        $row = $this->getDoctrine()->getRepository(Commande::class)->find($id);
+
+        // Remove the row from the source table
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+        // Add the row to the destination table
+        $destinationRow = new Stock();
+        $destinationRow->setNameProduit("test");
+        $destinationRow->setArtiste("also_TEST");
+        $destinationRow->setAddres($row->getAdresse());//****
+        $format = 'Y-m-d H:i:s';
+        $dateTime = DateTime::createFromFormat($format, $row->getCreatedAt());
+        $destinationRow->setDateEntr($dateTime);//****
+        $destinationRow->setUserName($row->getNom());//***
+        $destinationRow->setIdCommende($row);//***
+
+        $row->setStatuLiv("ON STOCK");
+        $entityManager->persist($destinationRow);
+        $entityManager->flush();
+        $twilioClient = new \Twilio\Rest\Client('AC4730297eb72be182dde74c2a2143deb8','fba49a82e157a83953c49896694c44ec');
+        $test=$this-> sendSmsMessage($twilioClient,'ART_FLOW want you to know that your commande is in Stock ',$row->getNumero());
+
+
+        // Redirect the user to the original page
+        return $this->redirectToRoute('app_stock_index');
     }
 
 

@@ -1,0 +1,45 @@
+{% extends './baseyasser.html.twig' %}
+
+{% block title %}Stock{% endblock %}
+
+{% block body %}
+
+
+    <table class= "my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+        <tbody>
+            <tr>
+                <th>Id : </th>
+                <td>{{ stock.id }}</td>
+            </tr>
+            <tr>
+                <th>Name produit : </th>
+                <td>{{ stock.nameProduit }}</td>
+            </tr>
+            <tr>
+                <th>Artiste:</th>
+                <td>{{ stock.artiste }}</td>
+            </tr>
+            <tr>
+                <th>Addres:</th>
+                <td>{{ stock.addres }}</td>
+            </tr>
+            <tr>
+                <th>User_name:</th>
+                <td>{{ stock.userName }}</td>
+            </tr>
+            <tr>
+                <th>Date_entr</th>
+                <td>{{ stock.dateEntr ? stock.dateEntr|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_stock_index') }}"class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg
+    active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">back to list</a>
+
+    <a href="{{ path('app_stock_edit', {'id': stock.id}) }}"class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg
+    active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">edit</a>
+
+
+    {{ include('stock/_delete_form.html.twig') }}
+{% endblock %}

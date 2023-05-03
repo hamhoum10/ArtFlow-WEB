@@ -82,7 +82,7 @@
                         <li><a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="./product-details.html">Product Details</a></li>
-                                <li><a href="./shop-cart.html">Shop Cart</a></li>
+                                <li><a href="../lignepanier">Shop Cart</a></li>
                                 <li><a href="./checkout.html">Checkout</a></li>
                                 <li><a href="./blog-details.html">Blog Details</a></li>
                             </ul>
@@ -507,7 +507,7 @@
                     //initially remove all elements (so if user erases a letter or adds new letter then clean previous out)
                     if(
                         i.toLowerCase().startsWith(input.value.toLowerCase()) &&
-                        input.value != ""
+                        input.value !== ""
                     ){
                         let listItem = document.createElement("li");
                         // One common class name

@@ -5,9 +5,15 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     images_directory: 'C:\Users\medya\ArtFlow-WEB-Nada\public\uploads'
+    twilio_number: '%env(TWILIO_NUMBER)%'
 
 
 services:
+    twilio.client:
+        class: Twilio\Rest\Client
+        arguments: [ '%env(TWILIO_ACCOUNT_SID)%', '%env(TWILIO_AUTH_TOKEN)%' ]
+
+    Twilio\Rest\Client: '@twilio.client'
     #app.image_uploader:
         #class: App\Service\ImageUploader
         #arguments:

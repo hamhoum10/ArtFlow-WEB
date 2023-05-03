@@ -1,0 +1,52 @@
+{% extends './baseyasser.html.twig' %}
+
+{% block title %}
+    <canvas id="myChart" ></canvas>
+    <canvas id="myChart1" ></canvas>
+    <canvas id="myChart2" ></canvas>
+    <canvas id="myChart3" ></canvas>
+{% endblock %}
+
+{% block body %}
+
+    <script src="{{ asset('assets/js/chart.js') }}"></script>
+
+    <script>
+
+
+
+        var ctx2 = document.getElementById('myChart3').getContext('2d');
+        var myChart2 = new Chart(ctx2, {
+            type: 'pie',
+            data: {{ data|json_encode|raw }},
+            options: {
+
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+var ctx3 = document.getElementById('myChart2').getContext('2d');
+var myChart3 = new Chart(ctx3, {
+    type: 'bar',
+    data: {{ data|json_encode|raw }},
+    options: {
+
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+
+    </script>
+
+
+{% endblock %}

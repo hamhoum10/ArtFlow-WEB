@@ -1,0 +1,43 @@
+
+{{ form_start(form,{'attr': {'novalidate': 'novalidate'}} ) }}
+<div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <div class = "block text-sm">
+
+<span class="text-gray-700 dark:text-gray-400">
+        {{form_label(form.user_name) }}</span>
+        {{ form_widget(form.user_name, {'attr': {'class': 'w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline'}}) }}
+
+
+        <span style="color: red">
+            {{ form_errors(form.user_name) }}</span>
+
+
+        <br><span class="text-gray-700 dark:text-gray-400">
+            {{ form_label(form.date_entr) }}</span>
+
+        {{ form_widget(form.date_entr) }}
+        <span style="color: red">
+            {{ form_errors(form.date_entr) }}</span><br>
+        <span class="text-gray-700 dark:text-gray-400">
+            {{ form_label(form.name_produit) }}</span>
+        {{ form_widget(form.name_produit, {'attr': {'class': 'w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline'}}) }}
+        <span style="color: red">
+            {{ form_errors(form.name_produit) }}</span><br>
+        <span class="text-gray-700 dark:text-gray-400">
+            {{ form_label(form.id_commende) }}</span>
+        {{ form_widget(form.id_commende) }}
+        <span style="color: red">
+            {{ form_errors(form.id_commende) }}</span><br>
+        <span class="text-gray-700 dark:text-gray-400">
+            {{ form_label(form.artiste) }}</span>
+        {{ form_widget(form.artiste, {'attr': {'class': 'w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline'}}) }}
+        <span style="color: red">
+            {{ form_errors(form.artiste) }}</span><br>
+        <span class="text-gray-700 dark:text-gray-400">
+            {{ form_label(form.addres) }}</span>
+        {{ form_widget(form.addres, {'attr': {'class': 'w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline'}}, {'attr': {'class': 'w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline'}}) }}
+        <span style="color: red">
+        {{ form_errors(form.addres) }}</span><br>
+    <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700
+     focus:outline-none focus:shadow-outline-purple">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}

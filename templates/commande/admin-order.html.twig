@@ -866,6 +866,9 @@
                                 <th class="px-4 py-3">Date</th>
                                 <th class="px-4 py-3">Adresse</th>
                                 <th class="px-4 py-3">Numero</th>
+                                <th class="px-4 py-3">état Livraison</th>
+                                <th class="px-4 py-3">action</th>
+
 
                             </tr>
                             </thead>
@@ -916,6 +919,13 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{ commande.numero }}
+                                </td>
+                                <td class="px-4 py-3 text-sm">
+                                    {{ commande.Statuliv }}
+{#                                    {{ commande.numero }}#}
+                                </td>
+                                <td class="px-4 py-3 text-sm">
+                                    <a href="{{ path('shift_row4',{'id': commande.id}) }}">Livrai</a>
                                 </td>
                             </tr>
                             {% endfor %}
