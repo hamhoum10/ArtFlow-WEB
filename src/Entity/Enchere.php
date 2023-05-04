@@ -16,7 +16,7 @@ class Enchere
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups("enchere")]
+    #[Groups("participant")] /////for participant it nneed to change
     private ?int $ide = null;
 
 
@@ -40,7 +40,7 @@ class Enchere
 
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotNull(message: 'La date limite est requise.')]
+
     #[Groups("enchere")]
     #[Assert\GreaterThanOrEqual(
         value: 'today',
@@ -58,10 +58,12 @@ class Enchere
 
 
 
-    /**
-     * @ ORM\OneToMany(targetEntity=Participant::class, mappedBy="enchere", orphanRemoval=true)
 
-    private $participant;
+     /**
+          *@ORM\OneToMany(targetEntity=Participant::class, mappedBy="enchere", orphanRemoval=true)
+           */
+   #[Groups("participant")]
+    private ?Participant $participant;
 
     // ...
 
@@ -76,7 +78,7 @@ class Enchere
 
         return $this;
     }
-     */
+
     /**
      * @ORM\Column(type="array")
      */
@@ -100,10 +102,21 @@ class Enchere
         return $this->ide;
     }
 
+
+public function setIde(int $ide): self
+    {
+        $this->ide = $ide;
+
+        return $this;
+    }
+
+
     public function getTitre(): ?string
     {
         return $this->titre;
     }
+
+
 
     public function setTitre(string $titre): self
     {
@@ -161,7 +174,10 @@ class Enchere
         return $this;
     }
 
-
+  public function __toString(): string
+    {
+       return $this->getIde();
+    }
 
 
 }

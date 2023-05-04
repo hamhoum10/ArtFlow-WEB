@@ -49,12 +49,13 @@ public function enchereId($ide, NormalizerInterface $normalizer, EnchereReposito
 
 /*********************************ADD AUCTIONS *************************************/
 
- #[Route("addenchere/new", name: "addStudentJSON")]
+ #[Route("addenchere/new", name: "addEnchere")]
     public function addenchere(Request $req,   NormalizerInterface $Normalizer)
     {
 
         $em = $this->getDoctrine()->getManager();
         $enchere = new Enchere();
+
         $enchere->setTitre($req->get('titre'));
         $enchere->setDescription($req->get('description'));
         $enchere->setPrixdepart($req->get('prixdepart'));
@@ -71,8 +72,10 @@ public function enchereId($ide, NormalizerInterface $normalizer, EnchereReposito
         $em->flush();
 
         $jsonContent = $Normalizer->normalize($enchere, 'json', ['groups' => 'enchere']);
-        return new Response(json_encode($jsonContent));
+        return new Response("auction added successfully " . json_encode($jsonContent));
     }
+
+
 
 
 /*********************************UPDATE AUCTIONS *************************************/
@@ -81,7 +84,7 @@ public function enchereId($ide, NormalizerInterface $normalizer, EnchereReposito
  #[Route("updateenchere/{ide}", name: "updateenchere")]
     public function updateenchere(Request $req, $ide, NormalizerInterface $Normalizer)
     {
-
+ $ide=$req->get("ide");
         $em = $this->getDoctrine()->getManager();
         $enchere = $em->getRepository(Enchere::class)->find($ide);
        $enchere->setTitre($req->get('titre'));
@@ -95,20 +98,20 @@ public function enchereId($ide, NormalizerInterface $normalizer, EnchereReposito
             $em->flush();
 
         $jsonContent = $Normalizer->normalize($enchere, 'json', ['groups' => 'enchere']);
-        return new Response("enchere updated successfully " . json_encode($jsonContent));
+        return new Response("auction updated successfully " . json_encode($jsonContent));
     }
 
-/*********************************UPDATE AUCTIONS *************************************/
+/*********************************DElETE AUCTIONS *************************************/
  #[Route("deleteenchere/{ide}", name: "deleteenchere")]
     public function deleteenchere(Request $req, $ide, NormalizerInterface $Normalizer)
     {
-
+ $ide=$req->get("ide");
         $em = $this->getDoctrine()->getManager();
         $enchere = $em->getRepository(Enchere::class)->find($ide);
         $em->remove($enchere);
         $em->flush();
         $jsonContent = $Normalizer->normalize($enchere, 'json', ['groups' => 'enchere']);
-        return new Response("Enchere deleted successfully " . json_encode($jsonContent));
+        return new Response("auction deleted successfully " . json_encode($jsonContent));
     }
 
 

@@ -26,6 +26,15 @@
             margin: 0 auto;
             padding-bottom: 20px;
         }
+        .address {
+                    max-width: 100px;
+                    display: block;
+                    margin: 20 100px 0 auto;
+                    position: absolute;
+                    top :0;
+                    right:0;
+
+                }
         h1, h2, h3 {
             margin-top: 0;
             margin-bottom: 10px;
@@ -53,12 +62,23 @@
             color: #999;
             margin-top: 20px;
             text-align: justify;
+            .resize {
+                width: 400px;
+                height: auto;
+            }
+
+            .resize {
+                width: 300px;
+                height: auto;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <img class="logo" src="data:image/png;base64,{{ logoSrc }}" alt="Logo">
+    <img  class="address" src="data:image/png;base64,{{ addressSrc }}" >
+
     <h1>{{ enchere.titre }}</h1>
     <p>{{ enchere.description }}</p>
     <ul>
@@ -66,14 +86,24 @@
         <li>Date limite: {{ enchere.dateLimite|date('Y-m-d') }}</li>
     </ul>
     {% set imageSrc = 'data:image/png;base64,' ~ imageSrc %}
-    <img src="{{ imageSrc }}" alt="Enchere Image">
+    <img class="resize" src="{{ imageSrc }}" alt="Enchere Image" >
     {% if client %}
-        <h2>Client with maximum bid:</h2>
+        <h2>Winner</h2>
+        <table cellspacing="0" cellpadding="0">
+        <tr>Name
+                <td>
+             {{ client.getLastname() }}
+                </td>
+            </tr>
+
+
+        </table>
+
         <ul>
             <li>Name: {{ client.getFirstname() }} {{ client.getLastname() }}</li>
             <li>Email: {{ client.getEmail() }}</li>
-            <li>Email: {{ client.getPhonenumber() }}</li>
-            <li>Email: {{ client.getAddress() }}</li>
+            <li>phone Number: {{ client.getPhonenumber() }}</li>
+            <li>Address : {{ client.getAddress() }}</li>
         </ul>
     {% endif %}
     <div class="terms">

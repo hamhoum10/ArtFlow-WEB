@@ -32,14 +32,17 @@ class ParticipantType extends AbstractType
                 },
                 'placeholder' => 'user',
             ])
-            ->add('ide', EntityType::class, [
-                'label'=> 'user',
-                'class' => Enchere::class,
-                'choice_label' =>  function (Enchere $enchere) {
-                    return sprintf('%s', $enchere->getTitre());
-                },
-                'placeholder' => ' Enchere',
-            ])
+
+   //        ->add('ide')
+//
+//             ->add('ide', EntityType::class, [
+//                 'label'=> 'user',
+//                 'class' => Enchere::class,
+//                 'choice_label' =>  function (Enchere $enchere) {
+//                     return sprintf('%s', $enchere->getIde());
+//                 },
+//                 'placeholder' => ' Enchere',
+//             ])
 
 
         ;
@@ -60,25 +63,25 @@ class ParticipantType extends AbstractType
 
 
 
-
-    public function validate($value, Constraint $constraint)
-    {
-        $encheres = $this->context->getRoot()->getData();
-        $lastMontant = 0;
-
-        foreach ($encheres as $enchere) {
-            if ($enchere->getIde() == $encheres[count($encheres)-1]->getIde()) {
-                $lastMontant = $enchere->getMontant();
-                break;
-            }
-        }
-
-        if ($value <= $lastMontant) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ lastMontant }}', $lastMontant)
-                ->addViolation();
-        }
-    }
+//
+//     public function validate($value, Constraint $constraint)
+//     {
+//         $encheres = $this->context->getRoot()->getData();
+//         $lastMontant = 0;
+//
+//         foreach ($encheres as $enchere) {
+//             if ($enchere->getIde() == $encheres[count($encheres)-1]->getIde()) {
+//                 $lastMontant = $enchere->getMontant();
+//                 break;
+//             }
+//         }
+//
+//         if ($value <= $lastMontant) {
+//             $this->context->buildViolation($constraint->message)
+//                 ->setParameter('{{ lastMontant }}', $lastMontant)
+//                 ->addViolation();
+//         }
+//     }
 
 
 

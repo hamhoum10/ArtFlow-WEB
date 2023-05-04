@@ -25,6 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Component\Routing\Generator;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+
 //use Symfony\Component\Validator\Constraints\DateTime;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -39,10 +41,12 @@ class EnchereController extends AbstractController
 
 
 
+
+
 /*********************************ADD AN AUCTION *************************************/
 
     #[Route('/new', name: 'app_enchere_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EnchereRepository $enchereRepository): Response
+     public function new(Request $request, EnchereRepository $enchereRepository): Response
     {
         $enchere = new Enchere();
         $form = $this->createForm(EnchereType::class, $enchere);
@@ -153,7 +157,7 @@ class EnchereController extends AbstractController
         //have a pdf bundle
 
         #[Route('/{ide}', name: 'app_enchere_showfront', methods: ['GET', 'POST'])]
-        public function frontshow(Enchere $enchere, ParticipantRepository $participantRepository, Participant $participant, Request $request): Response
+        public function frontshow($ide, Enchere $enchere, ParticipantRepository $participantRepository, Participant $participant, Request $request, EnchereRepository $enchereRepository,EntityManagerInterface $entityManager): Response
         {
             //$now for the date pdf download condition
             $now = new DateTime();
@@ -187,15 +191,22 @@ class EnchereController extends AbstractController
             )->getDataUri();
 
             //add the form for participation
+//  $idencher = new Enchere();
+// $idencher->setIde($ide);
 
+
+            $ench=$entityManager->getRepository(Enchere::class)->find($ide);
             $newParticipant = new Participant();
+
             $newParticipantForm = $this->createForm(ParticipantType::class, $newParticipant);
             $newParticipantForm->handleRequest($request);
 
+             $newParticipant->setIde($ench);
             if ($newParticipantForm->isSubmitted() && $newParticipantForm->isValid()) {
-                $encheresParticipants = $participantRepository->findBy(['ide' => $newParticipant->getIde()]);
+            $maxMontant = 0;
+               $encheresParticipants = $participantRepository->findBy(['ide' => $newParticipant->getIde()]);
                 //check montant > to the previous max(montant)
-                $maxMontant = 0;
+
 
                 foreach ($encheresParticipants as $encheresParticipant) {
                     $montant = $encheresParticipant->getMontant();
@@ -210,9 +221,32 @@ class EnchereController extends AbstractController
                 }else {
                     $participantRepository->save($newParticipant, true);
 
+
+
                     return $this->redirectToRoute('app_welcomepage', [], Response::HTTP_SEE_OTHER);
                 }
             }
+
+//
+// $ep = $participantRepository->findBy(['ide' => $newParticipant->getIde()]);
+
+
+
+//         $tab = array();
+//         // Get the count of all Livraison entities
+//         $count1 = $this->entityManager
+//             ->createQueryBuilder()
+//             ->select('MAX(p.montant)')
+//             ->from(Participant::class, 'p')
+//              ->where('p.ide = 40')
+// //              ->setParameter('ide', $ep)
+//             ->getQuery()
+//             ->getSingleScalarResult();
+//
+//         $tab[0] = $count1;
+
+
+
 
             return $this->render('enchere/frontshow.html.twig', [
                 'participants' => $participantRepository->findAll(),
@@ -222,6 +256,7 @@ class EnchereController extends AbstractController
                 //  'qrCodeDataUri' => $qrCodeDataUri, // pass the QR code data URI to the view
                 'qrCodes' => $qrCodes,
                 'now' => $now,
+// 'ep'=> $tab[0],
 
             ]);
         }

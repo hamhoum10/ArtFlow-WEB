@@ -22,6 +22,9 @@ class PdfGeneratorController extends AbstractController
 
         $logoPath = $this->getParameter('kernel.project_dir') . '/public/uploads/logo.png';
         $logoData = base64_encode(file_get_contents($logoPath));
+
+         $addPath = $this->getParameter('kernel.project_dir') . '/public/uploads/PDFPICC.png';
+         $addData = base64_encode(file_get_contents($addPath));
         $entityManager = $this->getDoctrine()->getManager();
         $enchere = $entityManager->getRepository(Enchere::class)->find($ide);
         if (!$enchere) {
@@ -42,6 +45,7 @@ class PdfGeneratorController extends AbstractController
         $imageData = base64_encode(file_get_contents($imagePath)); // convert image to base64 string
 
         $data = [
+        'addressSrc'=>$addData,
             'logoSrc'=>$logoData,
             'imageSrc' => $imageData,
             'enchere' => $enchere,

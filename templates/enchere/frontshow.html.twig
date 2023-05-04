@@ -30,7 +30,7 @@
 </head>
 
 <body>
-<H1> hello</H1>
+
 <!-- Page Preloder
 <div id="preloder">
     <div class="loader"></div>
@@ -233,14 +233,15 @@
 
                     <p>{{ enchere.description }}</p>
                     <p>{{ enchere.dateLimite|date('Y-m-d') }}</p>
-                    <p>{{ enchere.prixdepart }}</p>
+
+
 
                     <!--
                     <input type="text" id="test">
 
 
                     <button type="submit"   class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple" >
-                        <span>{ button_label|default  ('Save') }</span>
+                        <span>{ button_label|default  ('Participate') }</span>
                         <svg
                                 class="w-4 h-4 ml-2 -mr-1"
                                 fill="currentColor"
@@ -261,8 +262,10 @@
 
                     {% block body %}
 
+
+
                             <div class="col">
-                                <h2>Bids</h2>
+                                <h2>Bid</h2>
 
 
 
@@ -271,7 +274,7 @@
 
 
                                 {{ form_row(newParticipantForm._token) }}
-                                <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+  <button type="submit" class="btn btn-primary">{{ button_label|default('Participate') }}</button>
                                 {{ form_end(newParticipantForm) }}
 
 

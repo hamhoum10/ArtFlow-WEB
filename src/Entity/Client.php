@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClientRepository;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 
@@ -14,6 +14,7 @@ class Client
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[Groups("participant")]
     #[ORM\Column]
 
     private ?int $id = null;
