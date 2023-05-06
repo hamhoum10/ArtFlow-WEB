@@ -56,7 +56,7 @@ class MobileCommandeController extends AbstractController
 
         $commande = new Commande();
 
-        $client = $entityManager->getRepository(Client::class)->find($request->get('id-client'));
+        $client = $entityManager->getRepository(Client::class)->find($request->get('id_client'));
         $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
 
         //total

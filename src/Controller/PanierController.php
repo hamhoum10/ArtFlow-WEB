@@ -31,8 +31,7 @@ class PanierController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {//7atit kol shay mta form en commentaire alakhtr panier fihesh form
         $panier = new Panier();
-//        $form = $this->createForm(PanierType::class, $panier);
-//        $form->handleRequest($request);
+
 
         $client = $entityManager->getRepository(Client::class)->find(4); //baed  inscrire bedhabt tejra hethi baed mat5ou id user
         $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
@@ -46,12 +45,7 @@ class PanierController extends AbstractController
 
             return $this->redirectToRoute('app_panier_index', ['success_message' => $successMessage ], Response::HTTP_SEE_OTHER);
         }else{
-            //hethi methode 5ayba alkhtr to93ed tet3ad l route e5or w baed terj3 w background ywali blanc
-//            return $this->render('panier/errorPanier.html.twig', [
-//                'error_message' => $errorMessage,
-//                'redirect_url' => '/panier' // mesh nerj3ou lel route loula /panier ama lezem n7oto fi twig code hetha window.location.href = "{{ redirect_url }}"; mesh ytexecuti
-//            ]);
-            // pop up
+
             $errorMessage = "this user already have a cart !";
             return $this->redirectToRoute('app_panier_index', [
                 'error_message' => $errorMessage, // texecuti fi index.panier mesh nbadloush route that's why i added script ghadi

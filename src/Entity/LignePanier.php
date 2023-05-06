@@ -125,7 +125,7 @@ class LignePanier
 
         return $this;
     }
-
+//    #[Groups("lp")]
     public function getIdPanier(): ?Panier
     {
         return $this->idPanier;
@@ -137,7 +137,7 @@ class LignePanier
 
         return $this;
     }
-
+//    #[Groups("lp")]
     public function getIdArticle(): ?Article
     {
         return $this->idArticle;

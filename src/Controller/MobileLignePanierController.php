@@ -27,6 +27,7 @@ class MobileLignePanierController extends AbstractController
 
 
 
+
         $json = $normalizer->serialize($lignePaniers, 'json', ['groups' => 'lp']);
 
         return new Response($json);
@@ -36,7 +37,7 @@ class MobileLignePanierController extends AbstractController
     #[Route('/showLP/{id}', name: 'app_ligne_panier_showLPuser')]
     public function showLpuser(EntityManagerInterface $entityManager, NormalizerInterface $normalizer,$id): Response
     {
-        https://127.0.0.1:8000/showLP/3
+//        https://127.0.0.1:8000/showLP/3
 
         $client = $entityManager->getRepository(Client::class)->find($id);
         $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
@@ -168,16 +169,13 @@ class MobileLignePanierController extends AbstractController
     }
 
     // delete by article
-    #[Route('/{id}/deleteLP', name: 'app_ligne_panier_deleteAllLP')] //delete all
-    public function deleteLP(EntityManagerInterface $entityManager,NormalizerInterface $normalizer,$id,Request $request)
+    #[Route('/{idlp}/deleteLP', name: 'app_ligne_panier_deleteAllLP')] //delete all
+    public function deleteLP(EntityManagerInterface $entityManager,NormalizerInterface $normalizer,$idlp,Request $request)
     {
         //https://127.0.0.1:8000/3/deleteLP?id-article=36
 
-        $client = $entityManager->getRepository(Client::class)->find($id);
-        $article =$entityManager->getRepository(Article::class)->find($request->get("id-article"));
-        $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
-        /** @var LignePanier $lignePanier */$lignePanier = $entityManager->getRepository(LignePanier::class)->findOneBy(['idPanier' => $panierparclient ,'idArticle' => $article]);
-
+        $lp = $entityManager->getRepository(LignePanier::class)->find($idlp);
+        /** @var LignePanier $lignePanier */$lignePanier = $entityManager->getRepository(LignePanier::class)->find($lp);
         $entityManager->remove($lignePanier);
         $entityManager->flush();
 
@@ -187,15 +185,12 @@ class MobileLignePanierController extends AbstractController
     }
 
 
-    #[Route('/{id}/plusLP', name: 'app_ligne_panier_plusLP')]
-    public function addByOneLP(Request $request, EntityManagerInterface $entityManager,$id,NormalizerInterface $normalizer)
+    #[Route('/{idlp}/plusLP', name: 'app_ligne_panier_plusLP')]
+    public function addByOneLP(Request $request, EntityManagerInterface $entityManager,$idlp,NormalizerInterface $normalizer)
     {
-        //https://127.0.0.1:8000/3/plusLP?id-article=36
-
-        $client = $entityManager->getRepository(Client::class)->find($id);
-        $article =$entityManager->getRepository(Article::class)->find($request->get("id-article"));
-        $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
-        /** @var LignePanier $lignePanier */$lignePanier = $entityManager->getRepository(LignePanier::class)->findOneBy(['idPanier' => $panierparclient ,'idArticle' => $article]);
+        //https://127.0.0.1:8000/idlp/plusLP
+        $lp = $entityManager->getRepository(LignePanier::class)->find($idlp);
+        /** @var LignePanier $lignePanier */$lignePanier = $entityManager->getRepository(LignePanier::class)->find($lp);
 
         $lignePanier->setQuantity($lignePanier->getQuantity()+1);
         $entityManager->persist($lignePanier);
@@ -205,23 +200,21 @@ class MobileLignePanierController extends AbstractController
 
     }
 
-    #[Route('/{id}/minusLP', name: 'app_ligne_panier_minusLP', methods: ['GET','POST'])]
-    public function minusByOne(Request $request, EntityManagerInterface $entityManager,$id,NormalizerInterface $normalizer)
+    #[Route('/{idlp}/minusLP', name: 'app_ligne_panier_minusLP', methods: ['GET','POST'])]
+    public function minusByOne(Request $request, EntityManagerInterface $entityManager,$idlp,NormalizerInterface $normalizer)
     {
         //https://127.0.0.1:8000/3/minusLP?id-article=36
 
-        $client = $entityManager->getRepository(Client::class)->find($id);
-        $article =$entityManager->getRepository(Article::class)->find($request->get("id-article"));
-        $panierparclient = $entityManager->getRepository(Panier::class)->findOneBy(['idClient' => $client]);
-        /** @var LignePanier $lignePanier */$lignePanier = $entityManager->getRepository(LignePanier::class)->findOneBy(['idPanier' => $panierparclient ,'idArticle' => $article]);
+        $lp = $entityManager->getRepository(LignePanier::class)->find($idlp);
+        /** @var LignePanier $lignePanier */$lignePanier = $entityManager->getRepository(LignePanier::class)->find($lp);
         if ($lignePanier->getQuantity()>1){
 
-        $lignePanier->setQuantity($lignePanier->getQuantity()-1);
-        $entityManager->persist($lignePanier);
-        $entityManager->flush();
+            $lignePanier->setQuantity($lignePanier->getQuantity()-1);
+            $entityManager->persist($lignePanier);
+            $entityManager->flush();
 
-        $jsonContent = $normalizer->normalize($lignePanier, 'json', ['groups' => 'lp']);
-        return new Response("lp decreased by one successfully " . json_encode($jsonContent));
+            $jsonContent = $normalizer->normalize($lignePanier, 'json', ['groups' => 'lp']);
+            return new Response("lp decreased by one successfully " . json_encode($jsonContent));
         }else{
 
             $jsonContent = $normalizer->normalize($lignePanier, 'json', ['groups' => 'lp']);
