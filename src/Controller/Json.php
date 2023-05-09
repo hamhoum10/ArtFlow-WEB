@@ -37,15 +37,15 @@ class Json extends AbstractController
 
         return new Response($json);
     }
-    #[Route("/stock", name:"sto")]
-    public function showSto(StockRepository $stockRepository, NormalizerInterface $normalizer): Response
+    #[Route("/stock", name:"stot")]
+    public function showSto(StockRepository $StockRepository, NormalizerInterface $normalizer): Response
     {
-        $stock = $stockRepository->findAll();
+        $stock = $StockRepository->findAll();
         $json = $normalizer->serialize($stock, 'json', ['groups' => 'stock']);
 
         return new Response($json);
     }
-    #[Route("/retour", name:"sto")]
+    #[Route("/retour", name:"ret")]
     public function showRte(RetourRepository $retourRepository, NormalizerInterface $normalizer): Response
     {
         $retour = $retourRepository->findAll();
@@ -283,7 +283,7 @@ class Json extends AbstractController
         return new Response("livraison updated successfully " . json_encode($jsonContent));
 
     }
-    #[Route("/updatstk/{id}", name: "updatestock")]
+    #[Route("/updatesto/{id}", name: "updatestock")]
     public function updatestk(Request $req, $id, NormalizerInterface $Normalizer,CommandeRepository $commandeRepository)
     {
 

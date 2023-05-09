@@ -42,7 +42,9 @@ class Livraison
 
     #[ORM\OneToOne()]
     #[Assert\NotNull(message:"Please select one")]
+    #[Groups("livraison")]
     private ?Commande $id_commende = null;
+
 
 
     #[ORM\Column(length: 255)]

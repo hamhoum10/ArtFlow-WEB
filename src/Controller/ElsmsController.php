@@ -19,7 +19,31 @@ class ElsmsController extends AbstractController
 
 
         $twilioClient->messages->create("+21650660438", [
-            "body" => "0000",
+            "body" => "ART_FLOW want you to know that your commande is in Livraison ",
+            "from" => $this->getParameter('twilio_number')
+        ]);
+        return new Response();
+    }
+    #[Route('/sms2', name: 'app_sms2')]
+
+    public function sendSmsMessage2(Client $twilioClient):Response
+    {
+
+
+        $twilioClient->messages->create("+21650660438", [
+            "body" => "ART_FLOW want you to know that your commande is in Stock ",
+            "from" => $this->getParameter('twilio_number')
+        ]);
+        return new Response();
+    }
+    #[Route('/sms3', name: 'app_sms3')]
+
+    public function sendSmsMessage3(Client $twilioClient):Response
+    {
+
+
+        $twilioClient->messages->create("+21650660438", [
+            "body" => "ART_FLOW want you to know that your commande is in Retour ",
             "from" => $this->getParameter('twilio_number')
         ]);
         return new Response();
