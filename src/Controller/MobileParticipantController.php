@@ -9,6 +9,7 @@ use App\Repository\EnchereRepository;
 use App\Entity\Participant;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,9 +51,8 @@ public function participantId($idp, NormalizerInterface $normalizer,ParticipantR
 
 
 /*********************************ADD AUCTIONS *************************************/
-
- #[Route("addparticipant/new", name: "addparticipant")]
-    public function addParticipant(Request $req, NormalizerInterface $Normalizer)
+    #[Route("addparticipant/new", name: "addparticipant")]
+    public function addParticipant(Request $req, NormalizerInterface $Normalizer,EntityManagerInterface $entityManager,ParticipantRepository $participantRepository)
     {
         $em = $this->getDoctrine()->getManager();
         $participant = new Participant();
@@ -64,16 +64,46 @@ public function participantId($idp, NormalizerInterface $normalizer,ParticipantR
         $client = $em->getRepository(Client::class)->find($clientId);
         $enchere = $em->getRepository(Enchere::class)->find($enchereId);
 
-        $participant->setMontant($montant);
+
+        $montantFloat = floatval($montant);
+        $participant->setMontant($montantFloat);
         $participant->setId($client);
         $participant->setIde($enchere);
 
-        $em->persist($participant);
-        $em->flush();
+
+        $ench=$entityManager->getRepository(Enchere::class)->find($enchereId);
+        $newParticipant = new Participant();
+
+
+        $newParticipant->setIde($ench);
+
+        $maxMontant = 0;
+        $encheresParticipants = $participantRepository->findBy(['ide' => $newParticipant->getIde()]);
+        //check montant > to the previous max(montant)
+
+
+        foreach ($encheresParticipants as $encheresParticipant) {
+            $montantmax = $encheresParticipant->getMontant();
+            if ($montantmax> $maxMontant) {
+                $maxMontant = $montantmax;
+
+            }
+        }
+        if (($montantFloat - $maxMontant) < 100) {
+           // $this->addFlash('error', sprintf('The bid must be at least 100 DT higher than the current highest bid (%s DT).', $maxMontant));
+            return new Response(json_encode('The bid must be at least 100 DT higher than the current highest bid (%s DT).', $maxMontant));
+        }else {
+            $em->persist($participant);
+            $em->flush();
+
+        }
+
+
 
         $jsonContent = $Normalizer->normalize($participant, 'json', ['groups' => 'participant']);
         return new Response("Participant added successfully " . json_encode($jsonContent));
     }
+
 
 
 
@@ -86,19 +116,20 @@ public function participantId($idp, NormalizerInterface $normalizer,ParticipantR
      $entityManager = $this->getDoctrine()->getManager();
 
      // Get the new values from the request
-     $montant = $request->get('montant');
+
      $clientId = $request->get('id');
      $enchereId = $request->get('ide');
-
+     $montant = $request->get('montant');
      // Update the participant entity with the new values
      $participant->setMontant($montant);
 
      // Retrieve the client and enchere objects from the database using their IDs
      $client = $entityManager->getRepository(Client::class)->find($clientId);
      $enchere = $entityManager->getRepository(Enchere::class)->find($enchereId);
-
+     $participant->setMontant($montant);
      $participant->setId($client);
      $participant->setIde($enchere);
+
 
      // Save the changes to the database
      $entityManager->flush();
@@ -109,7 +140,7 @@ public function participantId($idp, NormalizerInterface $normalizer,ParticipantR
  }
 
 
-/*********************************DELETE AUCTIONS *************************************/
+
  #[Route("deleteparticipant/{idp}", name: "delete_participant")]
     public function deleteparticipant (Request $req, $idp, NormalizerInterface $Normalizer)
     {
@@ -121,6 +152,31 @@ public function participantId($idp, NormalizerInterface $normalizer,ParticipantR
         $jsonContent = $Normalizer->normalize($participant, 'json', ['groups' => 'participant']);
         return new Response("Participant deleted successfully " . json_encode($jsonContent));
     }
+
+
+    /*********************************client *************************************/
+    #[Route("/clientById/{id}", name: "ClientById")]
+    public function clientId($id, NormalizerInterface $normalizer, ClientRepository $clientRepository)
+    {
+        $client = $clientRepository->find($id);
+        $json = $normalizer->serialize($client, 'json', ['groups' => "client"]);
+        return new Response(json_encode($json));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -41,7 +41,7 @@ class MobileEnchereController extends AbstractController
 public function enchereId($ide, NormalizerInterface $normalizer, EnchereRepository $enchereRepository)
 {
     $enchere = $enchereRepository->find($ide);
-    $json = $normalizer->serialize($enchere, 'json', ['groups' => "enchere"]);
+    $json = $normalizer->normalize($enchere, 'json', ['groups' => "enchere"]);
     return new Response(json_encode($json));
 }
 
